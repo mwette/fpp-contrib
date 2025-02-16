@@ -1,0 +1,41 @@
+%% demo1.tex
+%%
+
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\title{%
+title
+}
+\author{Matt Wette \\ project }
+\date{Feb 16, 2025}
+
+\begin{document}
+\include{pgfprime.tex}
+%\maketitle
+
+\begin{tikzpicture}
+
+\node (S) at (0,0) 
+      [draw,rectangle,
+       minimum height=3cm, minimum width=1.5cm] {Sender} ;
+
+\node (R)
+      [right=3cm of S,draw,rectangle,
+       minimum height=3cm, minimum width=1.5cm] {Receiver} ;
+
+\node (F1) at (S.30) [fingerrt,draw,fill] {};
+\node (B1) at (R.150) [buttonlt,draw,fill] {};
+
+\node (F2) at (R.210) [fingerlt,draw,fill] {};
+\node (B2) at (S.330) [buttonrt,draw,fill] {};
+
+\draw[->] (F1.tip) -- (B1.tip);
+\draw[->] (F2.tip) -- (B2.tip);
+
+\end{tikzpicture}
+
+
+\end{document}
+%% --- last line ---

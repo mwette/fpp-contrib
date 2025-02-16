@@ -1,0 +1,111 @@
+% pgfprime.tex
+%
+% SPDX-License-Identifier: Apache-2.0
+%
+% Copyright (C) 2025 Matthew Wette
+
+% This file defines fingerrt, fingerlt, buttonrt, buttonlt
+% Work to do are {finger,button}{up,dn}.
+%
+% Causality from left to right is indicated with right-facing finger
+% (i.e., fingerrt) to left-facing button (i.e., buttonlt).
+% 
+% \draw[->] (F1.tip) -- (B1.tip);
+%        __             ___
+%       |  |_          |_  |
+% base->|   _|<--tip--> _| |<-base
+%       |__|           |___|
+%         ^-fingerrt      ^-buttonlt
+
+%% random notes -
+%
+% WxH is (2+1)x3 and (2-1)x3  where cell is 4x5
+% or (3x4)x(3x5) or 12x15 or 4x5 or .8x1
+% finger at .3,.7 of height
+
+% a:0,.5 b:0,1 c:.53,1 d:.8,.7 e:.8,.5 f:.8,.3 g:.53,.3 h:.53,0 i:0,0
+
+% from base anchor clockwize: xa,ya xb,yb ... w/ xe,ye at tip
+
+
+\makeatletter
+
+% ???
+\pgfkeys{/pgf/.cd,
+  fppwd/.initial=20pt,
+  fppfill/.initial=black,
+  }
+
+\pgfdeclareshape{fingerrt}{%
+  \anchor{center}{\pgfpointorigin}%
+  \anchor{base}{\pgfpointorigin}%
+  \anchor{tip}{\pgfpointorigin\advance\pgf@x+6pt}%
+  \foregroundpath{%
+    \pgfpathmoveto{\pgfpoint{+0pt}{+0pt}}%
+    \pgfpathlineto{\pgfpoint{+0pt}{+6pt}}%
+    \pgfpathlineto{\pgfpoint{+4pt}{+6pt}}%
+    \pgfpathlineto{\pgfpoint{+4pt}{+4pt}}%
+    \pgfpathlineto{\pgfpoint{+6pt}{+3pt}}%
+    \pgfpathlineto{\pgfpoint{+6pt}{-3pt}}%
+    \pgfpathlineto{\pgfpoint{+4pt}{-4pt}}%
+    \pgfpathlineto{\pgfpoint{+4pt}{-6pt}}%
+    \pgfpathlineto{\pgfpoint{+0pt}{-6pt}}%
+    \pgfpathclose%
+  }%
+}
+\pgfdeclareshape{buttonrt}{%
+  \anchor{center}{\pgfpointorigin}%
+  \anchor{base}{\pgfpointorigin}%
+  \anchor{tip}{\pgfpointorigin\advance\pgf@x+5pt}%
+  \foregroundpath{%
+    \pgfpathmoveto{\pgfpoint{+0pt}{+0pt}}%
+    \pgfpathlineto{\pgfpoint{+0pt}{+6pt}}%
+    \pgfpathlineto{\pgfpoint{+5pt}{+6pt}}%
+    \pgfpathlineto{\pgfpoint{+5pt}{+4pt}}%
+    \pgfpathlineto{\pgfpoint{+3pt}{+3pt}}%
+    \pgfpathlineto{\pgfpoint{+3pt}{-3pt}}%
+    \pgfpathlineto{\pgfpoint{+5pt}{-4pt}}%
+    \pgfpathlineto{\pgfpoint{+5pt}{-6pt}}%
+    \pgfpathlineto{\pgfpoint{+0pt}{-6pt}}%
+    \pgfpathclose%
+  }%
+}
+
+\pgfdeclareshape{fingerlt}{%
+  \anchor{center}{\pgfpointorigin}%
+  \anchor{base}{\pgfpointorigin}%
+  \anchor{tip}{\pgfpointorigin\advance\pgf@x-6pt}%
+  \foregroundpath{%
+    \pgfpathmoveto{\pgfpoint{+0pt}{+0pt}}%
+    \pgfpathlineto{\pgfpoint{+0pt}{+6pt}}%
+    \pgfpathlineto{\pgfpoint{-4pt}{+6pt}}%
+    \pgfpathlineto{\pgfpoint{-4pt}{+4pt}}%
+    \pgfpathlineto{\pgfpoint{-6pt}{+3pt}}%
+    \pgfpathlineto{\pgfpoint{-6pt}{-3pt}}%
+    \pgfpathlineto{\pgfpoint{-4pt}{-4pt}}%
+    \pgfpathlineto{\pgfpoint{-4pt}{-6pt}}%
+    \pgfpathlineto{\pgfpoint{+0pt}{-6pt}}%
+    \pgfpathclose%
+  }%
+}
+\pgfdeclareshape{buttonlt}{%
+  \anchor{center}{\pgfpointorigin}%
+  \anchor{base}{\pgfpointorigin}%
+  \anchor{tip}{\pgfpointorigin\advance\pgf@x-5pt}%
+  \foregroundpath{%
+    \pgfpathmoveto{\pgfpoint{+0pt}{+0pt}}%
+    \pgfpathlineto{\pgfpoint{+0pt}{+6pt}}%
+    \pgfpathlineto{\pgfpoint{-5pt}{+6pt}}%
+    \pgfpathlineto{\pgfpoint{-5pt}{+4pt}}%
+    \pgfpathlineto{\pgfpoint{-3pt}{+3pt}}%
+    \pgfpathlineto{\pgfpoint{-3pt}{-3pt}}%
+    \pgfpathlineto{\pgfpoint{-5pt}{-4pt}}%
+    \pgfpathlineto{\pgfpoint{-5pt}{-6pt}}%
+    \pgfpathlineto{\pgfpoint{+0pt}{-6pt}}%
+    \pgfpathclose%
+  }%
+}
+
+\makeatother
+
+% --- last line ---
