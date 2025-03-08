@@ -47,8 +47,8 @@
          ((eqv? ch #\newline) (cons newline-val "\n"))
          ((char-set-contains? space-cs ch) (loop (read-char)))
          ((read-comm ch #f) (loop (read-char)))
-         ((read-lone-anno ch #f) => assc-$)
          ((read-code-anno ch #f) => assc-$)
+         ((read-lone-anno ch #f) => assc-$)
          ((read-ident ch) => (lambda (s)
                                (or (and=> (assoc s kwstab) swap)
                                    (assc-$ (cons '$ident s)))))
@@ -83,7 +83,11 @@
       (newline (current-error-port))
       #f)))
 
-(define (read-fpp-file port)
-  (with-input-from-port port parse-fpp))
+(define (read-fpp-file filename)
+  (let* ((port (open-input-file filename))
+         (tree (with-input-from-port port parse-fpp))
+         )
+    ; need to augment tree with filename ???
+    tree))
 
 ;; --- last line ---

@@ -20,32 +20,23 @@
 
 (define fpp-spec
   (lalr-spec
-   (notice (string-append "Copyright 2024 Matthew Wette" license-lgpl3+))
+   (notice (string-append "Copyright 2025 Matthew Wette" license-lgpl3+))
    ;;(prec< '$ident 'dotted-id) couldn't get this to work
    (expect 1)
    (start translation-unit)
    (grammar
 
-    (elt-sep
-     (",")
-     ("\n")
-     (mem-sep "\n"))
-    
-    (mem-sep
-     (";")
-     ("\n")
-     (mem-sep "\n"))
+    (elt-sep (",") ("\n") (mem-sep "\n"))
+    (mem-sep (";") ("\n") (mem-sep "\n"))
 
-    (include-spec ("include" string))
+    (include-spec ("include" string ($$ `(include ,$2))))
 
     (translation-unit
-     (module-mem-seq))
+     (module-mem-seq ($$ `(trans-unit ,(tl->list $1)))))
 
-    (module-defn
-     ("module" ident "{" module-mem-seq "}"))
     (module-mem-seq
-     ($empty)
-     (mod-mem mem-sep module-mem-seq))
+     ($empty ($$ (make-tl 'module-mem-set)))
+     (mod-mem mem-sep module-mem-seq ($$ (tl-insert $3 $1))))
     (mod-mem
      (include-spec)
      (component-defn)
@@ -62,6 +53,9 @@
      ;;(stmach-defn)
      )
 
+    (module-defn
+     ("module" ident "{" module-mem-seq "}"
+      ($$ `(module-defn ,$2 ,(tl->list $4)))))
 
     ;; === const, type, port defn
     
@@ -72,7 +66,7 @@
 
     (abs-type-defn ("type" ident))
     (array-defn ("array" ident "=" index))
-    (const-defn ("constant" ident "=" exprNode))
+    (const-defn ("constant" ident "=" expr ($$ `(const-defn ,$2 ,$4))))
     
     (enum-defn (enum-defn-3))
     (enum-defn-0 ("enum" ident))
@@ -182,13 +176,6 @@
      ("guarded" ($$ 'guarded))
      ("sync" ($$ 'async)))
 
-    ;;(specContainer)
-    (prod-cont-spec (cont-spec-2))
-    (cont-spec-0 ("product" "container" ident))
-    (cont-spec-1 (cont-spec-0) (cont-spec-0 "id" expr))
-    (cont-spec-2 (cont-spec-1) (cont-spec-1 "default" "priority" expr))
-
-    ;;(specEvent event-spec-5)
     (event-spec (event-spec-5))
     (event-spec-0 ("event" ident))
     (event-spec-1 (event-spec-0) (event-spec-0 "(" param-list ")"))
@@ -197,7 +184,6 @@
     (event-spec-4 (event-spec-3 "format" string))
     (event-spec-5 (event-spec-4) (event-spec-4 "throttle" expr))
 
-    ;;(specParam (param-spec-4))
     (param-spec (param-spec-4))
     (param-spec-0 ("param" ident ":" type-name))
     (param-spec-1 (param-spec-0) (param-spec-0 "default" expr))
@@ -216,24 +202,43 @@
     (tlm-lim-seq (tlm-lim) (tlm-lim-seq elt-sep tlm-lim))
     (tlm-lim ("red" expr) ("orange" expr) ("yellow" expr))
 
-    ;;(specRecord record-spec-2)
     (record-spec (record-spec-2))
     (record-spec-0 ("product" "record" ident ":" type-name))
     (record-spec-1 (record-spec-0) (record-spec-0 "array"))
     (record-spec-2 (record-spec-1) (record-spec-1 "id" expr))
 
+    (prod-cont-spec (cont-spec-2))
+    (cont-spec-0 ("product" "container" ident))
+    (cont-spec-1 (cont-spec-0) (cont-spec-0 "id" expr))
+    (cont-spec-2 (cont-spec-1) (cont-spec-1 "default" "priority" expr))
+
 
     ;; === instance spec ================
     
     (comp-inst-defn (comp-inst-7))
-    (comp-inst-0 ("instance" ident ":" qual-ident "base" "id" expr))
-    (comp-inst-1 (comp-inst-0) (comp-inst-0 "type" string))
-    (comp-inst-2 (comp-inst-1) (comp-inst-1 "at" string))
-    (comp-inst-3 (comp-inst-2) (comp-inst-2 "queue" "size" exprNode))
-    (comp-inst-4 (comp-inst-3) (comp-inst-3 "stack" "size" exprNode))
-    (comp-inst-5 (comp-inst-4) (comp-inst-4 "priority" exprNode))
-    (comp-inst-6 (comp-inst-5) (comp-inst-5 "cpu" exprNode))
-    (comp-inst-7 (comp-inst-6) (comp-inst-6 "{" string "}"))
+    (comp-inst-0 ("instance" ident ":" qual-ident "base" "id" expr
+                  ($$ `(comp-inst-defn ,$2 ,$4 ,$7))))
+    (comp-inst-1 (comp-inst-0)
+                 (comp-inst-0
+                  "type" string ($$ (append $1 (list `(type ,$3))))))
+    (comp-inst-2 (comp-inst-1)
+                 (comp-inst-1
+                  "at" string ($$ (append $1 (list `(type ,$3))))))
+    (comp-inst-3 (comp-inst-2)
+                 (comp-inst-2
+                  "queue" "size" expr ($$ (append $1 (list `(qsiz ,$4))))))
+    (comp-inst-4 (comp-inst-3)
+                 (comp-inst-3
+                  "stack" "size" expr ($$ (append $1 (list `(stksiz ,$4))))))
+    (comp-inst-5 (comp-inst-4)
+                 (comp-inst-4
+                  "priority" expr ($$ (append $1 (list `(prio ,$3))))))
+    (comp-inst-6 (comp-inst-5)
+                 (comp-inst-5
+                  "cpu" expr ($$ (append $1 (list `(cpu ,$3))))))
+    (comp-inst-7 (comp-inst-6)
+                 (comp-inst-6
+                  "{" string "}" ($$ (append $1 (list `(code ,$3))))))
 
 
     ;; === topology spec ================
@@ -341,7 +346,6 @@
 
     ;; === expr's and prim's ===========
 
-    (exprNode (expr))
     (expr (add-expr))
     (add-expr
      (mul-expr)
@@ -368,32 +372,30 @@
      ($empty)
      (ident "=" expr elt-sep struct-elt-seq))
 
-    (number ($float) ($fixed))
-    (ident ($ident))
-    (string ($string))
+    (number ($float ($$ `(float ,$1)))
+            ($fixed ($$ `(fixed ,$1))))
+    (ident ($ident ($$ `(ident ,$1))))
+    (string ($string ($$ `(string ,$1))))
 
-    (qual-ident
-     ;;(ident ($prec 'lone-id))
-     (ident)
-     (qual-ident "." ident))
+    (qual-ident (qual-ident-1 ($$ (tl->list $1))))
+    (qual-ident-1
+     (ident ($$ (make-tl 'qual-ident (sx-ref $1 1))))
+     (qual-ident-1 "." ident ($$ (tl-append $1 (sx-ref $3 1)))))
     (qual-ident-seq
      (qual-ident)
      (qual-ident-seq elt-sep qual-ident))
 
     (index
-     ("[" expr "]"))
+     ("[" expr "]" ($$ `(index $2))))
 
     (type-name
-     ("I8") ("U8")
-     ("I16") ("U16")
-     ("I32") ("U32")
-     ("I64") ("U64")
-     ("F32") ("F64")
-     ("bool") ("string")
-     ("string" "size" expr)
-     )
-
-    ;; ??? (visibility     )
+     ("I8" ($$ `(type-name $1))) ("U8" ($$ `(type-name $1)))
+     ("I16" ($$ `(type-name $1))) ("U16" ($$ `(type-name $1)))
+     ("I32" ($$ `(type-name $1))) ("U32" ($$ `(type-name $1)))
+     ("I64" ($$ `(type-name $1))) ("U64" ($$ `(type-name $1)))
+     ("F32" ($$ `(type-name $1))) ("F64" ($$ `(type-name $1)))
+     ("bool" ($$ `(type-name $1))) ("string" ($$ `(type-name $1)))
+     ("string" "size" expr ($$ `(type-name (@ (size ,$3)) $1))))
 
 
     ;; === state machines ==============

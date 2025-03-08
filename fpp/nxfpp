@@ -13,11 +13,8 @@ exec guile $0 "$@"
        (file (car args))
        (port (open-input-file file))
        )
- (pp
-  (with-input-from-port port
-   (lambda () (parse-fpp #:debug #t)))
- )
-  #f)
+ (pp (read-fpp-file file))
+ #f)
 
 
 ;; --- last line ---

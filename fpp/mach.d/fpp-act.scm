@@ -1,6 +1,6 @@
 ;; fpp-act.scm
 
-;; Copyright 2024 Matthew Wette
+;; Copyright 2025 Matthew Wette
 ;; 
 ;; This library is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU Lesser General Public
@@ -25,15 +25,13 @@
    ;; mem-sep => mem-sep "\n"
    (lambda ($2 $1 . $rest) $1)
    ;; include-spec => "include" string
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) `(include ,$2))
    ;; translation-unit => module-mem-seq
-   (lambda ($1 . $rest) $1)
-   ;; module-defn => "module" ident "{" module-mem-seq "}"
-   (lambda ($5 $4 $3 $2 $1 . $rest) $1)
+   (lambda ($1 . $rest) `(trans-unit ,(tl->list $1)))
    ;; module-mem-seq => 
-   (lambda $rest (list))
+   (lambda $rest (make-tl 'module-mem-set))
    ;; module-mem-seq => mod-mem mem-sep module-mem-seq
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
    ;; mod-mem => include-spec
    (lambda ($1 . $rest) $1)
    ;; mod-mem => component-defn
@@ -58,6 +56,8 @@
    (lambda ($1 . $rest) $1)
    ;; mod-mem => enum-defn
    (lambda ($1 . $rest) $1)
+   ;; module-defn => "module" ident "{" module-mem-seq "}"
+   (lambda ($5 $4 $3 $2 $1 . $rest) `(module-defn ,$2 ,(tl->list $4)))
    ;; port-defn => port-defn-2
    (lambda ($1 . $rest) $1)
    ;; port-defn-0 => "port" ident
@@ -74,8 +74,8 @@
    (lambda ($2 $1 . $rest) $1)
    ;; array-defn => "array" ident "=" index
    (lambda ($4 $3 $2 $1 . $rest) $1)
-   ;; const-defn => "constant" ident "=" exprNode
-   (lambda ($4 $3 $2 $1 . $rest) $1)
+   ;; const-defn => "constant" ident "=" expr
+   (lambda ($4 $3 $2 $1 . $rest) `(const-defn ,$2 ,$4))
    ;; enum-defn => enum-defn-3
    (lambda ($1 . $rest) $1)
    ;; enum-defn-0 => "enum" ident
@@ -266,18 +266,6 @@
    (lambda ($1 . $rest) 'guarded)
    ;; input-port-kind => "sync"
    (lambda ($1 . $rest) 'async)
-   ;; prod-cont-spec => cont-spec-2
-   (lambda ($1 . $rest) $1)
-   ;; cont-spec-0 => "product" "container" ident
-   (lambda ($3 $2 $1 . $rest) $1)
-   ;; cont-spec-1 => cont-spec-0
-   (lambda ($1 . $rest) $1)
-   ;; cont-spec-1 => cont-spec-0 "id" expr
-   (lambda ($3 $2 $1 . $rest) $1)
-   ;; cont-spec-2 => cont-spec-1
-   (lambda ($1 . $rest) $1)
-   ;; cont-spec-2 => cont-spec-1 "default" "priority" expr
-   (lambda ($4 $3 $2 $1 . $rest) $1)
    ;; event-spec => event-spec-5
    (lambda ($1 . $rest) $1)
    ;; event-spec-0 => "event" ident
@@ -368,38 +356,50 @@
    (lambda ($1 . $rest) $1)
    ;; record-spec-2 => record-spec-1 "id" expr
    (lambda ($3 $2 $1 . $rest) $1)
+   ;; prod-cont-spec => cont-spec-2
+   (lambda ($1 . $rest) $1)
+   ;; cont-spec-0 => "product" "container" ident
+   (lambda ($3 $2 $1 . $rest) $1)
+   ;; cont-spec-1 => cont-spec-0
+   (lambda ($1 . $rest) $1)
+   ;; cont-spec-1 => cont-spec-0 "id" expr
+   (lambda ($3 $2 $1 . $rest) $1)
+   ;; cont-spec-2 => cont-spec-1
+   (lambda ($1 . $rest) $1)
+   ;; cont-spec-2 => cont-spec-1 "default" "priority" expr
+   (lambda ($4 $3 $2 $1 . $rest) $1)
    ;; comp-inst-defn => comp-inst-7
    (lambda ($1 . $rest) $1)
    ;; comp-inst-0 => "instance" ident ":" qual-ident "base" "id" expr
-   (lambda ($7 $6 $5 $4 $3 $2 $1 . $rest) $1)
+   (lambda ($7 $6 $5 $4 $3 $2 $1 . $rest) `(comp-inst-defn ,$2 ,$4 ,$7))
    ;; comp-inst-1 => comp-inst-0
    (lambda ($1 . $rest) $1)
    ;; comp-inst-1 => comp-inst-0 "type" string
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) (append $1 (list `(type ,$3))))
    ;; comp-inst-2 => comp-inst-1
    (lambda ($1 . $rest) $1)
    ;; comp-inst-2 => comp-inst-1 "at" string
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) (append $1 (list `(type ,$3))))
    ;; comp-inst-3 => comp-inst-2
    (lambda ($1 . $rest) $1)
-   ;; comp-inst-3 => comp-inst-2 "queue" "size" exprNode
-   (lambda ($4 $3 $2 $1 . $rest) $1)
+   ;; comp-inst-3 => comp-inst-2 "queue" "size" expr
+   (lambda ($4 $3 $2 $1 . $rest) (append $1 (list `(qsiz ,$4))))
    ;; comp-inst-4 => comp-inst-3
    (lambda ($1 . $rest) $1)
-   ;; comp-inst-4 => comp-inst-3 "stack" "size" exprNode
-   (lambda ($4 $3 $2 $1 . $rest) $1)
+   ;; comp-inst-4 => comp-inst-3 "stack" "size" expr
+   (lambda ($4 $3 $2 $1 . $rest) (append $1 (list `(ksiz ,$4))))
    ;; comp-inst-5 => comp-inst-4
    (lambda ($1 . $rest) $1)
-   ;; comp-inst-5 => comp-inst-4 "priority" exprNode
-   (lambda ($3 $2 $1 . $rest) $1)
+   ;; comp-inst-5 => comp-inst-4 "priority" expr
+   (lambda ($3 $2 $1 . $rest) (append $1 (list `(prio ,$3))))
    ;; comp-inst-6 => comp-inst-5
    (lambda ($1 . $rest) $1)
-   ;; comp-inst-6 => comp-inst-5 "cpu" exprNode
-   (lambda ($3 $2 $1 . $rest) $1)
+   ;; comp-inst-6 => comp-inst-5 "cpu" expr
+   (lambda ($3 $2 $1 . $rest) (append $1 (list `(cpu ,$3))))
    ;; comp-inst-7 => comp-inst-6
    (lambda ($1 . $rest) $1)
    ;; comp-inst-7 => comp-inst-6 "{" string "}"
-   (lambda ($4 $3 $2 $1 . $rest) $1)
+   (lambda ($4 $3 $2 $1 . $rest) (append $1 (list `(code ,$3))))
    ;; topology-defn => "topology" ident "{" topo-mem-seq "}"
    (lambda ($5 $4 $3 $2 $1 . $rest) $1)
    ;; topo-mem-seq => 
@@ -532,8 +532,6 @@
    (lambda ($5 $4 $3 $2 $1 . $rest) $1)
    ;; port-match-spec => "match" ident "with" ident
    (lambda ($4 $3 $2 $1 . $rest) $1)
-   ;; exprNode => expr
-   (lambda ($1 . $rest) $1)
    ;; expr => add-expr
    (lambda ($1 . $rest) $1)
    ;; add-expr => mul-expr
@@ -573,49 +571,51 @@
    ;; struct-elt-seq => ident "=" expr elt-sep struct-elt-seq
    (lambda ($5 $4 $3 $2 $1 . $rest) $1)
    ;; number => '$float
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(float ,$1))
    ;; number => '$fixed
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(fixed ,$1))
    ;; ident => '$ident
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(ident ,$1))
    ;; string => '$string
-   (lambda ($1 . $rest) $1)
-   ;; qual-ident => ident
-   (lambda ($1 . $rest) $1)
-   ;; qual-ident => qual-ident "." ident
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($1 . $rest) `(string ,$1))
+   ;; qual-ident => qual-ident-1
+   (lambda ($1 . $rest) (tl->list $1))
+   ;; qual-ident-1 => ident
+   (lambda ($1 . $rest) (make-tl 'qual-ident (sx-ref $1 1)))
+   ;; qual-ident-1 => qual-ident-1 "." ident
+   (lambda ($3 $2 $1 . $rest) (tl-append $1 (sx-ref $3 1)))
    ;; qual-ident-seq => qual-ident
    (lambda ($1 . $rest) $1)
    ;; qual-ident-seq => qual-ident-seq elt-sep qual-ident
    (lambda ($3 $2 $1 . $rest) $1)
    ;; index => "[" expr "]"
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) `(index $2))
    ;; type-name => "I8"
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "U8"
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "I16"
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "U16"
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "I32"
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "U32"
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "I64"
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "U64"
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "F32"
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "F64"
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "bool"
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "string"
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "string" "size" expr
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) `(type-name (@ (size ,$3)) $1))
    ))
 
 ;;; end tables
