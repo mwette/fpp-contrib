@@ -1,0 +1,20 @@
+#!/bin/sh
+# -*- scheme -*-
+exec guile $0
+!#
+(add-to-load-path (string-append (getcwd) "/.."))
+(use-modules (nyacc lalr))
+(use-modules (fpp mach))
+
+(when (gen-fpp-files)
+  (system "touch parser.scm")
+  (system "mv mach.d/fpp-tab.scm.new mach.d/fpp-tab.scm")
+  )
+
+
+(with-output-to-file ",gram.txt"
+  (lambda ()
+    (and fpp-spec (pp-lalr-grammar fpp-spec))
+    (and fpp-mach (pp-lalr-machine fpp-mach))))
+
+;;; --- last line ---

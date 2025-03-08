@@ -1,0 +1,23 @@
+#!/bin/bash
+# -*- scheme -*-
+
+exec guile $0 "$@"
+!#
+
+(use-modules (fpp parser))
+
+(use-modules (ice-9 pretty-print))
+(define pp pretty-print)
+
+(let* ((args (cdr (program-arguments)))
+       (file (car args))
+       (port (open-input-file file))
+       )
+ (pp
+  (with-input-from-port port
+   (lambda () (parse-fpp #:debug #t)))
+ )
+  #f)
+
+
+;; --- last line ---

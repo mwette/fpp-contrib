@@ -1,0 +1,94 @@
+#!/bin/sh
+# -*- scheme -*-
+
+export GUILE_LOAD_PATH=..:.:$GUILE_LOAD_PATH
+exec guile $0 "$@"
+!#
+
+(use-modules (fpp-parser mach))
+(use-modules (nyacc util))
+(use-modules (ice-9 pretty-print))
+(define pp pretty-print)
+
+;;(include-from-path "mach.d/fpp-tab.scm")
+
+
+(define sf simple-format)
+(define (ff fmt . args) (apply simple-format #f fmt args))
+
+(define (make-arg-list n)
+  (let loop ((r '()) (i 1))
+    (if (> i n)
+        (string-join (reverse r) ", ")
+        (loop (cons (ff "rhs~a" i) r) (1+ i)))))
+
+
+(define (gen-act mach port)
+  
+  (define (eqv-terminal? a b)
+    (eqv? (atomize-terminal a) (atomize-terminal b)))
+
+  (define (find-terminal symb term-l)
+    (let loop ((tl term-l))
+      (if (null? tl) #f
+          (if (eqv-terminal? symb (car tl)) (car tl)
+              (loop (cdr tl))))))
+  
+  (define (elt->str elt terms)
+    (or (and=> (find-terminal elt terms) obj->str)
+        (symbol->string elt)))
+
+  (define (pp-rule/ts gx)
+    (let* (;;(core (fluid-ref *lalr-core*))
+           (lhs (vector-ref (assq-ref mach 'lhs-v) gx))
+           (rhs (vector-ref (assq-ref mach 'rhs-v) gx))
+           (tl (assq-ref mach 'terminals))
+           (line (string-append
+                  (symbol->string lhs) " <= "
+                  (string-join 
+                   (map (lambda (elt) (elt->str elt tl))
+                        (vector->list rhs))
+                   " "))))
+      (if (> (string-length line) 72)
+          (string-append (substring/shared line 0 69) "...")
+          line)))
+
+  (define (write-actions len-v)
+    (vector-for-each
+     (lambda (gx ln)
+       (sf port "\n")
+       (sf port "# ~a\n" (pp-rule/ts gx))
+       (sf port "def act_~a(stack):\n" gx)
+       (let loop ((ix 1))
+         (when (<= ix ln)
+           (sf port "    val~a = stack[-~a]\n" ix (- ln ix -1))
+           (loop (1+ ix))))
+       (sf port "    pass\n"))
+     len-v))
+
+  (let* ((len-v (assq-ref mach 'len-v))
+         )
+    (write-actions (assq-ref mach 'len-v))
+    (newline port)
+    (sf port "actions = (    \n") 
+    (let loop ((col 4) (ix 0))
+      (let* ((fs (ff "act_~a, " ix)) (ln (string-length fs)))
+        (cond
+         ((> (+ col ln) 78)
+          (sf port "\n    ")
+          (loop 4 ix))
+         ((< ix (vector-length len-v))
+          (sf port fs) (loop (+ col ln) (1+ ix)))
+         (else #t))))
+    (sf port ")\n")
+    ))
+
+;;(define (gen-act mach port)
+(let ((port (current-output-port)))
+  (gen-act fpp-mach port)
+  ;;(gen-tab fpp-mach port)
+  #f)
+
+;;(pp (map car fpp-mach))
+
+;; --- last line ---
