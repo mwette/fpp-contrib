@@ -88,19 +88,16 @@
        (cond
         ((char-whitespace? ch) (unread-char ch) (cons 'u-lit (rls chl)))
         ((char=? #\newline ch) (unread-char ch) (cons 'u-lit (rls chl)))
+        ((memq ch '(#\))) (unread-char ch) (cons 'u-lit (rls chl)))
         (else (loop (cons ch chl) st (read-char)))))
       )))
 
 (define tok-util
-  (let ((pb-tok #f))                      ; pushback token
+  (let ((pbl '()))                      ; pushback list
     (case-lambda
-      ((tok)
-       (set! pb-tok tok))
-      (()
-       (let ((tok pb-tok))
-         (cond
-          (tok (set! pb-tok #f) tok)
-          (else (next-tok))))))))
+      ((tok) (set! pbl (cons tok pbl)) #f)
+      (() (if (null? pbl) (next-tok)
+              (let ((tok (car pbl))) (set! pbl (cdr pbl)) tok))))))
 
 (define get-tok tok-util)
 (define unget-tok tok-util)
@@ -125,6 +122,33 @@
 (define (tok-is? tok type)
   (and (pair? tok) (eq? (car tok) type) tok))
 
+(define (p-arglist tok)
+  (let loop ((args '()) (tok tok))
+    (sf "arg? ~s\n" tok)
+    (cond
+     ((tok-is? tok 'comm) (loop args (get-tok)))
+     ((tok-is? tok 'nl) (loop args (get-tok)))
+     ((tok-is? tok 'ws) (loop args (get-tok)))
+     ((tok-is? tok 'word) => (lambda (t) (loop (cons t args) (get-tok))))
+     ((tok-is? tok 'numb) => (lambda (t) (loop (cons t args) (get-tok))))
+     ((tok-is? tok 'q-lit) => (lambda (t) (loop (cons t args) (get-tok))))
+     ((tok-is? tok 'u-lit) => (lambda (t) (loop (cons t args) (get-tok))))
+     ((tok-is? tok 'r-par) `(arglist ,@(reverse args)))
+     (else (sf "p-arglist error:\n") (pp tok) (quit)))))
+
+(define (skip tok . ttl)
+  (if (memq (car tok) ttl) (apply skip (get-tok) ttl) tok))
+
+(define (p-stmt tok)
+  (and
+   (tok-is? tok 'word)
+   (let* ((tok1 (skip (get-tok) 'ws)))
+     (sf "p-stmt, tok1=~s\n" tok1)
+     (if (tok-is? tok1 'l-par)
+         (and=> (p-arglist (get-tok))
+           (lambda (t) `(stmt ,(cdr tok) ,t)))
+         (unget-tok tok1)))))
+ 
 (define (p-body tok)
   (let loop ((kids '()) (tok tok))
     (cond
@@ -137,37 +161,20 @@
             (loop (cons res kids) (get-tok))
             (error "p-body parse error")))))))
 
-(define (p-arglist tok)
-  (let loop ((args '()) (tok tok))
-    (cond
-     ((tok-is? tok 'comm) (loop args (get-tok)))
-     ((tok-is? tok 'nl) (loop args (get-tok)))
-     ((tok-is? tok 'ws) (loop args (get-tok)))
-     ((tok-is? tok 'word) => (lambda (t) (loop (cons t args) (get-tok))))
-     ((tok-is? tok 'numb) => (lambda (t) (loop (cons t args) (get-tok))))
-     ((tok-is? tok 'q-lit) => (lambda (t) (loop (cons t args) (get-tok))))
-     ((tok-is? tok 'u-lit) => (lambda (t) (loop (cons t args) (get-tok))))
-     ((tok-is? tok 'r-par) `(arglist ,@(reverse args)))
-     (else (sf "p-arglist error:\n") (pp tok) (quit)))))
-
-(define (p-stmt tok)
-  (and
-   (tok-is? tok 'word)
-   (let ((tok1 (get-tok)))
-     (if (tok-is? tok1 'l-par)
-         (and=> (p-arglist (get-tok))
-           (lambda (t) `(stmt ,t)))))))
- 
 (let ((file "CMakeLists.txt")
       )
   (with-input-from-file file
     (lambda ()
       (let loop ((pts '()) (tok (get-tok)))
+        (sf "top-tok: ~s\n" tok)
         (cond
          ((tok-is? tok 'comm) (loop pts (get-tok)))
          ((tok-is? tok 'nl) (loop pts (get-tok)))
+         ((tok-is? tok 'ws) (loop pts (get-tok)))
          ((tok-is? tok 'eof) `(body ,@(reverse pts)))
          ((p-stmt tok) => (lambda (pt) (loop (cons pt pts) (get-tok))))
-         (else (error "parse error")))))))
+         (else
+          (sf "parse-error: ~s:tok=~s\n" (port-line (current-input-port)) tok)
+          (quit)))))))
 
 ;; --- last line ---
