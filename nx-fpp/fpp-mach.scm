@@ -1,4 +1,4 @@
-;;; fpp/mach.scm
+;;; fpp-mach.scm
 
 ;; Copyright (C) 2025 Matthew Wette
 ;; SPDX-License-Identifier: LGPL-3.0-or-later
@@ -6,7 +6,7 @@
 ;; syntax: https://github.com/nasa/fpp/blob/main/
 ;;                compiler/lib/src/main/scala/syntax/Parser.scala
 
-(define-module (fpp mach)
+(define-module (fpp-mach)
   #:export (fpp-spec
             fpp-mach
             gen-fpp-files
@@ -26,7 +26,7 @@
    (start translation-unit)
    (grammar
 
-    (elt-sep (",") ("\n") (mem-sep "\n"))
+    (elt-sep (",") ("\n") (elt-sep "\n"))
     (mem-sep (";") ("\n") (mem-sep "\n"))
 
     (include-spec ("include" string ($$ `(include ,$2))))
@@ -57,57 +57,62 @@
      ("module" ident "{" module-mem-seq "}"
       ($$ `(module-defn ,$2 ,(tl->list $4)))))
 
-    ;; === const, type, port defn
+    ;; === const, abs-type, array, enum, struct, port defn's
     
-    (port-defn (port-defn-2))
-    (port-defn-0 ("port" ident))
-    (port-defn-1 (port-defn-0) (port-defn-0 "(" param-list ")"))
-    (port-defn-2 (port-defn-1) (port-defn-1 "->" type-name))
-
-    (abs-type-defn ("type" ident))
-    (array-defn ("array" ident "=" index))
     (const-defn ("constant" ident "=" expr ($$ `(const-defn ,$2 ,$4))))
+    (abs-type-defn ("type" ident ($$ `(type-defn ,$2))))
+    (array-defn ("array" ident "=" index ident ($$ `(array-defn ,$3 ,$2))))
     
-    (enum-defn (enum-defn-3))
-    (enum-defn-0 ("enum" ident))
-    (enum-defn-1 (enum-defn-0) (enum-defn-0 ":" type-name))
-    (enum-defn-2 (enum-defn-1 "{" enum-mem-seq "}"))
-    (enum-defn-3 (enum-defn-2) (enum-defn-2 "default" expr))
+    (enum-defn (enum-defn-3 ($$ (reverse $1))))
+    (enum-defn-0 ("enum" ident ($$ (list $2 'enum-defn))))
+    (enum-defn-1 (enum-defn-0)
+                 (enum-defn-0 ":" type-name ($$ (cons $3 $1))))
+    (enum-defn-2 (enum-defn-1 "{" enum-mem-seq "}" ($$ (cons (tl->list $3) $1))))
+    (enum-defn-3 (enum-defn-2)
+                 (enum-defn-2 "default" expr ($$ (cons `(default ,$3) $1))))
     (enum-mem-seq
-     ($empty)
-     (enum-mem elt-sep enum-mem-seq))
+     ($empty ($$ (make-tl 'enum-mem-seq)))
+     (enum-mem elt-sep enum-mem-seq ($$ (tl-insert $3 $1))))
     (enum-mem
-     (ident)
-     (ident "=" expr))
+     (ident ($$ `(enum $1)))
+     (ident "=" expr ($$ `(enum $1 $3))))
 
     (struct-defn
-     (struct-defn-1))
+     (struct-defn-1 ($$ (reverse $1))))
     (struct-defn-0
-     ("struct" ident "{" struct-mem-seq "}"))
+     ("struct" ident "{" struct-mem-seq "}"
+      ($$ (list (tl->list $4) $2 'struct-defn))))
     (struct-defn-1
      (struct-defn-0)
-     (struct-defn-0 "default" expr))
+     (struct-defn-0 "default" expr ($$ (cons `(default ,$3) $1))))
     (struct-mem-seq
-     ($empty)
-     (struct-mem mem-sep struct-mem-seq))
-    (struct-mem (struct-mem-3))
-    (struct-mem-0 (ident ":"))
-    (struct-mem-1 (struct-mem-0) (struct-mem-0 "[" expr "]"))
-    (struct-mem-2 (struct-mem-1 type-name))
-    (struct-mem-3 (struct-mem-2) (struct-mem-2 "format" string))
+     ($empty ($$ (make-tl 'mem-seq)))
+     (struct-mem mem-sep struct-mem-seq ($$ (tl-insert $3 $1))))
+    (struct-mem (struct-mem-3 ($$ (reverse $1))))
+    (struct-mem-0 (ident ":" ($$ (list $1 'struct-elt))))
+    (struct-mem-1 (struct-mem-0)
+                  (struct-mem-0 "[" expr "]" ($$ (cons `(index ,$3) $1))))
+    (struct-mem-2 (struct-mem-1 type-name ($$ (cons $2 $1))))
+    (struct-mem-3 (struct-mem-2)
+                  (struct-mem-2 "format" string ($$ (cons `(format ,$3) $1))))
+
+    (port-defn (port-defn-2 ($$ reverse $1)))
+    (port-defn-0 ("port" ident ($$ (list ident 'port-defn))))
+    (port-defn-1 (port-defn-0)
+                 (port-defn-0 "(" param-list ")" ($$ (cons $3 $1))))
+    (port-defn-2 (port-defn-1)
+                 (port-defn-1 "->" type-name ($$ (cons $3 $1))))
 
 
     ;; === component spec ===============
 
     (component-defn
-     (comp-kind ident "{" comp-mem-seq "}"))
-    (comp-kind 
-     ("active" ($$ 'active))
-     ("passive" ($$ 'passive))
-     ("queued" ($$ 'queued)))
+     (comp-kind ident "{" comp-mem-seq "}"
+                ($$ `(comp-defn (@ (kind ,$1)) ,$2 ,(reverse $4)))))
+    (comp-kind ("active") ("passive") ("queued"))
     (comp-mem-seq
-     (comp-mem)
-     (comp-mem-seq mem-sep comp-mem))
+     ($empty ($$ (make-tl 'mem-seq)))
+     (comp-mem mem-sep comp-mem-seq ($$ (tl-insert $3 $1))))
     (comp-mem
      (include-spec)
      (enum-defn)

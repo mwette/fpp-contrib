@@ -16,7 +16,7 @@
    (lambda ($1 . $rest) $1)
    ;; elt-sep => "\n"
    (lambda ($1 . $rest) $1)
-   ;; elt-sep => mem-sep "\n"
+   ;; elt-sep => elt-sep "\n"
    (lambda ($2 $1 . $rest) $1)
    ;; mem-sep => ";"
    (lambda ($1 . $rest) $1)
@@ -58,84 +58,85 @@
    (lambda ($1 . $rest) $1)
    ;; module-defn => "module" ident "{" module-mem-seq "}"
    (lambda ($5 $4 $3 $2 $1 . $rest) `(module-defn ,$2 ,(tl->list $4)))
-   ;; port-defn => port-defn-2
-   (lambda ($1 . $rest) $1)
-   ;; port-defn-0 => "port" ident
-   (lambda ($2 $1 . $rest) $1)
-   ;; port-defn-1 => port-defn-0
-   (lambda ($1 . $rest) $1)
-   ;; port-defn-1 => port-defn-0 "(" param-list ")"
-   (lambda ($4 $3 $2 $1 . $rest) $1)
-   ;; port-defn-2 => port-defn-1
-   (lambda ($1 . $rest) $1)
-   ;; port-defn-2 => port-defn-1 "->" type-name
-   (lambda ($3 $2 $1 . $rest) $1)
-   ;; abs-type-defn => "type" ident
-   (lambda ($2 $1 . $rest) $1)
-   ;; array-defn => "array" ident "=" index
-   (lambda ($4 $3 $2 $1 . $rest) $1)
    ;; const-defn => "constant" ident "=" expr
    (lambda ($4 $3 $2 $1 . $rest) `(const-defn ,$2 ,$4))
+   ;; abs-type-defn => "type" ident
+   (lambda ($2 $1 . $rest) `(type-defn ,$2))
+   ;; array-defn => "array" ident "=" index ident
+   (lambda ($5 $4 $3 $2 $1 . $rest) `(array-defn ,$3 ,$2))
    ;; enum-defn => enum-defn-3
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) (reverse $1))
    ;; enum-defn-0 => "enum" ident
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) (list $2 'enum-defn))
    ;; enum-defn-1 => enum-defn-0
    (lambda ($1 . $rest) $1)
    ;; enum-defn-1 => enum-defn-0 ":" type-name
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) (cons $3 $1))
    ;; enum-defn-2 => enum-defn-1 "{" enum-mem-seq "}"
-   (lambda ($4 $3 $2 $1 . $rest) $1)
+   (lambda ($4 $3 $2 $1 . $rest) (cons (tl->list $3) $1))
    ;; enum-defn-3 => enum-defn-2
    (lambda ($1 . $rest) $1)
    ;; enum-defn-3 => enum-defn-2 "default" expr
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) (cons `(default ,$3) $1))
    ;; enum-mem-seq => 
-   (lambda $rest (list))
+   (lambda $rest (make-tl 'enum-mem-seq))
    ;; enum-mem-seq => enum-mem elt-sep enum-mem-seq
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
    ;; enum-mem => ident
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) `(enum $1))
    ;; enum-mem => ident "=" expr
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) `(enum $1 $3))
    ;; struct-defn => struct-defn-1
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) (reverse $1))
    ;; struct-defn-0 => "struct" ident "{" struct-mem-seq "}"
-   (lambda ($5 $4 $3 $2 $1 . $rest) $1)
+   (lambda ($5 $4 $3 $2 $1 . $rest) (list (tl->list $4) $2 'struct-defn))
    ;; struct-defn-1 => struct-defn-0
    (lambda ($1 . $rest) $1)
    ;; struct-defn-1 => struct-defn-0 "default" expr
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) (cons `(default ,$3) $1))
    ;; struct-mem-seq => 
-   (lambda $rest (list))
+   (lambda $rest (make-tl 'mem-seq))
    ;; struct-mem-seq => struct-mem mem-sep struct-mem-seq
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
    ;; struct-mem => struct-mem-3
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) (reverse $1))
    ;; struct-mem-0 => ident ":"
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) (list $1 'struct-elt))
    ;; struct-mem-1 => struct-mem-0
    (lambda ($1 . $rest) $1)
    ;; struct-mem-1 => struct-mem-0 "[" expr "]"
-   (lambda ($4 $3 $2 $1 . $rest) $1)
+   (lambda ($4 $3 $2 $1 . $rest) (cons `(index ,$3) $1))
    ;; struct-mem-2 => struct-mem-1 type-name
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) (cons $2 $1))
    ;; struct-mem-3 => struct-mem-2
    (lambda ($1 . $rest) $1)
    ;; struct-mem-3 => struct-mem-2 "format" string
-   (lambda ($3 $2 $1 . $rest) $1)
-   ;; component-defn => comp-kind ident "{" comp-mem-seq "}"
-   (lambda ($5 $4 $3 $2 $1 . $rest) $1)
-   ;; comp-kind => "active"
-   (lambda ($1 . $rest) 'active)
-   ;; comp-kind => "passive"
-   (lambda ($1 . $rest) 'passive)
-   ;; comp-kind => "queued"
-   (lambda ($1 . $rest) 'queued)
-   ;; comp-mem-seq => comp-mem
+   (lambda ($3 $2 $1 . $rest) (cons `(format ,$3) $1))
+   ;; port-defn => port-defn-2
+   (lambda ($1 . $rest) reverse $1)
+   ;; port-defn-0 => "port" ident
+   (lambda ($2 $1 . $rest) (list ident 'port-defn))
+   ;; port-defn-1 => port-defn-0
    (lambda ($1 . $rest) $1)
-   ;; comp-mem-seq => comp-mem-seq mem-sep comp-mem
-   (lambda ($3 $2 $1 . $rest) $1)
+   ;; port-defn-1 => port-defn-0 "(" param-list ")"
+   (lambda ($4 $3 $2 $1 . $rest) (cons $3 $1))
+   ;; port-defn-2 => port-defn-1
+   (lambda ($1 . $rest) $1)
+   ;; port-defn-2 => port-defn-1 "->" type-name
+   (lambda ($3 $2 $1 . $rest) (cons $3 $1))
+   ;; component-defn => comp-kind ident "{" comp-mem-seq "}"
+   (lambda ($5 $4 $3 $2 $1 . $rest)
+     `(comp-defn (@ (kind ,$1)) ,$2 ,(reverse $4)))
+   ;; comp-kind => "active"
+   (lambda ($1 . $rest) $1)
+   ;; comp-kind => "passive"
+   (lambda ($1 . $rest) $1)
+   ;; comp-kind => "queued"
+   (lambda ($1 . $rest) $1)
+   ;; comp-mem-seq => 
+   (lambda $rest (make-tl 'mem-seq))
+   ;; comp-mem-seq => comp-mem mem-sep comp-mem-seq
+   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
    ;; comp-mem => include-spec
    (lambda ($1 . $rest) $1)
    ;; comp-mem => enum-defn
@@ -387,7 +388,7 @@
    ;; comp-inst-4 => comp-inst-3
    (lambda ($1 . $rest) $1)
    ;; comp-inst-4 => comp-inst-3 "stack" "size" expr
-   (lambda ($4 $3 $2 $1 . $rest) (append $1 (list `(ksiz ,$4))))
+   (lambda ($4 $3 $2 $1 . $rest) (append $1 (list `(stksiz ,$4))))
    ;; comp-inst-5 => comp-inst-4
    (lambda ($1 . $rest) $1)
    ;; comp-inst-5 => comp-inst-4 "priority" expr

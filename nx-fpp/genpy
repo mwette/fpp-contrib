@@ -5,13 +5,10 @@ export GUILE_LOAD_PATH=..:.:$GUILE_LOAD_PATH
 exec guile $0 "$@"
 !#
 
-(use-modules (fpp-parser mach))
+(use-modules (fpp-mach))
 (use-modules (nyacc util))
 (use-modules (ice-9 pretty-print))
 (define pp pretty-print)
-
-;;(include-from-path "mach.d/fpp-tab.scm")
-
 
 (define sf simple-format)
 (define (ff fmt . args) (apply simple-format #f fmt args))
@@ -63,7 +60,7 @@ exec guile $0 "$@"
          (when (<= ix ln)
            (sf port "    val~a = stack[-~a]\n" ix (- ln ix -1))
            (loop (1+ ix))))
-       (sf port "    val_ = None  # TODO\n" ln)
+       (sf port "    val_ = None  # TODO\n")
        (sf port "    return val_\n"))
      len-v))
 
