@@ -4,6 +4,7 @@ exec guile $0
 !#
 (add-to-load-path (string-append (getcwd) "/.."))
 (use-modules (nyacc lalr))
+(use-modules (nyacc export))
 (use-modules (fpp-mach))
 
 (when (gen-fpp-files)
@@ -16,5 +17,8 @@ exec guile $0
   (lambda ()
     (and fpp-spec (pp-lalr-grammar fpp-spec))
     (and fpp-mach (pp-lalr-machine fpp-mach))))
+
+(with-output-to-file "fpp-gram.y"
+  (lambda () (lalr->bison fpp-spec)))
 
 ;;; --- last line ---

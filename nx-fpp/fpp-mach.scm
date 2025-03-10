@@ -18,8 +18,6 @@
   #:use-module (ice-9 pretty-print)
   )
 
-(define licence  
-
 (define fpp-spec
   (lalr-spec
    (notice (string-append "Copyright 2025 Matthew Wette\n"

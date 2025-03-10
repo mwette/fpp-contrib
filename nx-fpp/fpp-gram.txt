@@ -1,7 +1,7 @@
 0 $start => translation-unit
 1 elt-sep => ","
 2 elt-sep => "\n"
-3 elt-sep => mem-sep "\n"
+3 elt-sep => elt-sep "\n"
 4 mem-sep => ";"
 5 mem-sep => "\n"
 6 mem-sep => mem-sep "\n"
@@ -22,45 +22,45 @@
 21 mod-mem => array-defn
 22 mod-mem => enum-defn
 23 module-defn => "module" ident "{" module-mem-seq "}"
-24 port-defn => port-defn-2
-25 port-defn-0 => "port" ident
-26 port-defn-1 => port-defn-0
-27 port-defn-1 => port-defn-0 "(" param-list ")"
-28 port-defn-2 => port-defn-1
-29 port-defn-2 => port-defn-1 "->" type-name
-30 abs-type-defn => "type" ident
-31 array-defn => "array" ident "=" index
-32 const-defn => "constant" ident "=" expr
-33 enum-defn => enum-defn-3
-34 enum-defn-0 => "enum" ident
-35 enum-defn-1 => enum-defn-0
-36 enum-defn-1 => enum-defn-0 ":" type-name
-37 enum-defn-2 => enum-defn-1 "{" enum-mem-seq "}"
-38 enum-defn-3 => enum-defn-2
-39 enum-defn-3 => enum-defn-2 "default" expr
-40 enum-mem-seq =>
-41 enum-mem-seq => enum-mem elt-sep enum-mem-seq
-42 enum-mem => ident
-43 enum-mem => ident "=" expr
-44 struct-defn => struct-defn-1
-45 struct-defn-0 => "struct" ident "{" struct-mem-seq "}"
-46 struct-defn-1 => struct-defn-0
-47 struct-defn-1 => struct-defn-0 "default" expr
-48 struct-mem-seq =>
-49 struct-mem-seq => struct-mem mem-sep struct-mem-seq
-50 struct-mem => struct-mem-3
-51 struct-mem-0 => ident ":"
-52 struct-mem-1 => struct-mem-0
-53 struct-mem-1 => struct-mem-0 "[" expr "]"
-54 struct-mem-2 => struct-mem-1 type-name
-55 struct-mem-3 => struct-mem-2
-56 struct-mem-3 => struct-mem-2 "format" string
+24 const-defn => "constant" ident "=" expr
+25 abs-type-defn => "type" ident
+26 array-defn => "array" ident "=" index ident
+27 enum-defn => enum-defn-3
+28 enum-defn-0 => "enum" ident
+29 enum-defn-1 => enum-defn-0
+30 enum-defn-1 => enum-defn-0 ":" type-name
+31 enum-defn-2 => enum-defn-1 "{" enum-mem-seq "}"
+32 enum-defn-3 => enum-defn-2
+33 enum-defn-3 => enum-defn-2 "default" expr
+34 enum-mem-seq =>
+35 enum-mem-seq => enum-mem elt-sep enum-mem-seq
+36 enum-mem => ident
+37 enum-mem => ident "=" expr
+38 struct-defn => struct-defn-1
+39 struct-defn-0 => "struct" ident "{" struct-mem-seq "}"
+40 struct-defn-1 => struct-defn-0
+41 struct-defn-1 => struct-defn-0 "default" expr
+42 struct-mem-seq =>
+43 struct-mem-seq => struct-mem mem-sep struct-mem-seq
+44 struct-mem => struct-mem-3
+45 struct-mem-0 => ident ":"
+46 struct-mem-1 => struct-mem-0
+47 struct-mem-1 => struct-mem-0 "[" expr "]"
+48 struct-mem-2 => struct-mem-1 type-name
+49 struct-mem-3 => struct-mem-2
+50 struct-mem-3 => struct-mem-2 "format" string
+51 port-defn => port-defn-2
+52 port-defn-0 => "port" ident
+53 port-defn-1 => port-defn-0
+54 port-defn-1 => port-defn-0 "(" param-list ")"
+55 port-defn-2 => port-defn-1
+56 port-defn-2 => port-defn-1 "->" type-name
 57 component-defn => comp-kind ident "{" comp-mem-seq "}"
 58 comp-kind => "active"
 59 comp-kind => "passive"
 60 comp-kind => "queued"
-61 comp-mem-seq => comp-mem
-62 comp-mem-seq => comp-mem-seq mem-sep comp-mem
+61 comp-mem-seq =>
+62 comp-mem-seq => comp-mem mem-sep comp-mem-seq
 63 comp-mem => include-spec
 64 comp-mem => enum-defn
 65 comp-mem => struct-defn
@@ -320,12 +320,12 @@
 	mod-mem => . enum-defn
 	include-spec => . "include" string
 	module-defn => . "module" ident "{" module-mem-seq "}"
-	port-defn => . port-defn-2
-	abs-type-defn => . "type" ident
-	array-defn => . "array" ident "=" index
 	const-defn => . "constant" ident "=" expr
+	abs-type-defn => . "type" ident
+	array-defn => . "array" ident "=" index ident
 	enum-defn => . enum-defn-3
 	struct-defn => . struct-defn-1
+	port-defn => . port-defn-2
 	component-defn => . comp-kind ident "{" comp-mem-seq "}"
 	comp-inst-defn => . comp-inst-7
 	topology-defn => . "topology" ident "{" topo-mem-seq "}"
@@ -336,26 +336,26 @@
 	loc-spec => . "locate" "state" "machine" qual-ident "at" string
 	loc-spec => . "locate" "topology" qual-ident "at" string
 	loc-spec => . "locate" "type" qual-ident "at" string
-	port-defn-2 => . port-defn-1
-	port-defn-2 => . port-defn-1 "->" type-name
 	enum-defn-3 => . enum-defn-2
 	enum-defn-3 => . enum-defn-2 "default" expr
 	struct-defn-1 => . struct-defn-0
 	struct-defn-1 => . struct-defn-0 "default" expr
+	port-defn-2 => . port-defn-1
+	port-defn-2 => . port-defn-1 "->" type-name
 	comp-kind => . "active"
 	comp-kind => . "passive"
 	comp-kind => . "queued"
 	comp-inst-7 => . comp-inst-6
 	comp-inst-7 => . comp-inst-6 "{" string "}"
-	port-defn-1 => . port-defn-0
-	port-defn-1 => . port-defn-0 "(" param-list ")"
 	enum-defn-2 => . enum-defn-1 "{" enum-mem-seq "}"
 	struct-defn-0 => . "struct" ident "{" struct-mem-seq "}"
+	port-defn-1 => . port-defn-0
+	port-defn-1 => . port-defn-0 "(" param-list ")"
 	comp-inst-6 => . comp-inst-5
 	comp-inst-6 => . comp-inst-5 "cpu" expr
-	port-defn-0 => . "port" ident
 	enum-defn-1 => . enum-defn-0
 	enum-defn-1 => . enum-defn-0 ":" type-name
+	port-defn-0 => . "port" ident
 	comp-inst-5 => . comp-inst-4
 	comp-inst-5 => . comp-inst-4 "priority" expr
 	enum-defn-0 => . "enum" ident
@@ -375,29 +375,29 @@
 		comp-inst-3 => shift 5
 		"enum" => shift 6
 		comp-inst-4 => shift 7
-		enum-defn-0 => shift 8
-		"port" => shift 9
+		"port" => shift 8
+		enum-defn-0 => shift 9
 		comp-inst-5 => shift 10
-		"struct" => shift 11
-		enum-defn-1 => shift 12
-		port-defn-0 => shift 13
+		port-defn-0 => shift 11
+		"struct" => shift 12
+		enum-defn-1 => shift 13
 		comp-inst-6 => shift 14
 		"queued" => shift 15
 		"passive" => shift 16
 		"active" => shift 17
-		struct-defn-0 => shift 18
-		enum-defn-2 => shift 19
-		port-defn-1 => shift 20
+		port-defn-1 => shift 18
+		struct-defn-0 => shift 19
+		enum-defn-2 => shift 20
 		"locate" => shift 21
 		"topology" => shift 22
 		comp-inst-7 => shift 23
 		comp-kind => shift 24
-		struct-defn-1 => shift 25
-		enum-defn-3 => shift 26
-		"constant" => shift 27
+		port-defn-2 => shift 25
+		struct-defn-1 => shift 26
+		enum-defn-3 => shift 27
 		"array" => shift 28
 		"type" => shift 29
-		port-defn-2 => shift 30
+		"constant" => shift 30
 		"module" => shift 31
 		"include" => shift 32
 		enum-defn => shift 33
@@ -457,15 +457,15 @@
 		"\n" => reduce 189
 		$default => reduce 189
 
-8:	enum-defn-1 => enum-defn-0 . ":" type-name
-	enum-defn-1 => enum-defn-0 .
-		":" => shift 76
-		$default => reduce 35
-
-9:	port-defn-0 => "port" . ident
+8:	port-defn-0 => "port" . ident
 	ident => . '$ident
 		'$ident => shift 53
-		ident => shift 75
+		ident => shift 76
+
+9:	enum-defn-1 => enum-defn-0 . ":" type-name
+	enum-defn-1 => enum-defn-0 .
+		":" => shift 75
+		$default => reduce 29
 
 10:	comp-inst-6 => comp-inst-5 . "cpu" expr
 	comp-inst-6 => comp-inst-5 .
@@ -473,19 +473,19 @@
 		"\n" => reduce 191
 		$default => reduce 191
 
-11:	struct-defn-0 => "struct" . ident "{" struct-mem-seq "}"
+11:	port-defn-1 => port-defn-0 . "(" param-list ")"
+	port-defn-1 => port-defn-0 .
+		"(" => shift 73
+		"\n" => reduce 53
+		$default => reduce 53
+
+12:	struct-defn-0 => "struct" . ident "{" struct-mem-seq "}"
 	ident => . '$ident
 		'$ident => shift 53
-		ident => shift 73
+		ident => shift 72
 
-12:	enum-defn-2 => enum-defn-1 . "{" enum-mem-seq "}"
-		"{" => shift 72
-
-13:	port-defn-1 => port-defn-0 . "(" param-list ")"
-	port-defn-1 => port-defn-0 .
-		"(" => shift 71
-		"\n" => reduce 26
-		$default => reduce 26
+13:	enum-defn-2 => enum-defn-1 . "{" enum-mem-seq "}"
+		"{" => shift 71
 
 14:	comp-inst-7 => comp-inst-6 . "{" string "}"
 	comp-inst-7 => comp-inst-6 .
@@ -502,23 +502,23 @@
 17:	comp-kind => "active" .
 		$default => reduce 58
 
-18:	struct-defn-1 => struct-defn-0 . "default" expr
-	struct-defn-1 => struct-defn-0 .
-		"default" => shift 69
-		"\n" => reduce 46
-		$default => reduce 46
-
-19:	enum-defn-3 => enum-defn-2 . "default" expr
-	enum-defn-3 => enum-defn-2 .
-		"default" => shift 68
-		"\n" => reduce 38
-		$default => reduce 38
-
-20:	port-defn-2 => port-defn-1 . "->" type-name
+18:	port-defn-2 => port-defn-1 . "->" type-name
 	port-defn-2 => port-defn-1 .
-		"->" => shift 67
-		"\n" => reduce 28
-		$default => reduce 28
+		"->" => shift 69
+		"\n" => reduce 55
+		$default => reduce 55
+
+19:	struct-defn-1 => struct-defn-0 . "default" expr
+	struct-defn-1 => struct-defn-0 .
+		"default" => shift 68
+		"\n" => reduce 40
+		$default => reduce 40
+
+20:	enum-defn-3 => enum-defn-2 . "default" expr
+	enum-defn-3 => enum-defn-2 .
+		"default" => shift 67
+		"\n" => reduce 32
+		$default => reduce 32
 
 21:	loc-spec => "locate" . "type" qual-ident "at" string
 	loc-spec => "locate" . "topology" qual-ident "at" string
@@ -549,32 +549,32 @@
 		'$ident => shift 53
 		ident => shift 58
 
-25:	struct-defn => struct-defn-1 .
-		"\n" => reduce 44
-		$default => reduce 44
+25:	port-defn => port-defn-2 .
+		"\n" => reduce 51
+		$default => reduce 51
 
-26:	enum-defn => enum-defn-3 .
-		"\n" => reduce 33
-		$default => reduce 33
+26:	struct-defn => struct-defn-1 .
+		"\n" => reduce 38
+		$default => reduce 38
 
-27:	const-defn => "constant" . ident "=" expr
+27:	enum-defn => enum-defn-3 .
+		"\n" => reduce 27
+		$default => reduce 27
+
+28:	array-defn => "array" . ident "=" index ident
 	ident => . '$ident
 		'$ident => shift 53
 		ident => shift 57
 
-28:	array-defn => "array" . ident "=" index
+29:	abs-type-defn => "type" . ident
 	ident => . '$ident
 		'$ident => shift 53
 		ident => shift 56
 
-29:	abs-type-defn => "type" . ident
+30:	const-defn => "constant" . ident "=" expr
 	ident => . '$ident
 		'$ident => shift 53
 		ident => shift 55
-
-30:	port-defn => port-defn-2 .
-		"\n" => reduce 24
-		$default => reduce 24
 
 31:	module-defn => "module" . ident "{" module-mem-seq "}"
 	ident => . '$ident
@@ -674,12 +674,12 @@
 	mod-mem => . enum-defn
 	include-spec => . "include" string
 	module-defn => . "module" ident "{" module-mem-seq "}"
-	port-defn => . port-defn-2
-	abs-type-defn => . "type" ident
-	array-defn => . "array" ident "=" index
 	const-defn => . "constant" ident "=" expr
+	abs-type-defn => . "type" ident
+	array-defn => . "array" ident "=" index ident
 	enum-defn => . enum-defn-3
 	struct-defn => . struct-defn-1
+	port-defn => . port-defn-2
 	component-defn => . comp-kind ident "{" comp-mem-seq "}"
 	comp-inst-defn => . comp-inst-7
 	topology-defn => . "topology" ident "{" topo-mem-seq "}"
@@ -690,26 +690,26 @@
 	loc-spec => . "locate" "state" "machine" qual-ident "at" string
 	loc-spec => . "locate" "topology" qual-ident "at" string
 	loc-spec => . "locate" "type" qual-ident "at" string
-	port-defn-2 => . port-defn-1
-	port-defn-2 => . port-defn-1 "->" type-name
 	enum-defn-3 => . enum-defn-2
 	enum-defn-3 => . enum-defn-2 "default" expr
 	struct-defn-1 => . struct-defn-0
 	struct-defn-1 => . struct-defn-0 "default" expr
+	port-defn-2 => . port-defn-1
+	port-defn-2 => . port-defn-1 "->" type-name
 	comp-kind => . "active"
 	comp-kind => . "passive"
 	comp-kind => . "queued"
 	comp-inst-7 => . comp-inst-6
 	comp-inst-7 => . comp-inst-6 "{" string "}"
-	port-defn-1 => . port-defn-0
-	port-defn-1 => . port-defn-0 "(" param-list ")"
 	enum-defn-2 => . enum-defn-1 "{" enum-mem-seq "}"
 	struct-defn-0 => . "struct" ident "{" struct-mem-seq "}"
+	port-defn-1 => . port-defn-0
+	port-defn-1 => . port-defn-0 "(" param-list ")"
 	comp-inst-6 => . comp-inst-5
 	comp-inst-6 => . comp-inst-5 "cpu" expr
-	port-defn-0 => . "port" ident
 	enum-defn-1 => . enum-defn-0
 	enum-defn-1 => . enum-defn-0 ":" type-name
+	port-defn-0 => . "port" ident
 	comp-inst-5 => . comp-inst-4
 	comp-inst-5 => . comp-inst-4 "priority" expr
 	enum-defn-0 => . "enum" ident
@@ -729,29 +729,29 @@
 		comp-inst-3 => shift 5
 		"enum" => shift 6
 		comp-inst-4 => shift 7
-		enum-defn-0 => shift 8
-		"port" => shift 9
+		"port" => shift 8
+		enum-defn-0 => shift 9
 		comp-inst-5 => shift 10
-		"struct" => shift 11
-		enum-defn-1 => shift 12
-		port-defn-0 => shift 13
+		port-defn-0 => shift 11
+		"struct" => shift 12
+		enum-defn-1 => shift 13
 		comp-inst-6 => shift 14
 		"queued" => shift 15
 		"passive" => shift 16
 		"active" => shift 17
-		struct-defn-0 => shift 18
-		enum-defn-2 => shift 19
-		port-defn-1 => shift 20
+		port-defn-1 => shift 18
+		struct-defn-0 => shift 19
+		enum-defn-2 => shift 20
 		"locate" => shift 21
 		"topology" => shift 22
 		comp-inst-7 => shift 23
 		comp-kind => shift 24
-		struct-defn-1 => shift 25
-		enum-defn-3 => shift 26
-		"constant" => shift 27
+		port-defn-2 => shift 25
+		struct-defn-1 => shift 26
+		enum-defn-3 => shift 27
 		"array" => shift 28
 		"type" => shift 29
-		port-defn-2 => shift 30
+		"constant" => shift 30
 		"module" => shift 31
 		"include" => shift 32
 		enum-defn => shift 33
@@ -786,14 +786,14 @@
 54:	module-defn => "module" ident . "{" module-mem-seq "}"
 		"{" => shift 142
 
-55:	abs-type-defn => "type" ident .
-		"\n" => reduce 30
-		$default => reduce 30
-
-56:	array-defn => "array" ident . "=" index
+55:	const-defn => "constant" ident . "=" expr
 		"=" => shift 141
 
-57:	const-defn => "constant" ident . "=" expr
+56:	abs-type-defn => "type" ident .
+		"\n" => reduce 25
+		$default => reduce 25
+
+57:	array-defn => "array" ident . "=" index ident
 		"=" => shift 140
 
 58:	component-defn => comp-kind ident . "{" comp-mem-seq "}"
@@ -865,35 +865,49 @@
 		qual-ident-1 => shift 90
 		qual-ident => shift 131
 
-67:	port-defn-2 => port-defn-1 "->" . type-name
-	type-name => . "I8"
-	type-name => . "U8"
-	type-name => . "I16"
-	type-name => . "U16"
-	type-name => . "I32"
-	type-name => . "U32"
-	type-name => . "I64"
-	type-name => . "U64"
-	type-name => . "F32"
-	type-name => . "F64"
-	type-name => . "bool"
-	type-name => . "string"
-	type-name => . "string" "size" expr
-		"string" => shift 105
-		"bool" => shift 106
-		"F64" => shift 107
-		"F32" => shift 108
-		"U64" => shift 109
-		"I64" => shift 110
-		"U32" => shift 111
-		"I32" => shift 112
-		"U16" => shift 113
-		"I16" => shift 114
-		"U8" => shift 115
-		"I8" => shift 116
-		type-name => shift 130
+67:	enum-defn-3 => enum-defn-2 "default" . expr
+	expr => . add-expr
+	add-expr => . mul-expr
+	add-expr => . add-expr "+" mul-expr
+	add-expr => . add-expr "-" mul-expr
+	mul-expr => . unary-expr
+	mul-expr => . mul-expr "*" unary-expr
+	mul-expr => . mul-expr "/" unary-expr
+	unary-expr => . prim-expr
+	unary-expr => . "-" unary-expr
+	prim-expr => . qual-ident
+	prim-expr => . number
+	prim-expr => . string
+	prim-expr => . "[" expr-seq "]"
+	prim-expr => . "{" struct-elt-seq "}"
+	prim-expr => . "(" expr ")"
+	number => . '$float
+	number => . '$fixed
+	string => . '$string
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
+	ident => . '$ident
+		'$ident => shift 53
+		ident => shift 89
+		qual-ident-1 => shift 90
+		'$string => shift 51
+		'$fixed => shift 91
+		'$float => shift 92
+		"(" => shift 93
+		"{" => shift 94
+		"[" => shift 95
+		string => shift 96
+		number => shift 97
+		qual-ident => shift 98
+		"-" => shift 99
+		prim-expr => shift 100
+		unary-expr => shift 101
+		mul-expr => shift 102
+		add-expr => shift 103
+		expr => shift 130
 
-68:	enum-defn-3 => enum-defn-2 "default" . expr
+68:	struct-defn-1 => struct-defn-0 "default" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -935,79 +949,65 @@
 		add-expr => shift 103
 		expr => shift 129
 
-69:	struct-defn-1 => struct-defn-0 "default" . expr
-	expr => . add-expr
-	add-expr => . mul-expr
-	add-expr => . add-expr "+" mul-expr
-	add-expr => . add-expr "-" mul-expr
-	mul-expr => . unary-expr
-	mul-expr => . mul-expr "*" unary-expr
-	mul-expr => . mul-expr "/" unary-expr
-	unary-expr => . prim-expr
-	unary-expr => . "-" unary-expr
-	prim-expr => . qual-ident
-	prim-expr => . number
-	prim-expr => . string
-	prim-expr => . "[" expr-seq "]"
-	prim-expr => . "{" struct-elt-seq "}"
-	prim-expr => . "(" expr ")"
-	number => . '$float
-	number => . '$fixed
-	string => . '$string
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 53
-		ident => shift 89
-		qual-ident-1 => shift 90
-		'$string => shift 51
-		'$fixed => shift 91
-		'$float => shift 92
-		"(" => shift 93
-		"{" => shift 94
-		"[" => shift 95
-		string => shift 96
-		number => shift 97
-		qual-ident => shift 98
-		"-" => shift 99
-		prim-expr => shift 100
-		unary-expr => shift 101
-		mul-expr => shift 102
-		add-expr => shift 103
-		expr => shift 128
+69:	port-defn-2 => port-defn-1 "->" . type-name
+	type-name => . "I8"
+	type-name => . "U8"
+	type-name => . "I16"
+	type-name => . "U16"
+	type-name => . "I32"
+	type-name => . "U32"
+	type-name => . "I64"
+	type-name => . "U64"
+	type-name => . "F32"
+	type-name => . "F64"
+	type-name => . "bool"
+	type-name => . "string"
+	type-name => . "string" "size" expr
+		"string" => shift 105
+		"bool" => shift 106
+		"F64" => shift 107
+		"F32" => shift 108
+		"U64" => shift 109
+		"I64" => shift 110
+		"U32" => shift 111
+		"I32" => shift 112
+		"U16" => shift 113
+		"I16" => shift 114
+		"U8" => shift 115
+		"I8" => shift 116
+		type-name => shift 128
 
 70:	comp-inst-7 => comp-inst-6 "{" . string "}"
 	string => . '$string
 		'$string => shift 51
 		string => shift 127
 
-71:	port-defn-1 => port-defn-0 "(" . param-list ")"
-	param-list => . formal-param
-	param-list => . param-list elt-sep formal-param
-	formal-param => . ident ":" type-name
-	formal-param => . "ref" ident ":" type-name
-	ident => . '$ident
-		'$ident => shift 53
-		"ref" => shift 123
-		ident => shift 124
-		formal-param => shift 125
-		param-list => shift 126
-
-72:	enum-defn-2 => enum-defn-1 "{" . enum-mem-seq "}"
+71:	enum-defn-2 => enum-defn-1 "{" . enum-mem-seq "}"
 	enum-mem-seq => .
 	enum-mem-seq => . enum-mem elt-sep enum-mem-seq
 	enum-mem => . ident
 	enum-mem => . ident "=" expr
 	ident => . '$ident
 		'$ident => shift 53
-		ident => shift 120
-		enum-mem => shift 121
-		enum-mem-seq => shift 122
-		$default => reduce 40
+		ident => shift 124
+		enum-mem => shift 125
+		enum-mem-seq => shift 126
+		$default => reduce 34
 
-73:	struct-defn-0 => "struct" ident . "{" struct-mem-seq "}"
-		"{" => shift 119
+72:	struct-defn-0 => "struct" ident . "{" struct-mem-seq "}"
+		"{" => shift 123
+
+73:	port-defn-1 => port-defn-0 "(" . param-list ")"
+	param-list => . formal-param
+	param-list => . param-list elt-sep formal-param
+	formal-param => . ident ":" type-name
+	formal-param => . "ref" ident ":" type-name
+	ident => . '$ident
+		'$ident => shift 53
+		"ref" => shift 119
+		ident => shift 120
+		formal-param => shift 121
+		param-list => shift 122
 
 74:	comp-inst-6 => comp-inst-5 "cpu" . expr
 	expr => . add-expr
@@ -1051,11 +1051,7 @@
 		add-expr => shift 103
 		expr => shift 118
 
-75:	port-defn-0 => "port" ident .
-		"\n" => reduce 25
-		$default => reduce 25
-
-76:	enum-defn-1 => enum-defn-0 ":" . type-name
+75:	enum-defn-1 => enum-defn-0 ":" . type-name
 	type-name => . "I8"
 	type-name => . "U8"
 	type-name => . "I16"
@@ -1082,6 +1078,10 @@
 		"U8" => shift 115
 		"I8" => shift 116
 		type-name => shift 117
+
+76:	port-defn-0 => "port" ident .
+		"\n" => reduce 52
+		$default => reduce 52
 
 77:	comp-inst-5 => comp-inst-4 "priority" . expr
 	expr => . add-expr
@@ -1126,7 +1126,7 @@
 		expr => shift 104
 
 78:	enum-defn-0 => "enum" ident .
-		$default => reduce 34
+		$default => reduce 28
 
 79:	comp-inst-4 => comp-inst-3 "stack" . "size" expr
 		"size" => shift 88
@@ -1155,7 +1155,7 @@
 		'$ident => shift 53
 		ident => shift 89
 		qual-ident-1 => shift 90
-		qual-ident => shift 278
+		qual-ident => shift 277
 
 85:	comp-inst-1 => comp-inst-0 "type" string .
 		"\n" => reduce 182
@@ -1205,7 +1205,7 @@
 		unary-expr => shift 101
 		mul-expr => shift 102
 		add-expr => shift 103
-		expr => shift 277
+		expr => shift 276
 
 88:	comp-inst-4 => comp-inst-3 "stack" "size" . expr
 	expr => . add-expr
@@ -1247,7 +1247,7 @@
 		unary-expr => shift 101
 		mul-expr => shift 102
 		add-expr => shift 103
-		expr => shift 276
+		expr => shift 275
 
 89:	qual-ident-1 => ident .
 		"\n" => reduce 285
@@ -1255,7 +1255,7 @@
 
 90:	qual-ident-1 => qual-ident-1 . "." ident
 	qual-ident => qual-ident-1 .
-		"." => shift 275
+		"." => shift 274
 		"\n" => reduce 284
 		$default => reduce 284
 
@@ -1307,15 +1307,15 @@
 		unary-expr => shift 101
 		mul-expr => shift 102
 		add-expr => shift 103
-		expr => shift 274
+		expr => shift 273
 
 94:	prim-expr => "{" . struct-elt-seq "}"
 	struct-elt-seq => .
 	struct-elt-seq => . ident "=" expr elt-sep struct-elt-seq
 	ident => . '$ident
 		'$ident => shift 53
-		ident => shift 272
-		struct-elt-seq => shift 273
+		ident => shift 271
+		struct-elt-seq => shift 272
 		$default => reduce 278
 
 95:	prim-expr => "[" . expr-seq "]"
@@ -1360,8 +1360,8 @@
 		unary-expr => shift 101
 		mul-expr => shift 102
 		add-expr => shift 103
-		expr => shift 270
-		expr-seq => shift 271
+		expr => shift 269
+		expr-seq => shift 270
 
 96:	prim-expr => string .
 		"\n" => reduce 272
@@ -1405,7 +1405,7 @@
 		qual-ident => shift 98
 		"-" => shift 99
 		prim-expr => shift 100
-		unary-expr => shift 269
+		unary-expr => shift 268
 
 100:	unary-expr => prim-expr .
 		"\n" => reduce 268
@@ -1418,16 +1418,16 @@
 102:	mul-expr => mul-expr . "/" unary-expr
 	mul-expr => mul-expr . "*" unary-expr
 	add-expr => mul-expr .
-		"*" => shift 267
-		"/" => shift 268
+		"*" => shift 266
+		"/" => shift 267
 		"\n" => reduce 262
 		$default => reduce 262
 
 103:	add-expr => add-expr . "-" mul-expr
 	add-expr => add-expr . "+" mul-expr
 	expr => add-expr .
-		"+" => shift 265
-		"-" => shift 266
+		"+" => shift 264
+		"-" => shift 265
 		"\n" => reduce 261
 		$default => reduce 261
 
@@ -1437,7 +1437,7 @@
 
 105:	type-name => "string" . "size" expr
 	type-name => "string" .
-		"size" => shift 264
+		"size" => shift 263
 		"\n" => reduce 301
 		$default => reduce 301
 
@@ -1486,13 +1486,35 @@
 		$default => reduce 290
 
 117:	enum-defn-1 => enum-defn-0 ":" type-name .
-		$default => reduce 36
+		$default => reduce 30
 
 118:	comp-inst-6 => comp-inst-5 "cpu" expr .
 		"\n" => reduce 192
 		$default => reduce 192
 
-119:	struct-defn-0 => "struct" ident "{" . struct-mem-seq "}"
+119:	formal-param => "ref" . ident ":" type-name
+	ident => . '$ident
+		'$ident => shift 53
+		ident => shift 262
+
+120:	formal-param => ident . ":" type-name
+		":" => shift 261
+
+121:	param-list => formal-param .
+		"\n" => reduce 245
+		$default => reduce 245
+
+122:	param-list => param-list . elt-sep formal-param
+	elt-sep => . ","
+	elt-sep => . "\n"
+	elt-sep => . elt-sep "\n"
+	port-defn-1 => port-defn-0 "(" param-list . ")"
+		")" => shift 259
+		"\n" => shift 248
+		"," => shift 249
+		elt-sep => shift 260
+
+123:	struct-defn-0 => "struct" ident "{" . struct-mem-seq "}"
 	struct-mem-seq => .
 	struct-mem-seq => . struct-mem mem-sep struct-mem-seq
 	struct-mem => . struct-mem-3
@@ -1504,78 +1526,46 @@
 	struct-mem-0 => . ident ":"
 	ident => . '$ident
 		'$ident => shift 53
-		ident => shift 257
-		struct-mem-0 => shift 258
-		struct-mem-1 => shift 259
-		struct-mem-2 => shift 260
-		struct-mem-3 => shift 261
-		struct-mem => shift 262
-		struct-mem-seq => shift 263
-		$default => reduce 48
-
-120:	enum-mem => ident . "=" expr
-	enum-mem => ident .
-		"=" => shift 256
-		"\n" => reduce 42
+		ident => shift 252
+		struct-mem-0 => shift 253
+		struct-mem-1 => shift 254
+		struct-mem-2 => shift 255
+		struct-mem-3 => shift 256
+		struct-mem => shift 257
+		struct-mem-seq => shift 258
 		$default => reduce 42
 
-121:	enum-mem-seq => enum-mem . elt-sep enum-mem-seq
+124:	enum-mem => ident . "=" expr
+	enum-mem => ident .
+		"=" => shift 251
+		"\n" => reduce 36
+		$default => reduce 36
+
+125:	enum-mem-seq => enum-mem . elt-sep enum-mem-seq
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
-		elt-sep => shift 255
+	elt-sep => . elt-sep "\n"
+		"\n" => shift 248
+		"," => shift 249
+		elt-sep => shift 250
 
-122:	enum-defn-2 => enum-defn-1 "{" enum-mem-seq . "}"
-		"}" => shift 254
-
-123:	formal-param => "ref" . ident ":" type-name
-	ident => . '$ident
-		'$ident => shift 53
-		ident => shift 253
-
-124:	formal-param => ident . ":" type-name
-		":" => shift 252
-
-125:	param-list => formal-param .
-		"\n" => reduce 245
-		$default => reduce 245
-
-126:	param-list => param-list . elt-sep formal-param
-	elt-sep => . ","
-	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
-	port-defn-1 => port-defn-0 "(" param-list . ")"
-		")" => shift 247
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
-		elt-sep => shift 251
+126:	enum-defn-2 => enum-defn-1 "{" enum-mem-seq . "}"
+		"}" => shift 247
 
 127:	comp-inst-7 => comp-inst-6 "{" string . "}"
 		"}" => shift 246
 
-128:	struct-defn-1 => struct-defn-0 "default" expr .
-		"\n" => reduce 47
-		$default => reduce 47
+128:	port-defn-2 => port-defn-1 "->" type-name .
+		"\n" => reduce 56
+		$default => reduce 56
 
-129:	enum-defn-3 => enum-defn-2 "default" expr .
-		"\n" => reduce 39
-		$default => reduce 39
+129:	struct-defn-1 => struct-defn-0 "default" expr .
+		"\n" => reduce 41
+		$default => reduce 41
 
-130:	port-defn-2 => port-defn-1 "->" type-name .
-		"\n" => reduce 29
-		$default => reduce 29
+130:	enum-defn-3 => enum-defn-2 "default" expr .
+		"\n" => reduce 33
+		$default => reduce 33
 
 131:	loc-spec => "locate" "type" qual-ident . "at" string
 		"at" => shift 245
@@ -1654,8 +1644,8 @@
 		$default => reduce 196
 
 139:	component-defn => comp-kind ident "{" . comp-mem-seq "}"
-	comp-mem-seq => . comp-mem
-	comp-mem-seq => . comp-mem-seq mem-sep comp-mem
+	comp-mem-seq => .
+	comp-mem-seq => . comp-mem mem-sep comp-mem-seq
 	comp-mem => . include-spec
 	comp-mem => . enum-defn
 	comp-mem => . struct-defn
@@ -1807,7 +1797,7 @@
 		input-port-kind => shift 174
 		spc-port-inst-0 => shift 175
 		gen-port-inst-1 => shift 176
-		enum-defn-0 => shift 8
+		enum-defn-0 => shift 9
 		cont-spec-0 => shift 177
 		record-spec-0 => shift 178
 		tlm-chan-3 => shift 179
@@ -1817,8 +1807,8 @@
 		int-port-defn-1 => shift 183
 		spc-port-inst-1 => shift 184
 		gen-port-inst-2 => shift 185
-		"struct" => shift 11
-		enum-defn-1 => shift 12
+		"struct" => shift 12
+		enum-defn-1 => shift 13
 		cont-spec-1 => shift 186
 		record-spec-1 => shift 187
 		tlm-chan-4 => shift 188
@@ -1828,8 +1818,8 @@
 		int-port-defn-2 => shift 192
 		spc-port-inst-2 => shift 193
 		gen-port-inst-3 => shift 194
-		struct-defn-0 => shift 18
-		enum-defn-2 => shift 19
+		struct-defn-0 => shift 19
+		enum-defn-2 => shift 20
 		"match" => shift 195
 		cont-spec-2 => shift 196
 		record-spec-2 => shift 197
@@ -1840,8 +1830,8 @@
 		int-port-defn-3 => shift 202
 		spc-port-inst-3 => shift 203
 		gen-port-inst-4 => shift 204
-		struct-defn-1 => shift 25
-		enum-defn-3 => shift 26
+		struct-defn-1 => shift 26
+		enum-defn-3 => shift 27
 		"include" => shift 32
 		tlm-chan-spec => shift 205
 		prod-cont-spec => shift 206
@@ -1857,8 +1847,14 @@
 		include-spec => shift 216
 		comp-mem => shift 217
 		comp-mem-seq => shift 218
+		$default => reduce 61
 
-140:	const-defn => "constant" ident "=" . expr
+140:	array-defn => "array" ident "=" . index ident
+	index => . "[" expr "]"
+		"[" => shift 147
+		index => shift 148
+
+141:	const-defn => "constant" ident "=" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -1898,12 +1894,7 @@
 		unary-expr => shift 101
 		mul-expr => shift 102
 		add-expr => shift 103
-		expr => shift 148
-
-141:	array-defn => "array" ident "=" . index
-	index => . "[" expr "]"
-		"[" => shift 146
-		index => shift 147
+		expr => shift 146
 
 142:	module-defn => "module" ident "{" . module-mem-seq "}"
 	module-mem-seq => .
@@ -1922,12 +1913,12 @@
 	mod-mem => . enum-defn
 	include-spec => . "include" string
 	module-defn => . "module" ident "{" module-mem-seq "}"
-	port-defn => . port-defn-2
-	abs-type-defn => . "type" ident
-	array-defn => . "array" ident "=" index
 	const-defn => . "constant" ident "=" expr
+	abs-type-defn => . "type" ident
+	array-defn => . "array" ident "=" index ident
 	enum-defn => . enum-defn-3
 	struct-defn => . struct-defn-1
+	port-defn => . port-defn-2
 	component-defn => . comp-kind ident "{" comp-mem-seq "}"
 	comp-inst-defn => . comp-inst-7
 	topology-defn => . "topology" ident "{" topo-mem-seq "}"
@@ -1938,26 +1929,26 @@
 	loc-spec => . "locate" "state" "machine" qual-ident "at" string
 	loc-spec => . "locate" "topology" qual-ident "at" string
 	loc-spec => . "locate" "type" qual-ident "at" string
-	port-defn-2 => . port-defn-1
-	port-defn-2 => . port-defn-1 "->" type-name
 	enum-defn-3 => . enum-defn-2
 	enum-defn-3 => . enum-defn-2 "default" expr
 	struct-defn-1 => . struct-defn-0
 	struct-defn-1 => . struct-defn-0 "default" expr
+	port-defn-2 => . port-defn-1
+	port-defn-2 => . port-defn-1 "->" type-name
 	comp-kind => . "active"
 	comp-kind => . "passive"
 	comp-kind => . "queued"
 	comp-inst-7 => . comp-inst-6
 	comp-inst-7 => . comp-inst-6 "{" string "}"
-	port-defn-1 => . port-defn-0
-	port-defn-1 => . port-defn-0 "(" param-list ")"
 	enum-defn-2 => . enum-defn-1 "{" enum-mem-seq "}"
 	struct-defn-0 => . "struct" ident "{" struct-mem-seq "}"
+	port-defn-1 => . port-defn-0
+	port-defn-1 => . port-defn-0 "(" param-list ")"
 	comp-inst-6 => . comp-inst-5
 	comp-inst-6 => . comp-inst-5 "cpu" expr
-	port-defn-0 => . "port" ident
 	enum-defn-1 => . enum-defn-0
 	enum-defn-1 => . enum-defn-0 ":" type-name
+	port-defn-0 => . "port" ident
 	comp-inst-5 => . comp-inst-4
 	comp-inst-5 => . comp-inst-4 "priority" expr
 	enum-defn-0 => . "enum" ident
@@ -1977,29 +1968,29 @@
 		comp-inst-3 => shift 5
 		"enum" => shift 6
 		comp-inst-4 => shift 7
-		enum-defn-0 => shift 8
-		"port" => shift 9
+		"port" => shift 8
+		enum-defn-0 => shift 9
 		comp-inst-5 => shift 10
-		"struct" => shift 11
-		enum-defn-1 => shift 12
-		port-defn-0 => shift 13
+		port-defn-0 => shift 11
+		"struct" => shift 12
+		enum-defn-1 => shift 13
 		comp-inst-6 => shift 14
 		"queued" => shift 15
 		"passive" => shift 16
 		"active" => shift 17
-		struct-defn-0 => shift 18
-		enum-defn-2 => shift 19
-		port-defn-1 => shift 20
+		port-defn-1 => shift 18
+		struct-defn-0 => shift 19
+		enum-defn-2 => shift 20
 		"locate" => shift 21
 		"topology" => shift 22
 		comp-inst-7 => shift 23
 		comp-kind => shift 24
-		struct-defn-1 => shift 25
-		enum-defn-3 => shift 26
-		"constant" => shift 27
+		port-defn-2 => shift 25
+		struct-defn-1 => shift 26
+		enum-defn-3 => shift 27
 		"array" => shift 28
 		"type" => shift 29
-		port-defn-2 => shift 30
+		"constant" => shift 30
 		"module" => shift 31
 		"include" => shift 32
 		enum-defn => shift 33
@@ -2028,7 +2019,11 @@
 145:	module-defn => "module" ident "{" module-mem-seq . "}"
 		"}" => shift 386
 
-146:	index => "[" . expr "]"
+146:	const-defn => "constant" ident "=" expr .
+		"\n" => reduce 24
+		$default => reduce 24
+
+147:	index => "[" . expr "]"
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -2070,78 +2065,75 @@
 		add-expr => shift 103
 		expr => shift 385
 
-147:	array-defn => "array" ident "=" index .
-		"\n" => reduce 31
-		$default => reduce 31
-
-148:	const-defn => "constant" ident "=" expr .
-		"\n" => reduce 32
-		$default => reduce 32
+148:	array-defn => "array" ident "=" index . ident
+	ident => . '$ident
+		'$ident => shift 53
+		ident => shift 384
 
 149:	tlm-chan-1 => tlm-chan-0 . "id" expr
 	tlm-chan-1 => tlm-chan-0 .
-		"id" => shift 384
+		"id" => shift 383
 		"\n" => reduce 150
 		$default => reduce 150
 
 150:	event-spec-1 => event-spec-0 . "(" param-list ")"
 	event-spec-1 => event-spec-0 .
-		"(" => shift 383
+		"(" => shift 382
 		$default => reduce 130
 
 151:	spc-port-kind => "time" . "get"
-		"get" => shift 382
+		"get" => shift 381
 
 152:	spc-port-kind => "text" . "event"
-		"event" => shift 381
+		"event" => shift 380
 
 153:	tlm-chan-0 => "telemetry" . ident ":" type-name
 	ident => . '$ident
 	spc-port-kind => "telemetry" .
 		'$ident => shift 53
-		ident => shift 380
+		ident => shift 379
 		$default => reduce 122
 
 154:	param-spec-0 => "param" . ident ":" type-name
 	ident => . '$ident
 	spc-port-kind => "param" . "set"
 	spc-port-kind => "param" . "get"
-		"get" => shift 377
-		"set" => shift 378
+		"get" => shift 376
+		"set" => shift 377
 		'$ident => shift 53
-		ident => shift 379
+		ident => shift 378
 
 155:	event-spec-0 => "event" . ident
 	ident => . '$ident
 	spc-port-kind => "event" .
 		'$ident => shift 53
-		ident => shift 376
+		ident => shift 375
 		$default => reduce 115
 
 156:	spc-port-kind => "command" . "resp"
 	spc-port-kind => "command" . "reg"
 	spc-port-kind => "command" . "recv"
-		"recv" => shift 373
-		"reg" => shift 374
-		"resp" => shift 375
+		"recv" => shift 372
+		"reg" => shift 373
+		"resp" => shift 374
 
 157:	gen-port-inst-0 => "output" . "port" ident ":"
-		"port" => shift 372
+		"port" => shift 371
 
 158:	tlm-chan-2 => tlm-chan-1 . "update" tlm-update
 	tlm-chan-2 => tlm-chan-1 .
-		"update" => shift 371
+		"update" => shift 370
 		"\n" => reduce 152
 		$default => reduce 152
 
 159:	param-spec-1 => param-spec-0 . "default" expr
 	param-spec-1 => param-spec-0 .
-		"default" => shift 370
+		"default" => shift 369
 		"\n" => reduce 140
 		$default => reduce 140
 
 160:	event-spec-2 => event-spec-1 . "severity" expr
-		"severity" => shift 369
+		"severity" => shift 368
 
 161:	input-port-kind => "sync" .
 		$default => reduce 127
@@ -2154,15 +2146,15 @@
 
 164:	cmd-spec-1 => cmd-spec-0 . "(" param-list ")"
 	cmd-spec-1 => cmd-spec-0 .
-		"(" => shift 368
+		"(" => shift 367
 		"\n" => reduce 104
 		$default => reduce 104
 
 165:	int-port-defn-0 => "internal" . "port" ident
-		"port" => shift 367
+		"port" => shift 366
 
 166:	spc-port-inst-0 => spc-port-kind . "port" ident ":"
-		"port" => shift 366
+		"port" => shift 365
 
 167:	gen-port-inst-1 => gen-port-inst-0 . expr
 	expr => . add-expr
@@ -2205,7 +2197,7 @@
 		unary-expr => shift 101
 		mul-expr => shift 102
 		add-expr => shift 103
-		expr => shift 365
+		expr => shift 364
 		$default => reduce 79
 		['$ident => reduce 79] REMOVED by default shift
 
@@ -2215,39 +2207,39 @@
 	spc-port-kind => "product" . "get"
 	cont-spec-0 => "product" . "container" ident
 	record-spec-0 => "product" . "record" ident ":" type-name
-		"record" => shift 359
-		"container" => shift 360
-		"get" => shift 361
-		"recv" => shift 362
-		"request" => shift 363
-		"send" => shift 364
+		"record" => shift 358
+		"container" => shift 359
+		"get" => shift 360
+		"recv" => shift 361
+		"request" => shift 362
+		"send" => shift 363
 
 169:	tlm-chan-3 => tlm-chan-2 . "format" string
 	tlm-chan-3 => tlm-chan-2 .
-		"format" => shift 358
+		"format" => shift 357
 		"\n" => reduce 154
 		$default => reduce 154
 
 170:	param-spec-2 => param-spec-1 . "id" expr
 	param-spec-2 => param-spec-1 .
-		"id" => shift 357
+		"id" => shift 356
 		"\n" => reduce 142
 		$default => reduce 142
 
 171:	event-spec-3 => event-spec-2 . "id" expr
 	event-spec-3 => event-spec-2 .
-		"id" => shift 356
+		"id" => shift 355
 		$default => reduce 133
 
 172:	cmd-spec-2 => cmd-spec-1 . "opcode" expr
 	cmd-spec-2 => cmd-spec-1 .
-		"opcode" => shift 355
+		"opcode" => shift 354
 		"\n" => reduce 106
 		$default => reduce 106
 
 173:	int-port-defn-1 => int-port-defn-0 . "(" param-list ")"
 	int-port-defn-1 => int-port-defn-0 .
-		"(" => shift 354
+		"(" => shift 353
 		"\n" => reduce 96
 		$default => reduce 96
 
@@ -2270,14 +2262,14 @@
 	spc-port-kind => . "time" "get"
 		"time" => shift 151
 		"text" => shift 152
-		"telemetry" => shift 347
-		"product" => shift 348
-		"param" => shift 349
-		"event" => shift 350
+		"telemetry" => shift 346
+		"product" => shift 347
+		"param" => shift 348
+		"event" => shift 349
 		spc-port-kind => shift 166
-		spc-port-inst-0 => shift 351
-		"input" => shift 352
-		"command" => shift 353
+		spc-port-inst-0 => shift 350
+		"input" => shift 351
+		"command" => shift 352
 
 175:	spc-port-inst-1 => spc-port-inst-0 .
 		"\n" => reduce 88
@@ -2292,87 +2284,87 @@
 		'$ident => shift 53
 		ident => shift 89
 		qual-ident-1 => shift 90
-		qual-ident => shift 345
-		"serial" => shift 346
+		qual-ident => shift 344
+		"serial" => shift 345
 
 177:	cont-spec-1 => cont-spec-0 . "id" expr
 	cont-spec-1 => cont-spec-0 .
-		"id" => shift 344
+		"id" => shift 343
 		"\n" => reduce 175
 		$default => reduce 175
 
 178:	record-spec-1 => record-spec-0 . "array"
 	record-spec-1 => record-spec-0 .
-		"array" => shift 343
+		"array" => shift 342
 		"\n" => reduce 169
 		$default => reduce 169
 
 179:	tlm-chan-4 => tlm-chan-3 . "low" "{" tlm-lim-seq "}"
 	tlm-chan-4 => tlm-chan-3 .
-		"low" => shift 342
+		"low" => shift 341
 		"\n" => reduce 156
 		$default => reduce 156
 
 180:	param-spec-3 => param-spec-2 . "set" "opcode" expr
 	param-spec-3 => param-spec-2 .
-		"set" => shift 341
+		"set" => shift 340
 		"\n" => reduce 144
 		$default => reduce 144
 
 181:	event-spec-4 => event-spec-3 . "format" string
-		"format" => shift 340
+		"format" => shift 339
 
 182:	cmd-spec-3 => cmd-spec-2 . "priority" expr
 	cmd-spec-3 => cmd-spec-2 .
-		"priority" => shift 339
+		"priority" => shift 338
 		"\n" => reduce 108
 		$default => reduce 108
 
 183:	int-port-defn-2 => int-port-defn-1 . "priority" expr
 	int-port-defn-2 => int-port-defn-1 .
-		"priority" => shift 338
+		"priority" => shift 337
 		"\n" => reduce 98
 		$default => reduce 98
 
 184:	spc-port-inst-2 => spc-port-inst-1 . "priority" expr
 	spc-port-inst-2 => spc-port-inst-1 .
-		"priority" => shift 337
+		"priority" => shift 336
 		"\n" => reduce 90
 		$default => reduce 90
 
 185:	gen-port-inst-3 => gen-port-inst-2 . "priority" expr
 	gen-port-inst-3 => gen-port-inst-2 .
-		"priority" => shift 336
+		"priority" => shift 335
 		"\n" => reduce 83
 		$default => reduce 83
 
 186:	cont-spec-2 => cont-spec-1 . "default" "priority" expr
 	cont-spec-2 => cont-spec-1 .
-		"default" => shift 335
+		"default" => shift 334
 		"\n" => reduce 177
 		$default => reduce 177
 
 187:	record-spec-2 => record-spec-1 . "id" expr
 	record-spec-2 => record-spec-1 .
-		"id" => shift 334
+		"id" => shift 333
 		"\n" => reduce 171
 		$default => reduce 171
 
 188:	tlm-chan-5 => tlm-chan-4 . "high" "{" tlm-lim-seq "}"
 	tlm-chan-5 => tlm-chan-4 .
-		"high" => shift 333
+		"high" => shift 332
 		"\n" => reduce 158
 		$default => reduce 158
 
 189:	param-spec-4 => param-spec-3 . "save" "opcode" expr
 	param-spec-4 => param-spec-3 .
-		"save" => shift 332
+		"save" => shift 331
 		"\n" => reduce 146
 		$default => reduce 146
 
 190:	event-spec-5 => event-spec-4 . "throttle" expr
 	event-spec-5 => event-spec-4 .
-		"throttle" => shift 331
+		"throttle" => shift 330
 		"\n" => reduce 136
 		$default => reduce 136
 
@@ -2382,11 +2374,11 @@
 	queue-full-beh => . "drop"
 	queue-full-beh => . "hook"
 	cmd-spec-4 => cmd-spec-3 .
-		"hook" => shift 323
-		"drop" => shift 324
-		"block" => shift 325
-		"assert" => shift 326
-		queue-full-beh => shift 330
+		"hook" => shift 322
+		"drop" => shift 323
+		"block" => shift 324
+		"assert" => shift 325
+		queue-full-beh => shift 329
 		"\n" => reduce 110
 		$default => reduce 110
 
@@ -2396,11 +2388,11 @@
 	queue-full-beh => . "drop"
 	queue-full-beh => . "hook"
 	int-port-defn-3 => int-port-defn-2 .
-		"hook" => shift 323
-		"drop" => shift 324
-		"block" => shift 325
-		"assert" => shift 326
-		queue-full-beh => shift 329
+		"hook" => shift 322
+		"drop" => shift 323
+		"block" => shift 324
+		"assert" => shift 325
+		queue-full-beh => shift 328
 		"\n" => reduce 100
 		$default => reduce 100
 
@@ -2410,11 +2402,11 @@
 	queue-full-beh => . "drop"
 	queue-full-beh => . "hook"
 	spc-port-inst-3 => spc-port-inst-2 .
-		"hook" => shift 323
-		"drop" => shift 324
-		"block" => shift 325
-		"assert" => shift 326
-		queue-full-beh => shift 328
+		"hook" => shift 322
+		"drop" => shift 323
+		"block" => shift 324
+		"assert" => shift 325
+		queue-full-beh => shift 327
 		"\n" => reduce 92
 		$default => reduce 92
 
@@ -2424,18 +2416,18 @@
 	queue-full-beh => . "drop"
 	queue-full-beh => . "hook"
 	gen-port-inst-4 => gen-port-inst-3 .
-		"hook" => shift 323
-		"drop" => shift 324
-		"block" => shift 325
-		"assert" => shift 326
-		queue-full-beh => shift 327
+		"hook" => shift 322
+		"drop" => shift 323
+		"block" => shift 324
+		"assert" => shift 325
+		queue-full-beh => shift 326
 		"\n" => reduce 85
 		$default => reduce 85
 
 195:	port-match-spec => "match" . ident "with" ident
 	ident => . '$ident
 		'$ident => shift 53
-		ident => shift 322
+		ident => shift 321
 
 196:	prod-cont-spec => cont-spec-2 .
 		"\n" => reduce 173
@@ -2521,23 +2513,20 @@
 		"\n" => reduce 63
 		$default => reduce 63
 
-217:	comp-mem-seq => comp-mem .
-		"\n" => reduce 61
-		$default => reduce 61
-
-218:	comp-mem-seq => comp-mem-seq . mem-sep comp-mem
+217:	comp-mem-seq => comp-mem . mem-sep comp-mem-seq
 	mem-sep => . ";"
 	mem-sep => . "\n"
 	mem-sep => . mem-sep "\n"
-	component-defn => comp-kind ident "{" comp-mem-seq . "}"
-		"}" => shift 320
 		"\n" => shift 48
 		";" => shift 49
-		mem-sep => shift 321
+		mem-sep => shift 320
+
+218:	component-defn => comp-kind ident "{" comp-mem-seq . "}"
+		"}" => shift 319
 
 219:	tlm-pktset-spec-1 => tlm-pktset-spec-0 . "omit" "{" tlm-chan-id-seq "}"
 	tlm-pktset-spec-1 => tlm-pktset-spec-0 .
-		"omit" => shift 319
+		"omit" => shift 318
 		"\n" => reduce 228
 		$default => reduce 228
 
@@ -2545,11 +2534,11 @@
 		$default => reduce 214
 
 221:	pattern-kind => "text" . "event"
-		"event" => shift 318
+		"event" => shift 317
 
 222:	tlm-pktset-spec-0 => "telemetry" . "packets" ident "{" tlm-pktgrp-mem-seq "}"
 	pattern-kind => "telemetry" .
-		"packets" => shift 317
+		"packets" => shift 316
 		$default => reduce 212
 
 223:	pattern-kind => "param" .
@@ -2570,20 +2559,20 @@
 
 228:	conn-graph-spec => pattern-kind . "connections" "instance" qual-ident "{" qual-ident-seq "}"
 	conn-graph-spec => pattern-kind . "connections" "instance" qual-ident
-		"connections" => shift 316
+		"connections" => shift 315
 
 229:	conn-graph-spec => "connections" . ident "{" conn-seq "}"
 	ident => . '$ident
 		'$ident => shift 53
-		ident => shift 315
+		ident => shift 314
 
 230:	comp-inst-spec => "private" . "instance" ident
-		"instance" => shift 314
+		"instance" => shift 313
 
 231:	comp-inst-spec => "instance" . ident
 	ident => . '$ident
 		'$ident => shift 53
-		ident => shift 313
+		ident => shift 312
 
 232:	topo-mem => include-spec .
 		"\n" => reduce 202
@@ -2597,7 +2586,7 @@
 		'$ident => shift 53
 		ident => shift 89
 		qual-ident-1 => shift 90
-		qual-ident => shift 312
+		qual-ident => shift 311
 
 234:	topo-mem => tlm-pktset-spec .
 		"\n" => reduce 200
@@ -2617,121 +2606,75 @@
 	mem-sep => . mem-sep "\n"
 		"\n" => shift 48
 		";" => shift 49
-		mem-sep => shift 311
+		mem-sep => shift 310
 
 238:	topology-defn => "topology" ident "{" topo-mem-seq . "}"
-		"}" => shift 310
+		"}" => shift 309
 
 239:	loc-spec => "locate" "instance" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 51
-		string => shift 309
+		string => shift 308
 
 240:	loc-spec => "locate" "component" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 51
-		string => shift 308
+		string => shift 307
 
 241:	loc-spec => "locate" "cnstant" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 51
-		string => shift 307
+		string => shift 306
 
 242:	loc-spec => "locate" "port" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 51
-		string => shift 306
+		string => shift 305
 
 243:	loc-spec => "locate" "state" "machine" qual-ident . "at" string
-		"at" => shift 305
+		"at" => shift 304
 
 244:	loc-spec => "locate" "topology" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 51
-		string => shift 304
+		string => shift 303
 
 245:	loc-spec => "locate" "type" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 51
-		string => shift 303
+		string => shift 302
 
 246:	comp-inst-7 => comp-inst-6 "{" string "}" .
 		"\n" => reduce 194
 		$default => reduce 194
 
-247:	port-defn-1 => port-defn-0 "(" param-list ")" .
-		"\n" => reduce 27
-		$default => reduce 27
+247:	enum-defn-2 => enum-defn-1 "{" enum-mem-seq "}" .
+		"\n" => reduce 31
+		$default => reduce 31
 
-248:	mem-sep => mem-sep . "\n"
-	elt-sep => mem-sep . "\n"
-		"\n" => shift 302
-
-249:	mem-sep => "\n" .
-	elt-sep => "\n" .
-		"\n" => reduce 5
+248:	elt-sep => "\n" .
+		"\n" => reduce 2
 		$default => reduce 2
 
-250:	elt-sep => "," .
+249:	elt-sep => "," .
+		"\n" => reduce 1
 		$default => reduce 1
 
-251:	param-list => param-list elt-sep . formal-param
-	formal-param => . ident ":" type-name
-	formal-param => . "ref" ident ":" type-name
-	ident => . '$ident
-		'$ident => shift 53
-		"ref" => shift 123
-		ident => shift 124
-		formal-param => shift 301
-
-252:	formal-param => ident ":" . type-name
-	type-name => . "I8"
-	type-name => . "U8"
-	type-name => . "I16"
-	type-name => . "U16"
-	type-name => . "I32"
-	type-name => . "U32"
-	type-name => . "I64"
-	type-name => . "U64"
-	type-name => . "F32"
-	type-name => . "F64"
-	type-name => . "bool"
-	type-name => . "string"
-	type-name => . "string" "size" expr
-		"string" => shift 105
-		"bool" => shift 106
-		"F64" => shift 107
-		"F32" => shift 108
-		"U64" => shift 109
-		"I64" => shift 110
-		"U32" => shift 111
-		"I32" => shift 112
-		"U16" => shift 113
-		"I16" => shift 114
-		"U8" => shift 115
-		"I8" => shift 116
-		type-name => shift 300
-
-253:	formal-param => "ref" ident . ":" type-name
-		":" => shift 299
-
-254:	enum-defn-2 => enum-defn-1 "{" enum-mem-seq "}" .
-		"\n" => reduce 37
-		$default => reduce 37
-
-255:	enum-mem-seq => enum-mem elt-sep . enum-mem-seq
+250:	elt-sep => elt-sep . "\n"
+	enum-mem-seq => enum-mem elt-sep . enum-mem-seq
 	enum-mem-seq => .
 	enum-mem-seq => . enum-mem elt-sep enum-mem-seq
 	enum-mem => . ident
 	enum-mem => . ident "=" expr
 	ident => . '$ident
 		'$ident => shift 53
-		ident => shift 120
-		enum-mem => shift 121
-		enum-mem-seq => shift 298
-		$default => reduce 40
+		ident => shift 124
+		enum-mem => shift 125
+		enum-mem-seq => shift 301
+		"\n" => shift 293
+		$default => reduce 34
 
-256:	enum-mem => ident "=" . expr
+251:	enum-mem => ident "=" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -2771,17 +2714,17 @@
 		unary-expr => shift 101
 		mul-expr => shift 102
 		add-expr => shift 103
-		expr => shift 297
+		expr => shift 300
 
-257:	struct-mem-0 => ident . ":"
-		":" => shift 296
+252:	struct-mem-0 => ident . ":"
+		":" => shift 299
 
-258:	struct-mem-1 => struct-mem-0 . "[" expr "]"
+253:	struct-mem-1 => struct-mem-0 . "[" expr "]"
 	struct-mem-1 => struct-mem-0 .
-		"[" => shift 295
-		$default => reduce 52
+		"[" => shift 298
+		$default => reduce 46
 
-259:	struct-mem-2 => struct-mem-1 . type-name
+254:	struct-mem-2 => struct-mem-1 . type-name
 	type-name => . "I8"
 	type-name => . "U8"
 	type-name => . "I16"
@@ -2807,30 +2750,76 @@
 		"I16" => shift 114
 		"U8" => shift 115
 		"I8" => shift 116
-		type-name => shift 294
+		type-name => shift 297
 
-260:	struct-mem-3 => struct-mem-2 . "format" string
+255:	struct-mem-3 => struct-mem-2 . "format" string
 	struct-mem-3 => struct-mem-2 .
-		"format" => shift 293
-		"\n" => reduce 55
-		$default => reduce 55
+		"format" => shift 296
+		"\n" => reduce 49
+		$default => reduce 49
 
-261:	struct-mem => struct-mem-3 .
-		"\n" => reduce 50
-		$default => reduce 50
+256:	struct-mem => struct-mem-3 .
+		"\n" => reduce 44
+		$default => reduce 44
 
-262:	struct-mem-seq => struct-mem . mem-sep struct-mem-seq
+257:	struct-mem-seq => struct-mem . mem-sep struct-mem-seq
 	mem-sep => . ";"
 	mem-sep => . "\n"
 	mem-sep => . mem-sep "\n"
 		"\n" => shift 48
 		";" => shift 49
-		mem-sep => shift 292
+		mem-sep => shift 295
 
-263:	struct-defn-0 => "struct" ident "{" struct-mem-seq . "}"
-		"}" => shift 291
+258:	struct-defn-0 => "struct" ident "{" struct-mem-seq . "}"
+		"}" => shift 294
 
-264:	type-name => "string" "size" . expr
+259:	port-defn-1 => port-defn-0 "(" param-list ")" .
+		"\n" => reduce 54
+		$default => reduce 54
+
+260:	elt-sep => elt-sep . "\n"
+	param-list => param-list elt-sep . formal-param
+	formal-param => . ident ":" type-name
+	formal-param => . "ref" ident ":" type-name
+	ident => . '$ident
+		'$ident => shift 53
+		"ref" => shift 119
+		ident => shift 120
+		formal-param => shift 292
+		"\n" => shift 293
+
+261:	formal-param => ident ":" . type-name
+	type-name => . "I8"
+	type-name => . "U8"
+	type-name => . "I16"
+	type-name => . "U16"
+	type-name => . "I32"
+	type-name => . "U32"
+	type-name => . "I64"
+	type-name => . "U64"
+	type-name => . "F32"
+	type-name => . "F64"
+	type-name => . "bool"
+	type-name => . "string"
+	type-name => . "string" "size" expr
+		"string" => shift 105
+		"bool" => shift 106
+		"F64" => shift 107
+		"F32" => shift 108
+		"U64" => shift 109
+		"I64" => shift 110
+		"U32" => shift 111
+		"I32" => shift 112
+		"U16" => shift 113
+		"I16" => shift 114
+		"U8" => shift 115
+		"I8" => shift 116
+		type-name => shift 291
+
+262:	formal-param => "ref" ident . ":" type-name
+		":" => shift 290
+
+263:	type-name => "string" "size" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -2870,45 +2859,9 @@
 		unary-expr => shift 101
 		mul-expr => shift 102
 		add-expr => shift 103
-		expr => shift 290
+		expr => shift 289
 
-265:	add-expr => add-expr "+" . mul-expr
-	mul-expr => . unary-expr
-	mul-expr => . mul-expr "*" unary-expr
-	mul-expr => . mul-expr "/" unary-expr
-	unary-expr => . prim-expr
-	unary-expr => . "-" unary-expr
-	prim-expr => . qual-ident
-	prim-expr => . number
-	prim-expr => . string
-	prim-expr => . "[" expr-seq "]"
-	prim-expr => . "{" struct-elt-seq "}"
-	prim-expr => . "(" expr ")"
-	number => . '$float
-	number => . '$fixed
-	string => . '$string
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 53
-		ident => shift 89
-		qual-ident-1 => shift 90
-		'$string => shift 51
-		'$fixed => shift 91
-		'$float => shift 92
-		"(" => shift 93
-		"{" => shift 94
-		"[" => shift 95
-		string => shift 96
-		number => shift 97
-		qual-ident => shift 98
-		"-" => shift 99
-		prim-expr => shift 100
-		unary-expr => shift 101
-		mul-expr => shift 289
-
-266:	add-expr => add-expr "-" . mul-expr
+264:	add-expr => add-expr "+" . mul-expr
 	mul-expr => . unary-expr
 	mul-expr => . mul-expr "*" unary-expr
 	mul-expr => . mul-expr "/" unary-expr
@@ -2944,7 +2897,10 @@
 		unary-expr => shift 101
 		mul-expr => shift 288
 
-267:	mul-expr => mul-expr "*" . unary-expr
+265:	add-expr => add-expr "-" . mul-expr
+	mul-expr => . unary-expr
+	mul-expr => . mul-expr "*" unary-expr
+	mul-expr => . mul-expr "/" unary-expr
 	unary-expr => . prim-expr
 	unary-expr => . "-" unary-expr
 	prim-expr => . qual-ident
@@ -2974,9 +2930,10 @@
 		qual-ident => shift 98
 		"-" => shift 99
 		prim-expr => shift 100
-		unary-expr => shift 287
+		unary-expr => shift 101
+		mul-expr => shift 287
 
-268:	mul-expr => mul-expr "/" . unary-expr
+266:	mul-expr => mul-expr "*" . unary-expr
 	unary-expr => . prim-expr
 	unary-expr => . "-" unary-expr
 	prim-expr => . qual-ident
@@ -3008,69 +2965,96 @@
 		prim-expr => shift 100
 		unary-expr => shift 286
 
-269:	unary-expr => "-" unary-expr .
+267:	mul-expr => mul-expr "/" . unary-expr
+	unary-expr => . prim-expr
+	unary-expr => . "-" unary-expr
+	prim-expr => . qual-ident
+	prim-expr => . number
+	prim-expr => . string
+	prim-expr => . "[" expr-seq "]"
+	prim-expr => . "{" struct-elt-seq "}"
+	prim-expr => . "(" expr ")"
+	number => . '$float
+	number => . '$fixed
+	string => . '$string
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
+	ident => . '$ident
+		'$ident => shift 53
+		ident => shift 89
+		qual-ident-1 => shift 90
+		'$string => shift 51
+		'$fixed => shift 91
+		'$float => shift 92
+		"(" => shift 93
+		"{" => shift 94
+		"[" => shift 95
+		string => shift 96
+		number => shift 97
+		qual-ident => shift 98
+		"-" => shift 99
+		prim-expr => shift 100
+		unary-expr => shift 285
+
+268:	unary-expr => "-" unary-expr .
 		"\n" => reduce 269
 		$default => reduce 269
 
-270:	expr-seq => expr . elt-sep expr
+269:	expr-seq => expr . elt-sep expr
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
+	elt-sep => . elt-sep "\n"
 	expr-seq => expr .
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
-		elt-sep => shift 285
+		"\n" => shift 248
+		"," => shift 249
+		elt-sep => shift 284
 		$default => reduce 276
 
-271:	prim-expr => "[" expr-seq . "]"
-		"]" => shift 284
+270:	prim-expr => "[" expr-seq . "]"
+		"]" => shift 283
 
-272:	struct-elt-seq => ident . "=" expr elt-sep struct-elt-seq
-		"=" => shift 283
+271:	struct-elt-seq => ident . "=" expr elt-sep struct-elt-seq
+		"=" => shift 282
 
-273:	prim-expr => "{" struct-elt-seq . "}"
-		"}" => shift 282
+272:	prim-expr => "{" struct-elt-seq . "}"
+		"}" => shift 281
 
-274:	prim-expr => "(" expr . ")"
-		")" => shift 281
+273:	prim-expr => "(" expr . ")"
+		")" => shift 280
 
-275:	qual-ident-1 => qual-ident-1 "." . ident
+274:	qual-ident-1 => qual-ident-1 "." . ident
 	ident => . '$ident
 		'$ident => shift 53
-		ident => shift 280
+		ident => shift 279
 
-276:	comp-inst-4 => comp-inst-3 "stack" "size" expr .
+275:	comp-inst-4 => comp-inst-3 "stack" "size" expr .
 		"\n" => reduce 188
 		$default => reduce 188
 
-277:	comp-inst-3 => comp-inst-2 "queue" "size" expr .
+276:	comp-inst-3 => comp-inst-2 "queue" "size" expr .
 		"\n" => reduce 186
 		$default => reduce 186
 
-278:	comp-inst-0 => "instance" ident ":" qual-ident . "base" "id" expr
-		"base" => shift 279
+277:	comp-inst-0 => "instance" ident ":" qual-ident . "base" "id" expr
+		"base" => shift 278
 
-279:	comp-inst-0 => "instance" ident ":" qual-ident "base" . "id" expr
+278:	comp-inst-0 => "instance" ident ":" qual-ident "base" . "id" expr
 		"id" => shift 438
 
-280:	qual-ident-1 => qual-ident-1 "." ident .
+279:	qual-ident-1 => qual-ident-1 "." ident .
 		"\n" => reduce 286
 		$default => reduce 286
 
-281:	prim-expr => "(" expr ")" .
+280:	prim-expr => "(" expr ")" .
 		"\n" => reduce 275
 		$default => reduce 275
 
-282:	prim-expr => "{" struct-elt-seq "}" .
+281:	prim-expr => "{" struct-elt-seq "}" .
 		"\n" => reduce 274
 		$default => reduce 274
 
-283:	struct-elt-seq => ident "=" . expr elt-sep struct-elt-seq
+282:	struct-elt-seq => ident "=" . expr elt-sep struct-elt-seq
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3112,11 +3096,12 @@
 		add-expr => shift 103
 		expr => shift 437
 
-284:	prim-expr => "[" expr-seq "]" .
+283:	prim-expr => "[" expr-seq "]" .
 		"\n" => reduce 273
 		$default => reduce 273
 
-285:	expr-seq => expr elt-sep . expr
+284:	elt-sep => elt-sep . "\n"
+	expr-seq => expr elt-sep . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3157,40 +3142,81 @@
 		mul-expr => shift 102
 		add-expr => shift 103
 		expr => shift 436
+		"\n" => shift 293
 
-286:	mul-expr => mul-expr "/" unary-expr .
+285:	mul-expr => mul-expr "/" unary-expr .
 		"\n" => reduce 267
 		$default => reduce 267
 
-287:	mul-expr => mul-expr "*" unary-expr .
+286:	mul-expr => mul-expr "*" unary-expr .
 		"\n" => reduce 266
 		$default => reduce 266
 
-288:	mul-expr => mul-expr . "/" unary-expr
+287:	mul-expr => mul-expr . "/" unary-expr
 	mul-expr => mul-expr . "*" unary-expr
 	add-expr => add-expr "-" mul-expr .
-		"*" => shift 267
-		"/" => shift 268
+		"*" => shift 266
+		"/" => shift 267
 		"\n" => reduce 264
 		$default => reduce 264
 
-289:	mul-expr => mul-expr . "/" unary-expr
+288:	mul-expr => mul-expr . "/" unary-expr
 	mul-expr => mul-expr . "*" unary-expr
 	add-expr => add-expr "+" mul-expr .
-		"*" => shift 267
-		"/" => shift 268
+		"*" => shift 266
+		"/" => shift 267
 		"\n" => reduce 263
 		$default => reduce 263
 
-290:	type-name => "string" "size" expr .
+289:	type-name => "string" "size" expr .
 		"\n" => reduce 302
 		$default => reduce 302
 
-291:	struct-defn-0 => "struct" ident "{" struct-mem-seq "}" .
-		"\n" => reduce 45
-		$default => reduce 45
+290:	formal-param => "ref" ident ":" . type-name
+	type-name => . "I8"
+	type-name => . "U8"
+	type-name => . "I16"
+	type-name => . "U16"
+	type-name => . "I32"
+	type-name => . "U32"
+	type-name => . "I64"
+	type-name => . "U64"
+	type-name => . "F32"
+	type-name => . "F64"
+	type-name => . "bool"
+	type-name => . "string"
+	type-name => . "string" "size" expr
+		"string" => shift 105
+		"bool" => shift 106
+		"F64" => shift 107
+		"F32" => shift 108
+		"U64" => shift 109
+		"I64" => shift 110
+		"U32" => shift 111
+		"I32" => shift 112
+		"U16" => shift 113
+		"I16" => shift 114
+		"U8" => shift 115
+		"I8" => shift 116
+		type-name => shift 435
 
-292:	mem-sep => mem-sep . "\n"
+291:	formal-param => ident ":" type-name .
+		"\n" => reduce 247
+		$default => reduce 247
+
+292:	param-list => param-list elt-sep formal-param .
+		"\n" => reduce 246
+		$default => reduce 246
+
+293:	elt-sep => elt-sep "\n" .
+		"\n" => reduce 3
+		$default => reduce 3
+
+294:	struct-defn-0 => "struct" ident "{" struct-mem-seq "}" .
+		"\n" => reduce 39
+		$default => reduce 39
+
+295:	mem-sep => mem-sep . "\n"
 	struct-mem-seq => struct-mem mem-sep . struct-mem-seq
 	struct-mem-seq => .
 	struct-mem-seq => . struct-mem mem-sep struct-mem-seq
@@ -3203,26 +3229,26 @@
 	struct-mem-0 => . ident ":"
 	ident => . '$ident
 		'$ident => shift 53
-		ident => shift 257
-		struct-mem-0 => shift 258
-		struct-mem-1 => shift 259
-		struct-mem-2 => shift 260
-		struct-mem-3 => shift 261
-		struct-mem => shift 262
-		struct-mem-seq => shift 435
+		ident => shift 252
+		struct-mem-0 => shift 253
+		struct-mem-1 => shift 254
+		struct-mem-2 => shift 255
+		struct-mem-3 => shift 256
+		struct-mem => shift 257
+		struct-mem-seq => shift 434
 		"\n" => shift 144
-		$default => reduce 48
+		$default => reduce 42
 
-293:	struct-mem-3 => struct-mem-2 "format" . string
+296:	struct-mem-3 => struct-mem-2 "format" . string
 	string => . '$string
 		'$string => shift 51
-		string => shift 434
+		string => shift 433
 
-294:	struct-mem-2 => struct-mem-1 type-name .
-		"\n" => reduce 54
-		$default => reduce 54
+297:	struct-mem-2 => struct-mem-1 type-name .
+		"\n" => reduce 48
+		$default => reduce 48
 
-295:	struct-mem-1 => struct-mem-0 "[" . expr "]"
+298:	struct-mem-1 => struct-mem-0 "[" . expr "]"
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3262,93 +3288,52 @@
 		unary-expr => shift 101
 		mul-expr => shift 102
 		add-expr => shift 103
-		expr => shift 433
+		expr => shift 432
 
-296:	struct-mem-0 => ident ":" .
-		$default => reduce 51
+299:	struct-mem-0 => ident ":" .
+		$default => reduce 45
 
-297:	enum-mem => ident "=" expr .
-		"\n" => reduce 43
-		$default => reduce 43
+300:	enum-mem => ident "=" expr .
+		"\n" => reduce 37
+		$default => reduce 37
 
-298:	enum-mem-seq => enum-mem elt-sep enum-mem-seq .
-		$default => reduce 41
+301:	enum-mem-seq => enum-mem elt-sep enum-mem-seq .
+		$default => reduce 35
 
-299:	formal-param => "ref" ident ":" . type-name
-	type-name => . "I8"
-	type-name => . "U8"
-	type-name => . "I16"
-	type-name => . "U16"
-	type-name => . "I32"
-	type-name => . "U32"
-	type-name => . "I64"
-	type-name => . "U64"
-	type-name => . "F32"
-	type-name => . "F64"
-	type-name => . "bool"
-	type-name => . "string"
-	type-name => . "string" "size" expr
-		"string" => shift 105
-		"bool" => shift 106
-		"F64" => shift 107
-		"F32" => shift 108
-		"U64" => shift 109
-		"I64" => shift 110
-		"U32" => shift 111
-		"I32" => shift 112
-		"U16" => shift 113
-		"I16" => shift 114
-		"U8" => shift 115
-		"I8" => shift 116
-		type-name => shift 432
-
-300:	formal-param => ident ":" type-name .
-		"\n" => reduce 247
-		$default => reduce 247
-
-301:	param-list => param-list elt-sep formal-param .
-		"\n" => reduce 246
-		$default => reduce 246
-
-302:	elt-sep => mem-sep "\n" .
-	mem-sep => mem-sep "\n" .
-		"\n" => reduce 6
-		$default => reduce 3
-
-303:	loc-spec => "locate" "type" qual-ident "at" string .
+302:	loc-spec => "locate" "type" qual-ident "at" string .
 		"\n" => reduce 259
 		$default => reduce 259
 
-304:	loc-spec => "locate" "topology" qual-ident "at" string .
+303:	loc-spec => "locate" "topology" qual-ident "at" string .
 		"\n" => reduce 258
 		$default => reduce 258
 
-305:	loc-spec => "locate" "state" "machine" qual-ident "at" . string
+304:	loc-spec => "locate" "state" "machine" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 51
 		string => shift 431
 
-306:	loc-spec => "locate" "port" qual-ident "at" string .
+305:	loc-spec => "locate" "port" qual-ident "at" string .
 		"\n" => reduce 256
 		$default => reduce 256
 
-307:	loc-spec => "locate" "cnstant" qual-ident "at" string .
+306:	loc-spec => "locate" "cnstant" qual-ident "at" string .
 		"\n" => reduce 255
 		$default => reduce 255
 
-308:	loc-spec => "locate" "component" qual-ident "at" string .
+307:	loc-spec => "locate" "component" qual-ident "at" string .
 		"\n" => reduce 254
 		$default => reduce 254
 
-309:	loc-spec => "locate" "instance" qual-ident "at" string .
+308:	loc-spec => "locate" "instance" qual-ident "at" string .
 		"\n" => reduce 253
 		$default => reduce 253
 
-310:	topology-defn => "topology" ident "{" topo-mem-seq "}" .
+309:	topology-defn => "topology" ident "{" topo-mem-seq "}" .
 		"\n" => reduce 195
 		$default => reduce 195
 
-311:	mem-sep => mem-sep . "\n"
+310:	mem-sep => mem-sep . "\n"
 	topo-mem-seq => topo-mem mem-sep . topo-mem-seq
 	topo-mem-seq => .
 	topo-mem-seq => . topo-mem mem-sep topo-mem-seq
@@ -3398,43 +3383,45 @@
 		"\n" => shift 144
 		$default => reduce 196
 
-312:	topo-mem => "import" qual-ident .
+311:	topo-mem => "import" qual-ident .
 		"\n" => reduce 201
 		$default => reduce 201
 
-313:	comp-inst-spec => "instance" ident .
+312:	comp-inst-spec => "instance" ident .
 		"\n" => reduce 203
 		$default => reduce 203
 
-314:	comp-inst-spec => "private" "instance" . ident
+313:	comp-inst-spec => "private" "instance" . ident
 	ident => . '$ident
 		'$ident => shift 53
 		ident => shift 429
 
-315:	conn-graph-spec => "connections" ident . "{" conn-seq "}"
+314:	conn-graph-spec => "connections" ident . "{" conn-seq "}"
 		"{" => shift 428
 
-316:	conn-graph-spec => pattern-kind "connections" . "instance" qual-ident
+315:	conn-graph-spec => pattern-kind "connections" . "instance" qual-ident
 	conn-graph-spec => pattern-kind "connections" . "instance" qual-ident "{" qual-ident-seq "}"
 		"instance" => shift 427
 
-317:	tlm-pktset-spec-0 => "telemetry" "packets" . ident "{" tlm-pktgrp-mem-seq "}"
+316:	tlm-pktset-spec-0 => "telemetry" "packets" . ident "{" tlm-pktgrp-mem-seq "}"
 	ident => . '$ident
 		'$ident => shift 53
 		ident => shift 426
 
-318:	pattern-kind => "text" "event" .
+317:	pattern-kind => "text" "event" .
 		$default => reduce 213
 
-319:	tlm-pktset-spec-1 => tlm-pktset-spec-0 "omit" . "{" tlm-chan-id-seq "}"
+318:	tlm-pktset-spec-1 => tlm-pktset-spec-0 "omit" . "{" tlm-chan-id-seq "}"
 		"{" => shift 425
 
-320:	component-defn => comp-kind ident "{" comp-mem-seq "}" .
+319:	component-defn => comp-kind ident "{" comp-mem-seq "}" .
 		"\n" => reduce 57
 		$default => reduce 57
 
-321:	mem-sep => mem-sep . "\n"
-	comp-mem-seq => comp-mem-seq mem-sep . comp-mem
+320:	mem-sep => mem-sep . "\n"
+	comp-mem-seq => comp-mem mem-sep . comp-mem-seq
+	comp-mem-seq => .
+	comp-mem-seq => . comp-mem mem-sep comp-mem-seq
 	comp-mem => . include-spec
 	comp-mem => . enum-defn
 	comp-mem => . struct-defn
@@ -3586,7 +3573,7 @@
 		input-port-kind => shift 174
 		spc-port-inst-0 => shift 175
 		gen-port-inst-1 => shift 176
-		enum-defn-0 => shift 8
+		enum-defn-0 => shift 9
 		cont-spec-0 => shift 177
 		record-spec-0 => shift 178
 		tlm-chan-3 => shift 179
@@ -3596,8 +3583,8 @@
 		int-port-defn-1 => shift 183
 		spc-port-inst-1 => shift 184
 		gen-port-inst-2 => shift 185
-		"struct" => shift 11
-		enum-defn-1 => shift 12
+		"struct" => shift 12
+		enum-defn-1 => shift 13
 		cont-spec-1 => shift 186
 		record-spec-1 => shift 187
 		tlm-chan-4 => shift 188
@@ -3607,8 +3594,8 @@
 		int-port-defn-2 => shift 192
 		spc-port-inst-2 => shift 193
 		gen-port-inst-3 => shift 194
-		struct-defn-0 => shift 18
-		enum-defn-2 => shift 19
+		struct-defn-0 => shift 19
+		enum-defn-2 => shift 20
 		"match" => shift 195
 		cont-spec-2 => shift 196
 		record-spec-2 => shift 197
@@ -3619,8 +3606,8 @@
 		int-port-defn-3 => shift 202
 		spc-port-inst-3 => shift 203
 		gen-port-inst-4 => shift 204
-		struct-defn-1 => shift 25
-		enum-defn-3 => shift 26
+		struct-defn-1 => shift 26
+		enum-defn-3 => shift 27
 		"include" => shift 32
 		tlm-chan-spec => shift 205
 		prod-cont-spec => shift 206
@@ -3634,45 +3621,47 @@
 		struct-defn => shift 214
 		enum-defn => shift 215
 		include-spec => shift 216
-		comp-mem => shift 424
+		comp-mem => shift 217
+		comp-mem-seq => shift 424
 		"\n" => shift 144
+		$default => reduce 61
 
-322:	port-match-spec => "match" ident . "with" ident
+321:	port-match-spec => "match" ident . "with" ident
 		"with" => shift 423
 
-323:	queue-full-beh => "hook" .
+322:	queue-full-beh => "hook" .
 		"\n" => reduce 252
 		$default => reduce 252
 
-324:	queue-full-beh => "drop" .
+323:	queue-full-beh => "drop" .
 		"\n" => reduce 251
 		$default => reduce 251
 
-325:	queue-full-beh => "block" .
+324:	queue-full-beh => "block" .
 		"\n" => reduce 250
 		$default => reduce 250
 
-326:	queue-full-beh => "assert" .
+325:	queue-full-beh => "assert" .
 		"\n" => reduce 249
 		$default => reduce 249
 
-327:	gen-port-inst-4 => gen-port-inst-3 queue-full-beh .
+326:	gen-port-inst-4 => gen-port-inst-3 queue-full-beh .
 		"\n" => reduce 86
 		$default => reduce 86
 
-328:	spc-port-inst-3 => spc-port-inst-2 queue-full-beh .
+327:	spc-port-inst-3 => spc-port-inst-2 queue-full-beh .
 		"\n" => reduce 93
 		$default => reduce 93
 
-329:	int-port-defn-3 => int-port-defn-2 queue-full-beh .
+328:	int-port-defn-3 => int-port-defn-2 queue-full-beh .
 		"\n" => reduce 101
 		$default => reduce 101
 
-330:	cmd-spec-4 => cmd-spec-3 queue-full-beh .
+329:	cmd-spec-4 => cmd-spec-3 queue-full-beh .
 		"\n" => reduce 111
 		$default => reduce 111
 
-331:	event-spec-5 => event-spec-4 "throttle" . expr
+330:	event-spec-5 => event-spec-4 "throttle" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3714,13 +3703,13 @@
 		add-expr => shift 103
 		expr => shift 422
 
-332:	param-spec-4 => param-spec-3 "save" . "opcode" expr
+331:	param-spec-4 => param-spec-3 "save" . "opcode" expr
 		"opcode" => shift 421
 
-333:	tlm-chan-5 => tlm-chan-4 "high" . "{" tlm-lim-seq "}"
+332:	tlm-chan-5 => tlm-chan-4 "high" . "{" tlm-lim-seq "}"
 		"{" => shift 420
 
-334:	record-spec-2 => record-spec-1 "id" . expr
+333:	record-spec-2 => record-spec-1 "id" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3762,10 +3751,10 @@
 		add-expr => shift 103
 		expr => shift 419
 
-335:	cont-spec-2 => cont-spec-1 "default" . "priority" expr
+334:	cont-spec-2 => cont-spec-1 "default" . "priority" expr
 		"priority" => shift 418
 
-336:	gen-port-inst-3 => gen-port-inst-2 "priority" . expr
+335:	gen-port-inst-3 => gen-port-inst-2 "priority" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3807,7 +3796,7 @@
 		add-expr => shift 103
 		expr => shift 417
 
-337:	spc-port-inst-2 => spc-port-inst-1 "priority" . expr
+336:	spc-port-inst-2 => spc-port-inst-1 "priority" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3849,7 +3838,7 @@
 		add-expr => shift 103
 		expr => shift 416
 
-338:	int-port-defn-2 => int-port-defn-1 "priority" . expr
+337:	int-port-defn-2 => int-port-defn-1 "priority" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3891,7 +3880,7 @@
 		add-expr => shift 103
 		expr => shift 415
 
-339:	cmd-spec-3 => cmd-spec-2 "priority" . expr
+338:	cmd-spec-3 => cmd-spec-2 "priority" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3933,22 +3922,22 @@
 		add-expr => shift 103
 		expr => shift 414
 
-340:	event-spec-4 => event-spec-3 "format" . string
+339:	event-spec-4 => event-spec-3 "format" . string
 	string => . '$string
 		'$string => shift 51
 		string => shift 413
 
-341:	param-spec-3 => param-spec-2 "set" . "opcode" expr
+340:	param-spec-3 => param-spec-2 "set" . "opcode" expr
 		"opcode" => shift 412
 
-342:	tlm-chan-4 => tlm-chan-3 "low" . "{" tlm-lim-seq "}"
+341:	tlm-chan-4 => tlm-chan-3 "low" . "{" tlm-lim-seq "}"
 		"{" => shift 411
 
-343:	record-spec-1 => record-spec-0 "array" .
+342:	record-spec-1 => record-spec-0 "array" .
 		"\n" => reduce 170
 		$default => reduce 170
 
-344:	cont-spec-1 => cont-spec-0 "id" . expr
+343:	cont-spec-1 => cont-spec-0 "id" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3990,65 +3979,65 @@
 		add-expr => shift 103
 		expr => shift 410
 
-345:	gen-port-inst-2 => gen-port-inst-1 qual-ident .
+344:	gen-port-inst-2 => gen-port-inst-1 qual-ident .
 		"\n" => reduce 81
 		$default => reduce 81
 
-346:	gen-port-inst-2 => gen-port-inst-1 "serial" .
+345:	gen-port-inst-2 => gen-port-inst-1 "serial" .
 		"\n" => reduce 82
 		$default => reduce 82
 
-347:	spc-port-kind => "telemetry" .
+346:	spc-port-kind => "telemetry" .
 		$default => reduce 122
 
-348:	spc-port-kind => "product" . "send"
+347:	spc-port-kind => "product" . "send"
 	spc-port-kind => "product" . "request"
 	spc-port-kind => "product" . "recv"
 	spc-port-kind => "product" . "get"
-		"get" => shift 361
-		"recv" => shift 362
-		"request" => shift 363
-		"send" => shift 364
+		"get" => shift 360
+		"recv" => shift 361
+		"request" => shift 362
+		"send" => shift 363
 
-349:	spc-port-kind => "param" . "set"
+348:	spc-port-kind => "param" . "set"
 	spc-port-kind => "param" . "get"
-		"get" => shift 377
-		"set" => shift 378
+		"get" => shift 376
+		"set" => shift 377
 
-350:	spc-port-kind => "event" .
+349:	spc-port-kind => "event" .
 		$default => reduce 115
 
-351:	spc-port-inst-1 => input-port-kind spc-port-inst-0 .
+350:	spc-port-inst-1 => input-port-kind spc-port-inst-0 .
 		"\n" => reduce 89
 		$default => reduce 89
 
-352:	gen-port-inst-0 => input-port-kind "input" . "port" ident ":"
+351:	gen-port-inst-0 => input-port-kind "input" . "port" ident ":"
 		"port" => shift 409
 
-353:	spc-port-kind => "command" . "resp"
+352:	spc-port-kind => "command" . "resp"
 	spc-port-kind => "command" . "reg"
 	spc-port-kind => "command" . "recv"
 	cmd-spec-0 => input-port-kind "command" . ident
 	ident => . '$ident
 		'$ident => shift 53
 		ident => shift 408
-		"recv" => shift 373
-		"reg" => shift 374
-		"resp" => shift 375
+		"recv" => shift 372
+		"reg" => shift 373
+		"resp" => shift 374
 
-354:	int-port-defn-1 => int-port-defn-0 "(" . param-list ")"
+353:	int-port-defn-1 => int-port-defn-0 "(" . param-list ")"
 	param-list => . formal-param
 	param-list => . param-list elt-sep formal-param
 	formal-param => . ident ":" type-name
 	formal-param => . "ref" ident ":" type-name
 	ident => . '$ident
 		'$ident => shift 53
-		"ref" => shift 123
-		ident => shift 124
-		formal-param => shift 125
+		"ref" => shift 119
+		ident => shift 120
+		formal-param => shift 121
 		param-list => shift 407
 
-355:	cmd-spec-2 => cmd-spec-1 "opcode" . expr
+354:	cmd-spec-2 => cmd-spec-1 "opcode" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -4090,7 +4079,7 @@
 		add-expr => shift 103
 		expr => shift 406
 
-356:	event-spec-3 => event-spec-2 "id" . expr
+355:	event-spec-3 => event-spec-2 "id" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -4132,7 +4121,7 @@
 		add-expr => shift 103
 		expr => shift 405
 
-357:	param-spec-2 => param-spec-1 "id" . expr
+356:	param-spec-2 => param-spec-1 "id" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -4174,59 +4163,59 @@
 		add-expr => shift 103
 		expr => shift 404
 
-358:	tlm-chan-3 => tlm-chan-2 "format" . string
+357:	tlm-chan-3 => tlm-chan-2 "format" . string
 	string => . '$string
 		'$string => shift 51
 		string => shift 403
 
-359:	record-spec-0 => "product" "record" . ident ":" type-name
+358:	record-spec-0 => "product" "record" . ident ":" type-name
 	ident => . '$ident
 		'$ident => shift 53
 		ident => shift 402
 
-360:	cont-spec-0 => "product" "container" . ident
+359:	cont-spec-0 => "product" "container" . ident
 	ident => . '$ident
 		'$ident => shift 53
 		ident => shift 401
 
-361:	spc-port-kind => "product" "get" .
+360:	spc-port-kind => "product" "get" .
 		$default => reduce 118
 
-362:	spc-port-kind => "product" "recv" .
+361:	spc-port-kind => "product" "recv" .
 		$default => reduce 119
 
-363:	spc-port-kind => "product" "request" .
+362:	spc-port-kind => "product" "request" .
 		$default => reduce 120
 
-364:	spc-port-kind => "product" "send" .
+363:	spc-port-kind => "product" "send" .
 		$default => reduce 121
 
-365:	gen-port-inst-1 => gen-port-inst-0 expr .
+364:	gen-port-inst-1 => gen-port-inst-0 expr .
 		$default => reduce 80
 
-366:	spc-port-inst-0 => spc-port-kind "port" . ident ":"
+365:	spc-port-inst-0 => spc-port-kind "port" . ident ":"
 	ident => . '$ident
 		'$ident => shift 53
 		ident => shift 400
 
-367:	int-port-defn-0 => "internal" "port" . ident
+366:	int-port-defn-0 => "internal" "port" . ident
 	ident => . '$ident
 		'$ident => shift 53
 		ident => shift 399
 
-368:	cmd-spec-1 => cmd-spec-0 "(" . param-list ")"
+367:	cmd-spec-1 => cmd-spec-0 "(" . param-list ")"
 	param-list => . formal-param
 	param-list => . param-list elt-sep formal-param
 	formal-param => . ident ":" type-name
 	formal-param => . "ref" ident ":" type-name
 	ident => . '$ident
 		'$ident => shift 53
-		"ref" => shift 123
-		ident => shift 124
-		formal-param => shift 125
+		"ref" => shift 119
+		ident => shift 120
+		formal-param => shift 121
 		param-list => shift 398
 
-369:	event-spec-2 => event-spec-1 "severity" . expr
+368:	event-spec-2 => event-spec-1 "severity" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -4268,7 +4257,7 @@
 		add-expr => shift 103
 		expr => shift 397
 
-370:	param-spec-1 => param-spec-0 "default" . expr
+369:	param-spec-1 => param-spec-0 "default" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -4310,61 +4299,61 @@
 		add-expr => shift 103
 		expr => shift 396
 
-371:	tlm-chan-2 => tlm-chan-1 "update" . tlm-update
+370:	tlm-chan-2 => tlm-chan-1 "update" . tlm-update
 	tlm-update => . "always"
 	tlm-update => . "on" "change"
 		"on" => shift 393
 		"always" => shift 394
 		tlm-update => shift 395
 
-372:	gen-port-inst-0 => "output" "port" . ident ":"
+371:	gen-port-inst-0 => "output" "port" . ident ":"
 	ident => . '$ident
 		'$ident => shift 53
 		ident => shift 392
 
-373:	spc-port-kind => "command" "recv" .
+372:	spc-port-kind => "command" "recv" .
 		$default => reduce 112
 
-374:	spc-port-kind => "command" "reg" .
+373:	spc-port-kind => "command" "reg" .
 		$default => reduce 113
 
-375:	spc-port-kind => "command" "resp" .
+374:	spc-port-kind => "command" "resp" .
 		$default => reduce 114
 
-376:	event-spec-0 => "event" ident .
+375:	event-spec-0 => "event" ident .
 		$default => reduce 129
 
-377:	spc-port-kind => "param" "get" .
+376:	spc-port-kind => "param" "get" .
 		$default => reduce 116
 
-378:	spc-port-kind => "param" "set" .
+377:	spc-port-kind => "param" "set" .
 		$default => reduce 117
 
-379:	param-spec-0 => "param" ident . ":" type-name
+378:	param-spec-0 => "param" ident . ":" type-name
 		":" => shift 391
 
-380:	tlm-chan-0 => "telemetry" ident . ":" type-name
+379:	tlm-chan-0 => "telemetry" ident . ":" type-name
 		":" => shift 390
 
-381:	spc-port-kind => "text" "event" .
+380:	spc-port-kind => "text" "event" .
 		$default => reduce 123
 
-382:	spc-port-kind => "time" "get" .
+381:	spc-port-kind => "time" "get" .
 		$default => reduce 124
 
-383:	event-spec-1 => event-spec-0 "(" . param-list ")"
+382:	event-spec-1 => event-spec-0 "(" . param-list ")"
 	param-list => . formal-param
 	param-list => . param-list elt-sep formal-param
 	formal-param => . ident ":" type-name
 	formal-param => . "ref" ident ":" type-name
 	ident => . '$ident
 		'$ident => shift 53
-		"ref" => shift 123
-		ident => shift 124
-		formal-param => shift 125
+		"ref" => shift 119
+		ident => shift 120
+		formal-param => shift 121
 		param-list => shift 389
 
-384:	tlm-chan-1 => tlm-chan-0 "id" . expr
+383:	tlm-chan-1 => tlm-chan-0 "id" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -4406,6 +4395,10 @@
 		add-expr => shift 103
 		expr => shift 388
 
+384:	array-defn => "array" ident "=" index ident .
+		"\n" => reduce 26
+		$default => reduce 26
+
 385:	index => "[" expr . "]"
 		"]" => shift 387
 
@@ -4414,7 +4407,6 @@
 		$default => reduce 23
 
 387:	index => "[" expr "]" .
-		"\n" => reduce 289
 		$default => reduce 289
 
 388:	tlm-chan-1 => tlm-chan-0 "id" expr .
@@ -4424,17 +4416,12 @@
 389:	param-list => param-list . elt-sep formal-param
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
+	elt-sep => . elt-sep "\n"
 	event-spec-1 => event-spec-0 "(" param-list . ")"
 		")" => shift 474
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
-		elt-sep => shift 251
+		"\n" => shift 248
+		"," => shift 249
+		elt-sep => shift 260
 
 390:	tlm-chan-0 => "telemetry" ident ":" . type-name
 	type-name => . "I8"
@@ -4516,17 +4503,12 @@
 398:	param-list => param-list . elt-sep formal-param
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
+	elt-sep => . elt-sep "\n"
 	cmd-spec-1 => cmd-spec-0 "(" param-list . ")"
 		")" => shift 469
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
-		elt-sep => shift 251
+		"\n" => shift 248
+		"," => shift 249
+		elt-sep => shift 260
 
 399:	int-port-defn-0 => "internal" "port" ident .
 		"\n" => reduce 95
@@ -4560,17 +4542,12 @@
 407:	param-list => param-list . elt-sep formal-param
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
+	elt-sep => . elt-sep "\n"
 	int-port-defn-1 => int-port-defn-0 "(" param-list . ")"
 		")" => shift 466
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
-		elt-sep => shift 251
+		"\n" => shift 248
+		"," => shift 249
+		elt-sep => shift 260
 
 408:	cmd-spec-0 => input-port-kind "command" ident .
 		"\n" => reduce 103
@@ -4768,8 +4745,7 @@
 		'$ident => shift 53
 		ident => shift 455
 
-424:	comp-mem-seq => comp-mem-seq mem-sep comp-mem .
-		"\n" => reduce 62
+424:	comp-mem-seq => comp-mem mem-sep comp-mem-seq .
 		$default => reduce 62
 
 425:	tlm-pktset-spec-1 => tlm-pktset-spec-0 "omit" "{" . tlm-chan-id-seq "}"
@@ -4844,19 +4820,19 @@
 		"\n" => reduce 257
 		$default => reduce 257
 
-432:	formal-param => "ref" ident ":" type-name .
-		"\n" => reduce 248
-		$default => reduce 248
-
-433:	struct-mem-1 => struct-mem-0 "[" expr . "]"
+432:	struct-mem-1 => struct-mem-0 "[" expr . "]"
 		"]" => shift 441
 
-434:	struct-mem-3 => struct-mem-2 "format" string .
-		"\n" => reduce 56
-		$default => reduce 56
+433:	struct-mem-3 => struct-mem-2 "format" string .
+		"\n" => reduce 50
+		$default => reduce 50
 
-435:	struct-mem-seq => struct-mem mem-sep struct-mem-seq .
-		$default => reduce 49
+434:	struct-mem-seq => struct-mem mem-sep struct-mem-seq .
+		$default => reduce 43
+
+435:	formal-param => "ref" ident ":" type-name .
+		"\n" => reduce 248
+		$default => reduce 248
 
 436:	expr-seq => expr elt-sep expr .
 		$default => reduce 277
@@ -4864,14 +4840,9 @@
 437:	struct-elt-seq => ident "=" expr . elt-sep struct-elt-seq
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
+	elt-sep => . elt-sep "\n"
+		"\n" => shift 248
+		"," => shift 249
 		elt-sep => shift 440
 
 438:	comp-inst-0 => "instance" ident ":" qual-ident "base" "id" . expr
@@ -4920,17 +4891,19 @@
 		"\n" => reduce 180
 		$default => reduce 180
 
-440:	struct-elt-seq => ident "=" expr elt-sep . struct-elt-seq
+440:	elt-sep => elt-sep . "\n"
+	struct-elt-seq => ident "=" expr elt-sep . struct-elt-seq
 	struct-elt-seq => .
 	struct-elt-seq => . ident "=" expr elt-sep struct-elt-seq
 	ident => . '$ident
 		'$ident => shift 53
-		ident => shift 272
+		ident => shift 271
 		struct-elt-seq => shift 500
+		"\n" => shift 293
 		$default => reduce 278
 
 441:	struct-mem-1 => struct-mem-0 "[" expr "]" .
-		$default => reduce 53
+		$default => reduce 47
 
 442:	connection-0 => qual-ident .
 		$default => reduce 218
@@ -4971,14 +4944,9 @@
 449:	conn-seq => connection . elt-sep conn-seq
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
+	elt-sep => . elt-sep "\n"
+		"\n" => shift 248
+		"," => shift 249
 		elt-sep => shift 495
 
 450:	conn-graph-spec => "connections" ident "{" conn-seq . "}"
@@ -5019,16 +4987,11 @@
 454:	tlm-chan-id-seq => tlm-chan-id-seq . elt-sep qual-ident
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
+	elt-sep => . elt-sep "\n"
 	tlm-pktset-spec-1 => tlm-pktset-spec-0 "omit" "{" tlm-chan-id-seq . "}"
 		"}" => shift 483
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
+		"\n" => shift 248
+		"," => shift 249
 		elt-sep => shift 484
 
 455:	port-match-spec => "match" ident "with" ident .
@@ -5172,16 +5135,11 @@
 461:	tlm-lim-seq => tlm-lim-seq . elt-sep tlm-lim
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
+	elt-sep => . elt-sep "\n"
 	tlm-chan-5 => tlm-chan-4 "high" "{" tlm-lim-seq . "}"
 		"}" => shift 479
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
+		"\n" => shift 248
+		"," => shift 249
 		elt-sep => shift 478
 
 462:	cont-spec-2 => cont-spec-1 "default" "priority" expr .
@@ -5195,16 +5153,11 @@
 464:	tlm-lim-seq => tlm-lim-seq . elt-sep tlm-lim
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
+	elt-sep => . elt-sep "\n"
 	tlm-chan-4 => tlm-chan-3 "low" "{" tlm-lim-seq . "}"
 		"}" => shift 477
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
+		"\n" => shift 248
+		"," => shift 249
 		elt-sep => shift 478
 
 465:	gen-port-inst-0 => input-port-kind "input" "port" ident . ":"
@@ -5279,7 +5232,8 @@
 		"\n" => reduce 157
 		$default => reduce 157
 
-478:	tlm-lim-seq => tlm-lim-seq elt-sep . tlm-lim
+478:	elt-sep => elt-sep . "\n"
+	tlm-lim-seq => tlm-lim-seq elt-sep . tlm-lim
 	tlm-lim => . "red" expr
 	tlm-lim => . "orange" expr
 	tlm-lim => . "yellow" expr
@@ -5287,6 +5241,7 @@
 		"orange" => shift 458
 		"red" => shift 459
 		tlm-lim => shift 513
+		"\n" => shift 293
 
 479:	tlm-chan-5 => tlm-chan-4 "high" "{" tlm-lim-seq "}" .
 		"\n" => reduce 159
@@ -5308,7 +5263,8 @@
 		"\n" => reduce 229
 		$default => reduce 229
 
-484:	tlm-chan-id-seq => tlm-chan-id-seq elt-sep . qual-ident
+484:	elt-sep => elt-sep . "\n"
+	tlm-chan-id-seq => tlm-chan-id-seq elt-sep . qual-ident
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
@@ -5317,6 +5273,7 @@
 		ident => shift 89
 		qual-ident-1 => shift 90
 		qual-ident => shift 512
+		"\n" => shift 293
 
 485:	tlm-pkt-spec-0 => "packet" . ident
 	ident => . '$ident
@@ -5346,14 +5303,9 @@
 491:	tlm-pktgrp-mem-seq => tlm-pktgrp-mem . elt-sep tlm-pktgrp-mem-seq
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
+	elt-sep => . elt-sep "\n"
+		"\n" => shift 248
+		"," => shift 249
 		elt-sep => shift 508
 
 492:	tlm-pktset-spec-0 => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq . "}"
@@ -5376,7 +5328,8 @@
 		"\n" => reduce 205
 		$default => reduce 205
 
-495:	conn-seq => connection elt-sep . conn-seq
+495:	elt-sep => elt-sep . "\n"
+	conn-seq => connection elt-sep . conn-seq
 	conn-seq => .
 	conn-seq => . connection elt-sep conn-seq
 	connection => . connection-4
@@ -5404,6 +5357,7 @@
 		connection-4 => shift 448
 		connection => shift 449
 		conn-seq => shift 504
+		"\n" => shift 293
 		$default => reduce 215
 
 496:	connection-4 => connection-3 "[" . expr "]"
@@ -5526,23 +5480,19 @@
 506:	qual-ident-seq => qual-ident-seq . elt-sep qual-ident
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
+	elt-sep => . elt-sep "\n"
 	conn-graph-spec => pattern-kind "connections" "instance" qual-ident "{" qual-ident-seq . "}"
 		"}" => shift 517
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
+		"\n" => shift 248
+		"," => shift 249
 		elt-sep => shift 518
 
 507:	tlm-pktset-spec-0 => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}" .
 		"\n" => reduce 227
 		$default => reduce 227
 
-508:	tlm-pktgrp-mem-seq => tlm-pktgrp-mem elt-sep . tlm-pktgrp-mem-seq
+508:	elt-sep => elt-sep . "\n"
+	tlm-pktgrp-mem-seq => tlm-pktgrp-mem elt-sep . tlm-pktgrp-mem-seq
 	tlm-pktgrp-mem-seq => .
 	tlm-pktgrp-mem-seq => . tlm-pktgrp-mem elt-sep tlm-pktgrp-mem-seq
 	tlm-pktgrp-mem => . include-spec
@@ -5562,6 +5512,7 @@
 		include-spec => shift 490
 		tlm-pktgrp-mem => shift 491
 		tlm-pktgrp-mem-seq => shift 516
+		"\n" => shift 293
 		$default => reduce 230
 
 509:	tlm-pkt-spec-2 => tlm-pkt-spec-1 "group" . expr "{" tlm-pkt-mem-seq "}"
@@ -5672,7 +5623,8 @@
 		"\n" => reduce 207
 		$default => reduce 207
 
-518:	qual-ident-seq => qual-ident-seq elt-sep . qual-ident
+518:	elt-sep => elt-sep . "\n"
+	qual-ident-seq => qual-ident-seq elt-sep . qual-ident
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
@@ -5681,6 +5633,7 @@
 		ident => shift 89
 		qual-ident-1 => shift 90
 		qual-ident => shift 521
+		"\n" => shift 293
 
 519:	connection-4 => connection-3 "[" expr "]" .
 		"\n" => reduce 225
@@ -5724,14 +5677,9 @@
 525:	tlm-pkt-mem-seq => tlm-pkt-mem . elt-sep tlm-pkt-mem-seq
 	elt-sep => . ","
 	elt-sep => . "\n"
-	elt-sep => . mem-sep "\n"
-	mem-sep => . ";"
-	mem-sep => . "\n"
-	mem-sep => . mem-sep "\n"
-		";" => shift 49
-		mem-sep => shift 248
-		"\n" => shift 249
-		"," => shift 250
+	elt-sep => . elt-sep "\n"
+		"\n" => shift 248
+		"," => shift 249
 		elt-sep => shift 528
 
 526:	tlm-pkt-spec-2 => tlm-pkt-spec-1 "group" expr "{" tlm-pkt-mem-seq . "}"
@@ -5741,7 +5689,8 @@
 		"\n" => reduce 238
 		$default => reduce 238
 
-528:	tlm-pkt-mem-seq => tlm-pkt-mem elt-sep . tlm-pkt-mem-seq
+528:	elt-sep => elt-sep . "\n"
+	tlm-pkt-mem-seq => tlm-pkt-mem elt-sep . tlm-pkt-mem-seq
 	tlm-pkt-mem-seq => .
 	tlm-pkt-mem-seq => . tlm-pkt-mem elt-sep tlm-pkt-mem-seq
 	tlm-pkt-mem => . include-spec
@@ -5759,6 +5708,7 @@
 		include-spec => shift 524
 		tlm-pkt-mem => shift 525
 		tlm-pkt-mem-seq => shift 529
+		"\n" => shift 293
 		$default => reduce 239
 
 529:	tlm-pkt-mem-seq => tlm-pkt-mem elt-sep tlm-pkt-mem-seq .
