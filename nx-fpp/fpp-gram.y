@@ -1,5 +1,16 @@
 // Copyright 2025 Matthew Wette
 // SPDX-License-Identifier: Apache-2.0
+%token DO
+%token ENTER
+%token EXIT
+%token ENTRY
+%token INITIAL
+%token SIGNAL
+%token GUARD
+%token ACTION
+%token ELSE
+%token IF
+%token CHOICE
 %token STRING
 %token BOOL
 %token F64
@@ -139,6 +150,7 @@ mod_mem: loc_spec ;
 mod_mem: abs_type_defn ;
 mod_mem: array_defn ;
 mod_mem: enum_defn ;
+mod_mem: stmach_defn ;
 module_defn: MODULE ident '{' module_mem_seq '}' ;
 const_defn: CONSTANT ident '=' expr ;
 abs_type_defn: TYPE ident ;
@@ -191,6 +203,8 @@ comp_mem: param_spec ;
 comp_mem: record_spec ;
 comp_mem: prod_cont_spec ;
 comp_mem: tlm_chan_spec ;
+comp_mem: stmach_defn ;
+comp_mem: stmach_inst ;
 port_inst: gen_port_inst_4 ;
 port_inst: spc_port_inst_3 ;
 gen_port_inst_0: input_port_kind INPUT PORT ident ':' ;
@@ -419,4 +433,47 @@ type_name: F64 ;
 type_name: BOOL ;
 type_name: STRING ;
 type_name: STRING SIZE expr ;
+stmach_inst: stmach_inst_2 ;
+stmach_inst_0: STATE MACHINE INSTANCE ident ':' qual_ident ;
+stmach_inst_1: stmach_inst_0 ;
+stmach_inst_1: stmach_inst_0 PRIORITY expr ;
+stmach_inst_2: stmach_inst_1 ;
+stmach_inst_2: stmach_inst_1 queue_full_beh ;
+stmach_defn: STATE MACHINE ident ;
+stmach_defn: STATE MACHINE ident '{' stmach_mem_seq '}' ;
+stmach_mem_seq: %empty ;
+stmach_mem_seq: stmach_mem mem_sep stmach_mem_seq ;
+stmach_mem: CHOICE ident '{' IF ident trans_expr ELSE trans_expr '}' ;
+stmach_mem: ACTION ident ;
+stmach_mem: ACTION ident ':' type_name ;
+stmach_mem: GUARD ident ;
+stmach_mem: GUARD ident ':' type_name ;
+stmach_mem: SIGNAL ident ;
+stmach_mem: SIGNAL ident ':' type_name ;
+stmach_mem: INITIAL trans_expr ;
+stmach_mem: state_defn ;
+state_defn: STATE ident ;
+state_defn: STATE ident '{' state_defn_mem_seq '}' ;
+state_defn_mem_seq: %empty ;
+state_defn_mem_seq: state_defn_mem mem_sep state_defn_mem_seq ;
+state_defn_mem: INITIAL trans_expr ;
+state_defn_mem: CHOICE ident '{' IF ident trans_expr ELSE trans_expr '}' ;
+state_defn_mem: state_defn ;
+state_defn_mem: state_trans_spec ;
+state_defn_mem: ENTRY do_expr ;
+state_defn_mem: EXIT do_expr ;
+state_trans_spec: st_tran_spec_2 ;
+st_tran_spec_0: ON ident ;
+st_tran_spec_1: st_tran_spec_0 ;
+st_tran_spec_1: st_tran_spec_0 IF ident ;
+st_tran_spec_2: st_tran_spec_1 trans_or_do ;
+trans_expr: trans_expr_1 ;
+trans_expr_0: ENTER qual_ident ;
+trans_expr_1: trans_expr_0 ;
+trans_expr_1: do_expr trans_expr_0 ;
+do_expr: DO '{' action_seq '}' ;
+action_seq: %empty ;
+action_seq: ident elt_sep action_seq ;
+trans_or_do: trans_expr ;
+trans_or_do: do_expr ;
 

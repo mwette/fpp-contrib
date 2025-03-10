@@ -51,8 +51,7 @@
      (abs-type-defn)
      (array-defn)
      (enum-defn)
-     ;;(stmach-defn)
-     )
+     (stmach-defn))
 
     (module-defn
      ("module" ident "{" module-mem-seq "}"
@@ -127,9 +126,8 @@
      (record-spec)
      (prod-cont-spec)
      (tlm-chan-spec)
-     ;;(stmach-defn)
-     ;;(stmach-inst)
-     )
+     (stmach-defn)
+     (stmach-inst))
 
     (port-inst
      (gen-port-inst-4)
@@ -405,75 +403,64 @@
 
 
     ;; === state machines ==============
-    #|
+
     (stmach-inst (stmach-inst-2))
     (stmach-inst-0 ("state" "machine" "instance" ident ":" qual-ident))
     (stmach-inst-1 (stmach-inst-0) (stmach-inst-0 "priority" expr))
     (stmach-inst-2 (stmach-inst-1) (stmach-inst-1 queue-full-beh))
     
+    ;;(stmach-defn ("state" "machine" ident) )
     (stmach-defn
       ("state" "machine" ident)
-      ("state" "machine" ident "{" stmach-membe-seq "}"))
+      ("state" "machine" ident "{" stmach-mem-seq "}"))
 
-    (stmach-member-seq
-      (stmach-member)
-      (stmach-member-seq mem-sep stmach-member))
-    (stmach-member
-     )
+    (stmach-mem-seq
+     ($empty)
+     (stmach-mem mem-sep stmach-mem-seq))
 
-    (specInit)
+    (stmach-mem
+     ("choice" ident "{" "if" ident trans-expr "else" trans-expr "}")
+     ("action" ident)
+     ("action" ident ":" type-name)
+     ("guard" ident)
+     ("guard" ident ":" type-name)
+     ("signal" ident)
+     ("signal" ident ":" type-name)
+     ("initial" trans-expr)
+     (state-defn))
 
     (state-defn
      ("state" ident)
-     ("state" ident "{" state-def-member-seq "}"))
+     ("state" ident "{" state-defn-mem-seq "}"))
 
-    (specStateEntry
+    (state-defn-mem-seq
+     ($empty)
+     (state-defn-mem mem-sep state-defn-mem-seq))
+    (state-defn-mem
+     ("initial" trans-expr)
+     ("choice" ident "{" "if" ident trans-expr "else" trans-expr "}")
+     (state-defn)
+     (state-trans-spec)
      ("entry" do-expr)
-     )
-    (specStateExit
-     ("exit" do-expr)
-     )
+     ("exit" do-expr))
 
-    (specInitialTransition
-     ("initial" transitionExpr)
-    )
+    (state-trans-spec (st-tran-spec-2))
+    (st-tran-spec-0 ("on" ident))
+    (st-tran-spec-1 (st-tran-spec-0) (st-tran-spec-0 "if" ident))
+    (st-tran-spec-2 (st-tran-spec-1 trans-or-do))
 
-    (specStateTransition
-     ("on" ident transition-or-do)
-     ("on" ident "if" ident transition-or-do)
-     )
-
-    (signal-defn
-     ("signal" ident)
-     ("signal" ident ":" type-name))
-
-    (defGuard
-      (ident)
-      (ident ":" typeName)
-      )
-
-    (action-defn
-      (ident ":" typeName)
-      (ident))
-
-    (action-seq
-     (ident)
-     (action-seq elt-sep ident))
-
-    (choice-defn
-      ("choice" ident "{" "if" ident transExpr "else" transExpr "}")) 
-
-    (transitionOrDo    )
-    
-    (transitionExpr
-     (do-expr "enter" qual-ident)
-     ("enter" qual-ident)
-     )
+    (trans-expr (trans-expr-1))
+    (trans-expr-0 ("enter" qual-ident))
+    (trans-expr-1 (trans-expr-0) (do-expr trans-expr-0))
 
     (do-expr
-      ("do" "{" action-seq "}"))
-    
-    |#
+     ("do" "{" action-seq "}"))
+    (action-seq
+     ($empty)
+     (ident elt-sep action-seq))
+
+    (trans-or-do (trans-expr) (do-expr))
+     
     )))
 
 (define fpp-mach

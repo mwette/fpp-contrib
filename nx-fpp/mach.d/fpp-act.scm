@@ -51,6 +51,8 @@
    (lambda ($1 . $rest) $1)
    ;; mod-mem => enum-defn
    (lambda ($1 . $rest) $1)
+   ;; mod-mem => stmach-defn
+   (lambda ($1 . $rest) $1)
    ;; module-defn => "module" ident "{" module-mem-seq "}"
    (lambda ($5 $4 $3 $2 $1 . $rest) `(module-defn ,$2 ,(tl->list $4)))
    ;; const-defn => "constant" ident "=" expr
@@ -155,6 +157,10 @@
    ;; comp-mem => prod-cont-spec
    (lambda ($1 . $rest) $1)
    ;; comp-mem => tlm-chan-spec
+   (lambda ($1 . $rest) $1)
+   ;; comp-mem => stmach-defn
+   (lambda ($1 . $rest) $1)
+   ;; comp-mem => stmach-inst
    (lambda ($1 . $rest) $1)
    ;; port-inst => gen-port-inst-4
    (lambda ($1 . $rest) $1)
@@ -612,6 +618,92 @@
    (lambda ($1 . $rest) `(type-name $1))
    ;; type-name => "string" "size" expr
    (lambda ($3 $2 $1 . $rest) `(type-name (@ (size ,$3)) $1))
+   ;; stmach-inst => stmach-inst-2
+   (lambda ($1 . $rest) $1)
+   ;; stmach-inst-0 => "state" "machine" "instance" ident ":" qual-ident
+   (lambda ($6 $5 $4 $3 $2 $1 . $rest) $1)
+   ;; stmach-inst-1 => stmach-inst-0
+   (lambda ($1 . $rest) $1)
+   ;; stmach-inst-1 => stmach-inst-0 "priority" expr
+   (lambda ($3 $2 $1 . $rest) $1)
+   ;; stmach-inst-2 => stmach-inst-1
+   (lambda ($1 . $rest) $1)
+   ;; stmach-inst-2 => stmach-inst-1 queue-full-beh
+   (lambda ($2 $1 . $rest) $1)
+   ;; stmach-defn => "state" "machine" ident
+   (lambda ($3 $2 $1 . $rest) $1)
+   ;; stmach-defn => "state" "machine" ident "{" stmach-mem-seq "}"
+   (lambda ($6 $5 $4 $3 $2 $1 . $rest) $1)
+   ;; stmach-mem-seq => 
+   (lambda $rest (list))
+   ;; stmach-mem-seq => stmach-mem mem-sep stmach-mem-seq
+   (lambda ($3 $2 $1 . $rest) $1)
+   ;; stmach-mem => "choice" ident "{" "if" ident trans-expr "else" trans-e...
+   (lambda ($9 $8 $7 $6 $5 $4 $3 $2 $1 . $rest) $1)
+   ;; stmach-mem => "action" ident
+   (lambda ($2 $1 . $rest) $1)
+   ;; stmach-mem => "action" ident ":" type-name
+   (lambda ($4 $3 $2 $1 . $rest) $1)
+   ;; stmach-mem => "guard" ident
+   (lambda ($2 $1 . $rest) $1)
+   ;; stmach-mem => "guard" ident ":" type-name
+   (lambda ($4 $3 $2 $1 . $rest) $1)
+   ;; stmach-mem => "signal" ident
+   (lambda ($2 $1 . $rest) $1)
+   ;; stmach-mem => "signal" ident ":" type-name
+   (lambda ($4 $3 $2 $1 . $rest) $1)
+   ;; stmach-mem => "initial" trans-expr
+   (lambda ($2 $1 . $rest) $1)
+   ;; stmach-mem => state-defn
+   (lambda ($1 . $rest) $1)
+   ;; state-defn => "state" ident
+   (lambda ($2 $1 . $rest) $1)
+   ;; state-defn => "state" ident "{" state-defn-mem-seq "}"
+   (lambda ($5 $4 $3 $2 $1 . $rest) $1)
+   ;; state-defn-mem-seq => 
+   (lambda $rest (list))
+   ;; state-defn-mem-seq => state-defn-mem mem-sep state-defn-mem-seq
+   (lambda ($3 $2 $1 . $rest) $1)
+   ;; state-defn-mem => "initial" trans-expr
+   (lambda ($2 $1 . $rest) $1)
+   ;; state-defn-mem => "choice" ident "{" "if" ident trans-expr "else" tra...
+   (lambda ($9 $8 $7 $6 $5 $4 $3 $2 $1 . $rest) $1)
+   ;; state-defn-mem => state-defn
+   (lambda ($1 . $rest) $1)
+   ;; state-defn-mem => state-trans-spec
+   (lambda ($1 . $rest) $1)
+   ;; state-defn-mem => "entry" do-expr
+   (lambda ($2 $1 . $rest) $1)
+   ;; state-defn-mem => "exit" do-expr
+   (lambda ($2 $1 . $rest) $1)
+   ;; state-trans-spec => st-tran-spec-2
+   (lambda ($1 . $rest) $1)
+   ;; st-tran-spec-0 => "on" ident
+   (lambda ($2 $1 . $rest) $1)
+   ;; st-tran-spec-1 => st-tran-spec-0
+   (lambda ($1 . $rest) $1)
+   ;; st-tran-spec-1 => st-tran-spec-0 "if" ident
+   (lambda ($3 $2 $1 . $rest) $1)
+   ;; st-tran-spec-2 => st-tran-spec-1 trans-or-do
+   (lambda ($2 $1 . $rest) $1)
+   ;; trans-expr => trans-expr-1
+   (lambda ($1 . $rest) $1)
+   ;; trans-expr-0 => "enter" qual-ident
+   (lambda ($2 $1 . $rest) $1)
+   ;; trans-expr-1 => trans-expr-0
+   (lambda ($1 . $rest) $1)
+   ;; trans-expr-1 => do-expr trans-expr-0
+   (lambda ($2 $1 . $rest) $1)
+   ;; do-expr => "do" "{" action-seq "}"
+   (lambda ($4 $3 $2 $1 . $rest) $1)
+   ;; action-seq => 
+   (lambda $rest (list))
+   ;; action-seq => ident elt-sep action-seq
+   (lambda ($3 $2 $1 . $rest) $1)
+   ;; trans-or-do => trans-expr
+   (lambda ($1 . $rest) $1)
+   ;; trans-or-do => do-expr
+   (lambda ($1 . $rest) $1)
    ))
 
 ;;; end tables
