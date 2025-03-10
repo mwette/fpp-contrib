@@ -1,10 +1,12 @@
 ;; cmake-parse.scm
 
 ;; Copyright (C) 2025 Matthew Wette
-;; SPDX-License-Identifier: LGPL-3.0-or-later
+;; SPDX-License-Identifier: Apache-2.0
 
 ;;
 ;; https://cmake-format.readthedocs.io/en/latest/parse-tree.html
+
+(use-modules (ice-9 match))
 
 (define (sf fmt . args) (apply simple-format (current-error-port) fmt args))
 (use-modules (ice-9 pretty-print))
@@ -124,7 +126,7 @@
 
 (define (p-arglist tok)
   (let loop ((args '()) (tok tok))
-    (sf "arg? ~s\n" tok)
+    ;;(sf "arg? ~s\n" tok)
     (cond
      ((tok-is? tok 'comm) (loop args (get-tok)))
      ((tok-is? tok 'nl) (loop args (get-tok)))
@@ -143,38 +145,67 @@
   (and
    (tok-is? tok 'word)
    (let* ((tok1 (skip (get-tok) 'ws)))
-     (sf "p-stmt, tok1=~s\n" tok1)
+     ;;(sf "p-stmt, tok1=~s\n" tok1)
      (if (tok-is? tok1 'l-par)
          (and=> (p-arglist (get-tok))
            (lambda (t) `(stmt ,(cdr tok) ,t)))
          (unget-tok tok1)))))
  
 (define (p-body tok)
-  (let loop ((kids '()) (tok tok))
+  (let loop ((pts '()) (tok tok))
+    (sf "body: tok=~s\n" tok)
     (cond
-     ((not tok) `(body . ,(reverse kids)))
-     ((tok-is? tok 'comm) (loop (cons tok kids) (get-tok)))
-     ((tok-is? tok 'ws) (loop (cons tok kids) (get-tok)))
-     ((p-stmt tok) =>
-      (lambda (res)
-        (if res
-            (loop (cons res kids) (get-tok))
-            (error "p-body parse error")))))))
+     ((tok-is? tok 'comm) (loop pts (get-tok)))
+     ((tok-is? tok 'nl) (loop pts (get-tok)))
+     ((tok-is? tok 'ws) (loop pts (get-tok)))
+     ((p-stmt tok) => (lambda (pt) (loop (cons pt pts) (get-tok))))
+     ((tok-is? tok 'eof) `(body ,@(reverse pts)))
+     (else
+      (sf "parse-error: ~s:tok=~s\n" (port-line (current-input-port)) tok)
+      (quit)))))
 
-(let ((file "CMakeLists.txt")
-      )
+
+(define (layout-tree body)
+  (define (layout-if bpts) ;; if rest
+    (let loop ((parts '()) (tag 'then) (ex #f) (cts '()) (pts (cdr bpts)))
+      (match pts 
+       ((`(stmt "elseif" ,expr) . rest)
+        (loop (cons (cons* tag ex (reverse cts)) parts) 'elseif expr '() rest))
+       ((`(stmt "else" ,expr) . rest)
+        (loop (cons (cons* tag ex (reverse cts)) parts) 'else expr '() rest))
+       ((`(stmt "endif" ,expr) . rest)
+        (values `(if ,@parts) rest))
+       ((stmt . rest)
+        (loop parts tag ex (cons stmt cts) rest)))))
+  (define (layout-foreach bpts) ;; foreach 
+    (let loop ((cts '()) (pts (cdr bpts)))
+      (match pts
+        ((`(stmt "endforeach" ,expr) . rest)
+         (values `(foreach (car tree) ,@cts) rest))
+        ((stmt . rest)
+         (loop (cons stmt cts) rest)))))
+  (let loop ((tps '()) (bps (cdr body)))
+    (match bps
+      ((`(if ,expr) . rest)
+       (call-with-values (lambda () (layout-if bps))
+         (lambda (tree rest) (loop (cons tree tps) rest))))
+      ((`(foreach ,args) . rest)
+       (call-with-values (lambda () (layout-foreach bps))
+         (lambda (tree rest) (loop (cons tree tps) rest))))
+      ((stmt . rest)
+       (loop (cons stmt tps) rest))
+      ('() (reverse bps)))))
+
+(define (parse-cmake-file file)
   (with-input-from-file file
-    (lambda ()
-      (let loop ((pts '()) (tok (get-tok)))
-        (sf "top-tok: ~s\n" tok)
-        (cond
-         ((tok-is? tok 'comm) (loop pts (get-tok)))
-         ((tok-is? tok 'nl) (loop pts (get-tok)))
-         ((tok-is? tok 'ws) (loop pts (get-tok)))
-         ((tok-is? tok 'eof) `(body ,@(reverse pts)))
-         ((p-stmt tok) => (lambda (pt) (loop (cons pt pts) (get-tok))))
-         (else
-          (sf "parse-error: ~s:tok=~s\n" (port-line (current-input-port)) tok)
-          (quit)))))))
+    (lambda () (p-body (get-tok)))))
+
+(let* ((file "CMakeLists.txt")
+       (body (parse-cmake-file file))
+       (tree (layout-tree body))
+       )
+  ;;(pp body)
+  (pp tree)
+  #f)
 
 ;; --- last line ---

@@ -1,8 +1,7 @@
 # nyparse.py
 
 # Copyright (C) 2025 Matthew Wette
-# SPDX-License-Identifier: LGPL-3.0-or-later
-
+# SPDX-License-Identifier: Apache-2.0
 
 DEFAULT = 1
 

@@ -4,6 +4,8 @@
 export GUILE_LOAD_PATH=..:.:$GUILE_LOAD_PATH
 exec guile $0 "$@"
 !#
+;; Copyright (C) 2025 Matthew Wette
+;; SPDX-License-Identifier: Apache-2.0
 
 (use-modules (fpp-mach))
 (use-modules (nyacc util))

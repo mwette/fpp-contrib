@@ -21,17 +21,6 @@ def esc_char(c):
 # This is not pretty, being a translation of the scheme version, but I don't
 # want to get into clean design in all the target languages. -- Matt
 
-# mtab:
-# cpp-mtab
-# '(($start . 56) ("," . 3) ("__has_include_next__" . 4) ($string . 5) 
-#   ("__has_include__" . 6) (")" . 7) ("(" . 8) ("defined" . 9) ($chlit/U . 10
-#   ) ($chlit/u . 11) ($chlit/L . 12) ($chlit . 13) ($fixed . 14) ($ident . 15
-#   ) ("--" . 16) ("++" . 17) ("~" . 18) ("!" . 19) ("%" . 20) ("/" . 21) 
-#   ("*" . 22) ("-" . 23) ("+" . 24) (">>" . 25) ("<<" . 26) (">=" . 27) 
-#   (">" . 28) ("<=" . 29) ("<" . 30) ("!=" . 31) ("==" . 32) ("&" . 33) 
-#   ("^" . 34) ("|" . 35) ("&&" . 36) ("||" . 37) (":" . 38) ("?" . 39) 
-#   ($error . 2) ($end . 41)))
-
 # mtab = {('$start': 56) ...
 
 def add_to_tree(tree, key, val):

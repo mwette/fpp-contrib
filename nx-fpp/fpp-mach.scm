@@ -1,7 +1,7 @@
 ;;; fpp-mach.scm
 
 ;; Copyright (C) 2025 Matthew Wette
-;; SPDX-License-Identifier: LGPL-3.0-or-later
+;; SPDX-License-Identifier: Apache-2.0
 
 ;; syntax: https://github.com/nasa/fpp/blob/main/
 ;;                compiler/lib/src/main/scala/syntax/Parser.scala
@@ -18,9 +18,12 @@
   #:use-module (ice-9 pretty-print)
   )
 
+(define licence  
+
 (define fpp-spec
   (lalr-spec
-   (notice (string-append "Copyright 2025 Matthew Wette" license-lgpl3+))
+   (notice (string-append "Copyright 2025 Matthew Wette\n"
+                          "SPDX-License-Identifier: Apache-2.0"))
    ;;(prec< '$ident 'dotted-id) couldn't get this to work
    (expect 1)
    (start translation-unit)
