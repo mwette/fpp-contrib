@@ -229,7 +229,7 @@
 
     (record-spec (record-spec-2 ($$ (reverse $1))))
     (record-spec-0 ("product" "record" ident ":" type-name
-                    ($$ (list $5 $3 'product-record))))
+                    ($$ (list $5 $3 'prod-recd))))
     (record-spec-1 (record-spec-0)
                    (record-spec-0 "array" ($$ (cons '(array) $1))))
     (record-spec-2 (record-spec-1)
@@ -237,7 +237,7 @@
 
     (prod-cont-spec (cont-spec-2))
     (cont-spec-0 ("product" "container" ident
-                  ($$ (list $3 'product-container))))
+                  ($$ (list $3 'prod-cont))))
     (cont-spec-1 (cont-spec-0)
                  (cont-spec-0 "id" expr ($$ (cons '(id ,$3)))))
     (cont-spec-2 (cont-spec-1)
@@ -247,72 +247,67 @@
 
     ;; === instance spec ================
     
-    (comp-inst-defn (comp-inst-7))
+    (comp-inst-defn (comp-inst-7 ($$ (reverse $1))))
     (comp-inst-0 ("instance" ident ":" qual-ident "base" "id" expr
-                  ($$ `(comp-inst-defn ,$2 ,$4 ,$7))))
+                  ($$ (list `(id ,$7) $4 $2 'instance))))
     (comp-inst-1 (comp-inst-0)
-                 (comp-inst-0
-                  "type" string ($$ (append $1 (list `(type ,$3))))))
+                 (comp-inst-0 "type" string ($$ (cons `(type ,$3) $1))))
     (comp-inst-2 (comp-inst-1)
-                 (comp-inst-1
-                  "at" string ($$ (append $1 (list `(type ,$3))))))
+                 (comp-inst-1 "at" string ($$ (cons `(type ,$3) $1))))
     (comp-inst-3 (comp-inst-2)
-                 (comp-inst-2
-                  "queue" "size" expr ($$ (append $1 (list `(qsiz ,$4))))))
+                 (comp-inst-2 "queue" "size" expr ($$ (cons `(qsiz ,$4) $1))))
     (comp-inst-4 (comp-inst-3)
-                 (comp-inst-3
-                  "stack" "size" expr ($$ (append $1 (list `(stksiz ,$4))))))
+                 (comp-inst-3 "stack" "size" expr ($$ (cons `(stksiz ,$4) $1))))
     (comp-inst-5 (comp-inst-4)
-                 (comp-inst-4
-                  "priority" expr ($$ (append $1 (list `(prio ,$3))))))
+                 (comp-inst-4 "priority" expr ($$ (cons `(prio ,$3) $1))))
     (comp-inst-6 (comp-inst-5)
-                 (comp-inst-5
-                  "cpu" expr ($$ (append $1 (list `(cpu ,$3))))))
+                 (comp-inst-5 "cpu" expr ($$ (cons `(cpu ,$3) $1))))
     (comp-inst-7 (comp-inst-6)
-                 (comp-inst-6
-                  "{" string "}" ($$ (append $1 (list `(code ,$3))))))
+                 (comp-inst-6 "{" string "}" ($$ (cons `(code ,$3) $1))))
 
 
     ;; === topology spec ================
 
     (topology-defn
-     ("topology" ident "{" topo-mem-seq "}"))
+     ("topology" ident "{" topo-mem-seq "}"
+      ($$ (topology-defn $2 (tl->list $4)))))
     (topo-mem-seq
-     ($empty)
-     (topo-mem mem-sep topo-mem-seq))
+     ($empty ($$ (make-tl 'topo-mem-seq)))
+     (topo-mem mem-sep topo-mem-seq ($$ (tl-insert $3 $1))))
     (topo-mem
      (comp-inst-spec)
      (conn-graph-spec)
      (tlm-pktset-spec)
-     ("import" qual-ident)
+     ("import" qual-ident ($$ `(import ,$2)))
      (include-spec))
     
     (comp-inst-spec
-     ("instance" ident)
-     ("private" "instance" ident))
+     ("instance" ident ($$ `(comp-inst ,$2)))
+     ("private" "instance" ident ($$ `(comp-priv-inst ,$3))))
 
     (conn-graph-spec
-     ("connections" ident "{" conn-seq "}")
-     (pattern-kind "connections" "instance" qual-ident)
-     (pattern-kind "connections" "instance" qual-ident "{" qual-ident-seq "}" ))
+     ("connections" ident "{" conn-seq "}"
+      ($$ `(connections ,$2 ,(tl->list $4))))
+     (pattern-kind "connections" "instance" qual-ident
+                   ($$ `(connections-inst ,$4 (kind ,$1))))
+     (pattern-kind "connections" "instance" qual-ident "{" qual-ident-seq "}"
+                   ($$ `(connections-inst ,$4 (kind ,$1) ,(tl->list $6)))))
     (pattern-kind
-     ("command" ($$ 'command))
-     ("event" ($$ 'event))
-     ("health" ($$ 'health))
-     ("param" ($$ 'command))
-     ("telemetry" ($$ 'command))
-     ("text" "event" ($$ 'text-event))
-     ("time" ($$ 'time)))
+     ("command") ("event") ("health") ("param") ("telemetry") ("time")
+     ("text" "event" ($$ "text-event")))
 
     (conn-seq
-     ($empty)
-     (connection elt-sep conn-seq))
-    (connection (connection-4))
-    (connection-0 (qual-ident))
-    (connection-1 (connection-0) ("unmatched" connection-0))
-    (connection-2 (connection-1) (connection-1 "[" expr "]"))
-    (connection-3 (connection-2 "->" qual-ident))
-    (connection-4 (connection-3) (connection-3 "[" expr "]"))
+     ($empty ($$ (make-tl 'conn-seq)))
+     (connection elt-sep conn-seq ($$ (tl-insert $3 $1))))
+    (connection
+     (conn-from "->" conn-to ($$ `(conn ,$1 ,$3)))
+     ("unmatched" conn-from "->" conn-to ($$ `(unmatched-conn ,$1 ,$3))))
+    (conn-from
+     (qual-ident ($$ `(from ,$1)))
+     (qual-ident "[" expr "]" ($$ (`from ,$1 ,$3))))
+    (conn-to
+     (qual-ident ($$ `(to ,$1)))
+     (qual-ident "[" expr "]" ($$ (`to ,$1 ,$3))))
 
     (tlm-pktset-spec (tlm-pktset-spec-1))
     (tlm-pktset-spec-0     
