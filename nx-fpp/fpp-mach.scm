@@ -309,35 +309,36 @@
      (qual-ident ($$ `(to ,$1)))
      (qual-ident "[" expr "]" ($$ (`to ,$1 ,$3))))
 
-    (tlm-pktset-spec (tlm-pktset-spec-1))
-    (tlm-pktset-spec-0     
-     ("telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}"))
-    (tlm-pktset-spec-1
-     (tlm-pktset-spec-0)
-     (tlm-pktset-spec-0 "omit" "{" tlm-chan-id-seq "}"))
+    (tlm-pktset-spec
+     ("telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}"
+      ($$ `(tlm-packets ,$3 ,(tl->list $4))))
+     ("telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}"
+      "omit" "{" tlm-chan-id-seq "}"
+      ($$ `(tlm-packets ,$3 ,(tl->list $5) (omit ,@(sx-tail (tl->list $9)))))))
 
     (tlm-pktgrp-mem-seq
-     ($empty)
-     (tlm-pktgrp-mem elt-sep tlm-pktgrp-mem-seq))
+     ($empty ($$ (make-tl 'tlm-pktgrp-mem-seq)))
+     (tlm-pktgrp-mem elt-sep tlm-pktgrp-mem-seq ($$ (tl->insert $3 $1))))
     (tlm-pktgrp-mem
      (include-spec)
      (tlm-pkt-spec))
     
-    (tlm-pkt-spec (tlm-pkt-spec-2))
-    (tlm-pkt-spec-0 ("packet" ident))
-    (tlm-pkt-spec-1 (tlm-pkt-spec-0) (tlm-pkt-spec-0 "id" expr))
-    (tlm-pkt-spec-2 (tlm-pkt-spec-1 "group" expr "{" tlm-pkt-mem-seq "}" ))
+    (tlm-pkt-spec
+     ("packet" ident "group" expr "{" tlm-pkt-mem-seq "}"
+      ($$ `(packet ,$2 (group ,$4) (tl->list $6))))
+     ("packet" ident "group" expr "id" expr "{" tlm-pkt-mem-seq "}"
+      ($$ `(packet ,$2 (group ,$4) (tl->list $6) (tl->list $8)))))
 
     (tlm-pkt-mem-seq
-     ($empty)
-     (tlm-pkt-mem elt-sep tlm-pkt-mem-seq))
+     ($empty ($$ (make-tl 'tlm-pkt-mem-seq)))
+     (tlm-pkt-mem elt-sep tlm-pkt-mem-seq ($$ (tl-insert $3 $1))))
     (tlm-pkt-mem
      (include-spec)
      (qual-ident))
 
     (tlm-chan-id-seq
-     (qual-ident)
-     (tlm-chan-id-seq elt-sep qual-ident))
+     ($empty ($$ (make-tl 'tlm-chanid-seq)))
+     (tlm-chan-id-seq elt-sep qual-ident ($$ (tl->insert $3 $1))))
 
 
     ;; ==================================
@@ -350,51 +351,57 @@
      ("ref" ident ":" type-name ($$ `(param-ref ,$1 ,$3))))
 
     (queue-full-beh
-     ("assert" ($$ 'assert))
-     ("block" ($$ 'block))
-     ("drop" ($$ 'drop))
-     ("hook" ($$ 'hook)))
+     ("assert") ("block") ("drop") ("hook"))
 
     (loc-spec
-     ("locate" "instance" qual-ident "at" string)
-     ("locate" "component" qual-ident "at" string)
-     ("locate" "cnstant" qual-ident "at" string)
-     ("locate" "port" qual-ident "at" string)
-     ("locate" "state" "machine" qual-ident "at" string)
-     ("locate" "topology" qual-ident "at" string)
-     ("locate" "type" qual-ident "at" string)
-     )
+     ("locate" "instance" qual-ident "at" string
+      ($$ `(loc-inst ,$3 (at ,$5))))
+     ("locate" "component" qual-ident "at" string
+      ($$ `(loc-comp ,$3 (at ,$5))))
+     ("locate" "cnstant" qual-ident "at" string
+      ($$ `(loc-const ,$3 (at ,$5))))
+     ("locate" "port" qual-ident "at" string
+      ($$ `(loc-port ,$3 (at ,$5))))
+     ("locate" "state" "machine" qual-ident "at" string
+      ($$ `(loc-stmach ,$3 (at ,$6))))
+     ("locate" "topology" qual-ident "at" string
+      ($$ `(loc-topo ,$3 (at ,$5))))
+     ("locate" "type" qual-ident "at" string
+      ($$ `(loc-type ,$3 (at ,$5)))))
 
     (port-match-spec
      ("match" ident "with" ident ($$ `(match ,$2 ,$4))))
 
+
     ;; === expr's and prim's ===========
 
-    (expr (add-expr))
+    (expr
+     (add-expr ($$ `(expr ,$1))))
     (add-expr
      (mul-expr)
-     (add-expr "+" mul-expr)
-     (add-expr "-" mul-expr))
+     (add-expr "+" mul-expr ($$ `(add $1 $3)))
+     (add-expr "-" mul-expr ($$ `(sub $1 $3))))
     (mul-expr
      (unary-expr)
-     (mul-expr "*" unary-expr)
-     (mul-expr "/" unary-expr))
+     (mul-expr "*" unary-expr ($$ `(mul $1 $3)))
+     (mul-expr "/" unary-expr ($$ `(div $1 $3))))
     (unary-expr
      (prim-expr)
-     ("-" unary-expr))
+     ("-" unary-expr ($$ `(neg ,$2))))
     (prim-expr
      (qual-ident)
      (number)
      (string)
-     ("[" expr-seq "]")
-     ("{" struct-elt-seq "}")
-     ("(" expr ")"))
+     ("[" expr-seq "]" ($$ `(array-val ,@(sx-tail (tl->list $2)))))
+     ("{" struct-elt-seq "}" ($$ `(struct-val ,@(sx-tail (tl->list $2)))))
+     ("(" expr ")" ($$ $2)))
     (expr-seq
-     (expr)
-     (expr elt-sep expr))
+     (expr ($$ (make-tl 'expr-seq)))
+     (expr elt-sep expr-seq ($$ (tl-insert $3 $1))))
     (struct-elt-seq
-     ($empty)
-     (ident "=" expr elt-sep struct-elt-seq))
+     ($empty ($$ (make-tl 'struct-val-seq)))
+     (ident "=" expr elt-sep struct-elt-seq
+            ($$ (tl-insert $5 `(bind-struct-elt ,$1 ,$3)))))
 
     (number ($float ($$ `(float ,$1)))
             ($fixed ($$ `(fixed ,$1))))
@@ -406,11 +413,11 @@
      (ident ($$ (make-tl 'qual-ident (sx-ref $1 1))))
      (qual-ident-1 "." ident ($$ (tl-append $1 (sx-ref $3 1)))))
     (qual-ident-seq
-     (qual-ident)
-     (qual-ident-seq elt-sep qual-ident))
+     ($empty ($$ (make-tl 'qual-ident-seq)))
+     (qual-ident elt-sep qual-ident-seq ($$ (tl->insert $3 $1))))
 
     (index
-     ("[" expr "]" ($$ `(index $2))))
+     ("[" expr "]" ($$ `(index ,$2))))
 
     (type-name
      ("I8" ($$ `(type-name $1))) ("U8" ($$ `(type-name $1)))
