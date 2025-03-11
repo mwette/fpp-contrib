@@ -27,6 +27,8 @@
    (lambda $rest (make-tl 'module-mem-set))
    ;; module-mem-seq => mod-mem mem-sep module-mem-seq
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   ;; mod-mem => lone-anno
+   (lambda ($1 . $rest) $1)
    ;; mod-mem => include-spec
    (lambda ($1 . $rest) $1)
    ;; mod-mem => component-defn
@@ -97,6 +99,9 @@
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
    ;; struct-mem => struct-mem-3
    (lambda ($1 . $rest) (reverse $1))
+   ;; struct-mem => struct-mem-3 '$code-anno
+   (lambda ($2 $1 . $rest)
+     (let (($1 (reverse $1))) (cons* (car $1) `(@ (anno ,$2)) (cdr $1))))
    ;; struct-mem-0 => ident ":"
    (lambda ($2 $1 . $rest) (list $1 'struct-elt))
    ;; struct-mem-1 => struct-mem-0
@@ -134,6 +139,8 @@
    (lambda $rest (make-tl 'mem-seq))
    ;; comp-mem-seq => comp-mem mem-sep comp-mem-seq
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   ;; comp-mem => lone-anno
+   (lambda ($1 . $rest) $1)
    ;; comp-mem => include-spec
    (lambda ($1 . $rest) $1)
    ;; comp-mem => enum-defn
@@ -422,6 +429,8 @@
    (lambda $rest (make-tl 'topo-mem-seq))
    ;; topo-mem-seq => topo-mem mem-sep topo-mem-seq
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   ;; topo-mem => lone-anno
+   (lambda ($1 . $rest) $1)
    ;; topo-mem => comp-inst-spec
    (lambda ($1 . $rest) $1)
    ;; topo-mem => conn-graph-spec
@@ -504,13 +513,19 @@
    (lambda $rest (make-tl 'tlm-chanid-seq))
    ;; tlm-chan-id-seq => tlm-chan-id-seq elt-sep qual-ident
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
-   ;; param-list => 
+   ;; param-list => param-list-1
+   (lambda ($1 . $rest) (tl->list $1))
+   ;; param-list-1 => 
    (lambda $rest (make-tl 'param-list))
-   ;; param-list => formal-param elt-sep param-list
+   ;; param-list-1 => formal-param elt-sep param-list-1
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
-   ;; formal-param => ident ":" type-name
+   ;; formal-param => formal-param-1
+   (lambda ($1 . $rest) $1)
+   ;; formal-param => formal-param-1 '$code-anno
+   (lambda ($2 $1 . $rest) (cons* (sx-tag $1) `(@ (anno ,$2)) (sx-tail $1)))
+   ;; formal-param-1 => ident ":" type-name
    (lambda ($3 $2 $1 . $rest) `(param ,$1 ,$3))
-   ;; formal-param => "ref" ident ":" type-name
+   ;; formal-param-1 => "ref" ident ":" type-name
    (lambda ($4 $3 $2 $1 . $rest) `(param-ref ,$1 ,$3))
    ;; queue-full-beh => queue-full-beh-1
    (lambda ($1 . $rest) `(q-full-beh ,$1))
@@ -585,6 +600,8 @@
    (lambda ($1 . $rest) `(ident ,$1))
    ;; string => '$string
    (lambda ($1 . $rest) `(string ,$1))
+   ;; lone-anno => '$lone-anno
+   (lambda ($1 . $rest) `(lone-anno ,$1))
    ;; qual-ident => qual-ident-1
    (lambda ($1 . $rest) (tl->list $1))
    ;; qual-ident-1 => ident
@@ -597,8 +614,8 @@
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
    ;; index => "[" expr "]"
    (lambda ($3 $2 $1 . $rest) `(index ,$2))
-   ;; type-name => ident
-   (lambda ($1 . $rest) `(type-name ,(sx-ref $1 1)))
+   ;; type-name => qual-ident
+   (lambda ($1 . $rest) `(type-name ,$1))
    ;; type-name => "I8"
    (lambda ($1 . $rest) `(type-name ,$1))
    ;; type-name => "U8"
@@ -624,65 +641,72 @@
    ;; type-name => "string"
    (lambda ($1 . $rest) `(type-name ,$1))
    ;; type-name => "string" "size" expr
-   (lambda ($3 $2 $1 . $rest) `(type-name (@ (size ,$3)) ,$1))
+   (lambda ($3 $2 $1 . $rest) `(type-name ,$1 (size ,$3)))
    ;; stmach-inst => stmach-inst-2
-   (lambda ($1 . $rest) $1)
+   (lambda ($1 . $rest) (reverse $1))
+   ;; stmach-inst => stmach-inst-2 '$code-anno
+   (lambda ($2 $1 . $rest)
+     (let (($1 (reverse $1))) (cons* (car $1) `(@ (anno ,$2)) (cdr $1))))
    ;; stmach-inst-0 => "state" "machine" "instance" ident ":" qual-ident
-   (lambda ($6 $5 $4 $3 $2 $1 . $rest) $1)
+   (lambda ($6 $5 $4 $3 $2 $1 . $rest) (list $5 $4 'stmach-inst))
    ;; stmach-inst-1 => stmach-inst-0
    (lambda ($1 . $rest) $1)
    ;; stmach-inst-1 => stmach-inst-0 "priority" expr
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) (cons `(prio ,$3) $1))
    ;; stmach-inst-2 => stmach-inst-1
    (lambda ($1 . $rest) $1)
    ;; stmach-inst-2 => stmach-inst-1 queue-full-beh
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) (cons $2 $1))
    ;; stmach-defn => "state" "machine" ident
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) `(stmach-defn ,$3))
    ;; stmach-defn => "state" "machine" ident "{" stmach-mem-seq "}"
-   (lambda ($6 $5 $4 $3 $2 $1 . $rest) $1)
+   (lambda ($6 $5 $4 $3 $2 $1 . $rest) `(stmach-defn ,$3 ,(tl->list $5)))
    ;; stmach-mem-seq => 
-   (lambda $rest (list))
+   (lambda $rest (make-tl 'stmach-mem-seq))
    ;; stmach-mem-seq => stmach-mem mem-sep stmach-mem-seq
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   ;; stmach-mem => lone-anno
+   (lambda ($1 . $rest) $1)
    ;; stmach-mem => "choice" ident "{" "if" ident trans-expr "else" trans-e...
-   (lambda ($9 $8 $7 $6 $5 $4 $3 $2 $1 . $rest) $1)
+   (lambda ($9 $8 $7 $6 $5 $4 $3 $2 $1 . $rest) `(choice ,$2 ,$5 ,$6 ,$7))
    ;; stmach-mem => "action" ident
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) `(action ,$2))
    ;; stmach-mem => "action" ident ":" type-name
-   (lambda ($4 $3 $2 $1 . $rest) $1)
+   (lambda ($4 $3 $2 $1 . $rest) `(action ,$2 ,$4))
    ;; stmach-mem => "guard" ident
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) `(guard ,$2))
    ;; stmach-mem => "guard" ident ":" type-name
-   (lambda ($4 $3 $2 $1 . $rest) $1)
+   (lambda ($4 $3 $2 $1 . $rest) `(guard ,$2 ,$4))
    ;; stmach-mem => "signal" ident
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) `(signal ,$2))
    ;; stmach-mem => "signal" ident ":" type-name
-   (lambda ($4 $3 $2 $1 . $rest) $1)
+   (lambda ($4 $3 $2 $1 . $rest) `(signal ,$2 ,$4))
    ;; stmach-mem => "initial" trans-expr
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) `(initial ,$2))
    ;; stmach-mem => state-defn
    (lambda ($1 . $rest) $1)
    ;; state-defn => "state" ident
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) `(state-defn ,$2))
    ;; state-defn => "state" ident "{" state-defn-mem-seq "}"
-   (lambda ($5 $4 $3 $2 $1 . $rest) $1)
+   (lambda ($5 $4 $3 $2 $1 . $rest) `(state-defn ,$2 ,(tl->list $4)))
    ;; state-defn-mem-seq => 
-   (lambda $rest (list))
+   (lambda $rest (make-tl 'state-defn-mem-seq))
    ;; state-defn-mem-seq => state-defn-mem mem-sep state-defn-mem-seq
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   ;; state-defn-mem => lone-anno
+   (lambda ($1 . $rest) $1)
    ;; state-defn-mem => "initial" trans-expr
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) `(intial ,$2))
    ;; state-defn-mem => "choice" ident "{" "if" ident trans-expr "else" tra...
-   (lambda ($9 $8 $7 $6 $5 $4 $3 $2 $1 . $rest) $1)
+   (lambda ($9 $8 $7 $6 $5 $4 $3 $2 $1 . $rest) `(choice ,$2 ,$5 ,$6 ,$7))
    ;; state-defn-mem => state-defn
    (lambda ($1 . $rest) $1)
    ;; state-defn-mem => state-trans-spec
    (lambda ($1 . $rest) $1)
    ;; state-defn-mem => "entry" do-expr
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) `(entry ,$2))
    ;; state-defn-mem => "exit" do-expr
-   (lambda ($2 $1 . $rest) $1)
+   (lambda ($2 $1 . $rest) `(exit ,$2))
    ;; state-trans-spec => st-tran-spec-2
    (lambda ($1 . $rest) $1)
    ;; st-tran-spec-0 => "on" ident
@@ -702,11 +726,11 @@
    ;; trans-expr-1 => do-expr trans-expr-0
    (lambda ($2 $1 . $rest) $1)
    ;; do-expr => "do" "{" action-seq "}"
-   (lambda ($4 $3 $2 $1 . $rest) $1)
+   (lambda ($4 $3 $2 $1 . $rest) `(do-expr ,(tl->list $3)))
    ;; action-seq => 
-   (lambda $rest (list))
+   (lambda $rest (make-tl 'action-seq))
    ;; action-seq => ident elt-sep action-seq
-   (lambda ($3 $2 $1 . $rest) $1)
+   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
    ;; trans-or-do => trans-expr
    (lambda ($1 . $rest) $1)
    ;; trans-or-do => do-expr

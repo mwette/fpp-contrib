@@ -129,6 +129,10 @@
 %token '\n'
 %token ','
 %token _end
+%token _lone_anno
+%token _code_anno
+%token _lone_comm
+%token _code_comm
 %define lr.default-reduction accepting
 %start translation_unit
 %%
@@ -142,6 +146,7 @@ include_spec: INCLUDE string ;
 translation_unit: module_mem_seq ;
 module_mem_seq: %empty ;
 module_mem_seq: mod_mem mem_sep module_mem_seq ;
+mod_mem: lone_anno ;
 mod_mem: include_spec ;
 mod_mem: component_defn ;
 mod_mem: comp_inst_defn ;
@@ -177,6 +182,7 @@ struct_defn_1: struct_defn_0 DEFAULT expr ;
 struct_mem_seq: %empty ;
 struct_mem_seq: struct_mem mem_sep struct_mem_seq ;
 struct_mem: struct_mem_3 ;
+struct_mem: struct_mem_3 _code_anno ;
 struct_mem_0: ident ':' ;
 struct_mem_1: struct_mem_0 ;
 struct_mem_1: struct_mem_0 '[' expr ']' ;
@@ -195,6 +201,7 @@ comp_kind: PASSIVE ;
 comp_kind: QUEUED ;
 comp_mem_seq: %empty ;
 comp_mem_seq: comp_mem mem_sep comp_mem_seq ;
+comp_mem: lone_anno ;
 comp_mem: include_spec ;
 comp_mem: enum_defn ;
 comp_mem: struct_defn ;
@@ -339,6 +346,7 @@ comp_inst_7: comp_inst_6 '{' string '}' ;
 topology_defn: TOPOLOGY ident '{' topo_mem_seq '}' ;
 topo_mem_seq: %empty ;
 topo_mem_seq: topo_mem mem_sep topo_mem_seq ;
+topo_mem: lone_anno ;
 topo_mem: comp_inst_spec ;
 topo_mem: conn_graph_spec ;
 topo_mem: tlm_pktset_spec ;
@@ -378,10 +386,13 @@ tlm_pkt_mem: include_spec ;
 tlm_pkt_mem: qual_ident ;
 tlm_chan_id_seq: %empty ;
 tlm_chan_id_seq: tlm_chan_id_seq elt_sep qual_ident ;
-param_list: %empty ;
-param_list: formal_param elt_sep param_list ;
-formal_param: ident ':' type_name ;
-formal_param: REF ident ':' type_name ;
+param_list: param_list_1 ;
+param_list_1: %empty ;
+param_list_1: formal_param elt_sep param_list_1 ;
+formal_param: formal_param_1 ;
+formal_param: formal_param_1 _code_anno ;
+formal_param_1: ident ':' type_name ;
+formal_param_1: REF ident ':' type_name ;
 queue_full_beh: queue_full_beh_1 ;
 queue_full_beh_1: ASSERT ;
 queue_full_beh_1: BLOCK ;
@@ -418,13 +429,14 @@ number: _float ;
 number: _fixed ;
 ident: _ident ;
 string: _string ;
+lone_anno: _lone_anno ;
 qual_ident: qual_ident_1 ;
 qual_ident_1: ident ;
 qual_ident_1: qual_ident_1 '.' ident ;
 qual_ident_seq: %empty ;
 qual_ident_seq: qual_ident elt_sep qual_ident_seq ;
 index: '[' expr ']' ;
-type_name: ident ;
+type_name: qual_ident ;
 type_name: I8 ;
 type_name: U8 ;
 type_name: I16 ;
@@ -439,6 +451,7 @@ type_name: BOOL ;
 type_name: STRING ;
 type_name: STRING SIZE expr ;
 stmach_inst: stmach_inst_2 ;
+stmach_inst: stmach_inst_2 _code_anno ;
 stmach_inst_0: STATE MACHINE INSTANCE ident ':' qual_ident ;
 stmach_inst_1: stmach_inst_0 ;
 stmach_inst_1: stmach_inst_0 PRIORITY expr ;
@@ -448,6 +461,7 @@ stmach_defn: STATE MACHINE ident ;
 stmach_defn: STATE MACHINE ident '{' stmach_mem_seq '}' ;
 stmach_mem_seq: %empty ;
 stmach_mem_seq: stmach_mem mem_sep stmach_mem_seq ;
+stmach_mem: lone_anno ;
 stmach_mem: CHOICE ident '{' IF ident trans_expr ELSE trans_expr '}' ;
 stmach_mem: ACTION ident ;
 stmach_mem: ACTION ident ':' type_name ;
@@ -461,6 +475,7 @@ state_defn: STATE ident ;
 state_defn: STATE ident '{' state_defn_mem_seq '}' ;
 state_defn_mem_seq: %empty ;
 state_defn_mem_seq: state_defn_mem mem_sep state_defn_mem_seq ;
+state_defn_mem: lone_anno ;
 state_defn_mem: INITIAL trans_expr ;
 state_defn_mem: CHOICE ident '{' IF ident trans_expr ELSE trans_expr '}' ;
 state_defn_mem: state_defn ;

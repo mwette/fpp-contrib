@@ -3,28 +3,39 @@
 ;; Copyright (C) 2025 Matthew Wette
 ;; SPDX-License-Identifier: Apache-2.0
 
-;; syntax: https://github.com/nasa/fpp/blob/main/
-;;                compiler/lib/src/main/scala/syntax/Parser.scala
+;; refs:
+;; * https://github.com/nasa/fpp/blob/
+;;           main/compiler/lib/src/main/scala/syntax/Parser.scala
+;; * https://nasa.github.io/fpp/fpp-spec.html
+;; * https://www.nongnu.org/nyacc/nyacc-ug.html
+
+;;; Notes:
+
+;; annotations can occur at
+;; 1. definition (done)
+;; 2. specification (done
+;; 3. member of struct defn (done)
+;; 4. formal parameter (done)
+;; 5. state machine member
+;; 6. state definition member
+
+;;; Code:
 
 (define-module (fpp-mach)
-  #:export (fpp-spec
-            fpp-mach
-            gen-fpp-files
-            )
+  #:export (fpp-spec fpp-mach gen-fpp-files)
   #:use-module (nyacc lang util)
   #:use-module (nyacc lalr)
   #:use-module (nyacc lex)
-  #:use-module (nyacc parse)
-  #:use-module (ice-9 pretty-print)
-  )
+  #:use-module (nyacc parse))
 
 (define fpp-spec
   (lalr-spec
    (notice (string-append "Copyright 2025 Matthew Wette\n"
                           "SPDX-License-Identifier: Apache-2.0"))
-   ;;(prec< '$ident 'dotted-id) couldn't get this to work
+   ;;(prec< '$ident 'dotted-id) ; couldn't get this to work
    (expect 1)
    (start translation-unit)
+   (reserve '$lone-anno '$code-anno '$lone-comm '$code-comm)
    (grammar
 
     (elt-sep (",") ("\n") (elt-sep "\n"))
@@ -39,6 +50,7 @@
      ($empty ($$ (make-tl 'module-mem-set)))
      (mod-mem mem-sep module-mem-seq ($$ (tl-insert $3 $1))))
     (mod-mem
+     (lone-anno)
      (include-spec)
      (component-defn)
      (comp-inst-defn)
@@ -88,7 +100,11 @@
     (struct-mem-seq
      ($empty ($$ (make-tl 'mem-seq)))
      (struct-mem mem-sep struct-mem-seq ($$ (tl-insert $3 $1))))
-    (struct-mem (struct-mem-3 ($$ (reverse $1))))
+    (struct-mem
+     (struct-mem-3 ($$ (reverse $1)))
+     (struct-mem-3 $code-anno
+                   ($$ (let (($1 (reverse $1)))
+                         (cons* (car $1) `(@ (anno ,$2)) (cdr $1))))))
     (struct-mem-0 (ident ":" ($$ (list $1 'struct-elt))))
     (struct-mem-1 (struct-mem-0)
                   (struct-mem-0 "[" expr "]" ($$ (cons `(index ,$3) $1))))
@@ -114,6 +130,7 @@
      ($empty ($$ (make-tl 'mem-seq)))
      (comp-mem mem-sep comp-mem-seq ($$ (tl-insert $3 $1))))
     (comp-mem
+     (lone-anno)
      (include-spec)
      (enum-defn)
      (struct-defn)
@@ -167,7 +184,8 @@
     (int-port-defn-3 (int-port-defn-2)
                      (int-port-defn-2 queue-full-beh ($$ (cons $2 $1))))
 
-    (command-spec (cmd-spec-4 ($$ (reverse $1))))
+    (command-spec
+     (cmd-spec-4 ($$ (reverse $1))))
     (cmd-spec-0 (input-port-kind "command" ident
                                  ($$ (list `(kind ,$1) $3 'command))))
     (cmd-spec-1 (cmd-spec-0)
@@ -303,6 +321,7 @@
      ($empty ($$ (make-tl 'topo-mem-seq)))
      (topo-mem mem-sep topo-mem-seq ($$ (tl-insert $3 $1))))
     (topo-mem
+     (lone-anno)
      (comp-inst-spec)
      (conn-graph-spec)
      (tlm-pktset-spec)
@@ -369,12 +388,17 @@
      (tlm-chan-id-seq elt-sep qual-ident ($$ (tl-insert $3 $1))))
 
 
-    ;; ==================================
+    ;; === misc =========================
 
-    (param-list
+    (param-list (param-list-1 ($$ (tl->list $1))))
+    (param-list-1
      ($empty ($$ (make-tl 'param-list)))
-     (formal-param elt-sep param-list ($$ (tl-insert $3 $1))))
+     (formal-param elt-sep param-list-1 ($$ (tl-insert $3 $1))))
     (formal-param
+     (formal-param-1)
+     (formal-param-1 $code-anno
+                     ($$ (cons* (sx-tag $1) `(@ (anno ,$2)) (sx-tail $1)))))
+    (formal-param-1
      (ident ":" type-name ($$ `(param ,$1 ,$3)))
      ("ref" ident ":" type-name ($$ `(param-ref ,$1 ,$3))))
 
@@ -436,6 +460,7 @@
             ($fixed ($$ `(fixed ,$1))))
     (ident ($ident ($$ `(ident ,$1))))
     (string ($string ($$ `(string ,$1))))
+    (lone-anno ($lone-anno ($$ `(lone-anno ,$1))))
 
     (qual-ident (qual-ident-1 ($$ (tl->list $1))))
     (qual-ident-1
@@ -449,57 +474,69 @@
      ("[" expr "]" ($$ `(index ,$2))))
 
     (type-name
-     (ident ($$ `(type-name ,(sx-ref $1 1))))
+     (qual-ident ($$ `(type-name ,$1)))
      ("I8" ($$ `(type-name ,$1))) ("U8" ($$ `(type-name ,$1)))
      ("I16" ($$ `(type-name ,$1))) ("U16" ($$ `(type-name ,$1)))
      ("I32" ($$ `(type-name ,$1))) ("U32" ($$ `(type-name ,$1)))
      ("I64" ($$ `(type-name ,$1))) ("U64" ($$ `(type-name ,$1)))
      ("F32" ($$ `(type-name ,$1))) ("F64" ($$ `(type-name ,$1)))
      ("bool" ($$ `(type-name ,$1))) ("string" ($$ `(type-name ,$1)))
-     ("string" "size" expr ($$ `(type-name (@ (size ,$3)) ,$1))))
+     ("string" "size" expr ($$ `(type-name ,$1 (size ,$3)))))
 
 
     ;; === state machines ==============
 
-    (stmach-inst (stmach-inst-2))
-    (stmach-inst-0 ("state" "machine" "instance" ident ":" qual-ident))
-    (stmach-inst-1 (stmach-inst-0) (stmach-inst-0 "priority" expr))
-    (stmach-inst-2 (stmach-inst-1) (stmach-inst-1 queue-full-beh))
+    (stmach-inst
+     (stmach-inst-2 ($$ (reverse $1)))
+     (stmach-inst-2 $code-anno
+                    ($$ (let (($1 (reverse $1)))
+                          (cons* (car $1) `(@ (anno ,$2)) (cdr $1))))))
+    (stmach-inst-0 ("state" "machine" "instance" ident ":" qual-ident
+                    ($$ (list $5 $4 'stmach-inst))))
+    (stmach-inst-1 (stmach-inst-0)
+                   (stmach-inst-0 "priority" expr ($$ (cons `(prio ,$3) $1))))
+    (stmach-inst-2 (stmach-inst-1)
+                   (stmach-inst-1 queue-full-beh ($$ (cons $2 $1))))
     
-    ;;(stmach-defn ("state" "machine" ident) )
     (stmach-defn
-      ("state" "machine" ident)
-      ("state" "machine" ident "{" stmach-mem-seq "}"))
+     ("state" "machine" ident ($$ `(stmach-defn ,$3)))
+     ("state" "machine" ident "{" stmach-mem-seq "}"
+      ($$ `(stmach-defn ,$3 ,(tl->list $5)))))
 
     (stmach-mem-seq
-     ($empty)
-     (stmach-mem mem-sep stmach-mem-seq))
+     ($empty ($$ (make-tl 'stmach-mem-seq)))
+     (stmach-mem mem-sep stmach-mem-seq ($$ (tl-insert $3 $1))))
 
     (stmach-mem
-     ("choice" ident "{" "if" ident trans-expr "else" trans-expr "}")
-     ("action" ident)
-     ("action" ident ":" type-name)
-     ("guard" ident)
-     ("guard" ident ":" type-name)
-     ("signal" ident)
-     ("signal" ident ":" type-name)
-     ("initial" trans-expr)
+     (lone-anno)
+     ("choice" ident "{" "if" ident trans-expr "else" trans-expr "}"
+      ($$ `(choice ,$2 ,$5 ,$6 ,$7)))
+     ("action" ident ($$ `(action ,$2)))
+     ("action" ident ":" type-name ($$ `(action ,$2 ,$4)))
+     ("guard" ident ($$ `(guard ,$2)))
+     ("guard" ident ":" type-name ($$ `(guard ,$2 ,$4)))
+     ("signal" ident ($$ `(signal ,$2)))
+     ("signal" ident ":" type-name ($$ `(signal ,$2 ,$4)))
+     ("initial" trans-expr ($$ `(initial ,$2)))
      (state-defn))
 
     (state-defn
-     ("state" ident)
-     ("state" ident "{" state-defn-mem-seq "}"))
+     ("state" ident ($$ `(state-defn ,$2)))
+     ("state" ident "{" state-defn-mem-seq "}"
+      ($$ `(state-defn ,$2 ,(tl->list $4))))) 
 
     (state-defn-mem-seq
-     ($empty)
-     (state-defn-mem mem-sep state-defn-mem-seq))
+     ($empty ($$ (make-tl 'state-defn-mem-seq)))
+     (state-defn-mem mem-sep state-defn-mem-seq ($$ (tl-insert $3 $1))))
     (state-defn-mem
-     ("initial" trans-expr)
-     ("choice" ident "{" "if" ident trans-expr "else" trans-expr "}")
+     (lone-anno)
+     ("initial" trans-expr ($$ `(intial ,$2)))
+     ("choice" ident "{" "if" ident trans-expr "else" trans-expr "}"
+      ($$ `(choice ,$2 ,$5 ,$6 ,$7)))
      (state-defn)
      (state-trans-spec)
-     ("entry" do-expr)
-     ("exit" do-expr))
+     ("entry" do-expr ($$ `(entry ,$2)))
+     ("exit" do-expr ($$ `(exit ,$2))))
 
     (state-trans-spec (st-tran-spec-2))
     (st-tran-spec-0 ("on" ident))
@@ -511,14 +548,12 @@
     (trans-expr-1 (trans-expr-0) (do-expr trans-expr-0))
 
     (do-expr
-     ("do" "{" action-seq "}"))
+     ("do" "{" action-seq "}" ($$ `(do-expr ,(tl->list $3)))))
     (action-seq
-     ($empty)
-     (ident elt-sep action-seq))
+     ($empty ($$ (make-tl 'action-seq)))
+     (ident elt-sep action-seq ($$ (tl-insert $3 $1))))
 
-    (trans-or-do (trans-expr) (do-expr))
-     
-    )))
+    (trans-or-do (trans-expr) (do-expr)))))
 
 (define fpp-mach
   (compact-machine
