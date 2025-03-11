@@ -47,7 +47,7 @@
      (module-mem-seq ($$ `(trans-unit ,@(sx-tail (tl->list $1))))))
 
     (module-mem-seq
-     ($empty ($$ (make-tl 'module-mem-set)))
+     ($empty ($$ (make-tl 'module-mem-seq)))
      (mod-mem mem-sep module-mem-seq ($$ (tl-insert $3 $1))))
     (mod-mem
      (lone-anno)
@@ -86,8 +86,8 @@
      ($empty ($$ (make-tl 'enum-mem-seq)))
      (enum-mem elt-sep enum-mem-seq ($$ (tl-insert $3 $1))))
     (enum-mem
-     (ident ($$ `(enum $1)))
-     (ident "=" expr ($$ `(enum $1 $3))))
+     (ident ($$ `(enum ,$1)))
+     (ident "=" expr ($$ `(enum ,$1 ,$3))))
 
     (struct-defn
      (struct-defn-1 ($$ (reverse $1))))
@@ -127,7 +127,7 @@
                 ($$ `(comp-defn ,$3 (kind ,$1) ,(tl->list $5)))))
     (comp-kind ("active") ("passive") ("queued"))
     (comp-mem-seq
-     ($empty ($$ (make-tl 'mem-seq)))
+     ($empty ($$ (make-tl 'comp-mem-seq)))
      (comp-mem mem-sep comp-mem-seq ($$ (tl-insert $3 $1))))
     (comp-mem
      (lone-anno)
@@ -212,10 +212,7 @@
      ("text" "event" ($$ "text-event"))
      ("time" "get" ($$ "time-get")))
 
-    (input-port-kind
-     ("async" ($$ 'async))
-     ("guarded" ($$ 'guarded))
-     ("sync" ($$ 'async)))
+    (input-port-kind ("async") ("guarded") ("sync"))
 
     (event-spec (event-spec-5 ($$ (reverse $1))))
     (event-spec-0 ("event" ident ($$ (list $2 'event-spec))))

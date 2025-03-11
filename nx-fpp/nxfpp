@@ -1,23 +1,44 @@
 #!/bin/bash
 # -*- scheme -*-
-
-NYACC=$HOME/repo/sv/nyacc/current
-GUILE_LOAD_PATH=.:$NYACC
-
+GUILE_LOAD_PATH=.:$HOME/repo/sv/nyacc/current
 exec guile $0 "$@"
 !#
-
+(use-modules ((srfi srfi-1) #:select (fold)))
+(use-modules (sxml match))
 (use-modules (fpp-parser))
 
-(use-modules (ice-9 pretty-print))
-(define pp pretty-print)
+(define (rsl->qid sl)
+  (string-join (reverse sl) "."))
+
+(define* (show-tlm tree #:optional (scope '()))
+  (letrec ((probe-form
+            (lambda (form scope seed)
+              (sxml-match form
+                ((trans-unit . ,members)
+                 (probe-members members scope seed))
+                ((module-mem-seq . ,members)
+                 (probe-members members scope seed))
+                ((module-defn (ident ,name) (module-mem-seq . ,members))
+                 (probe-members members (cons name scope) seed))
+                ((module-mem-seq . ,members)
+                 (probe-members members scope seed))
+                ((comp-defn (ident ,name) (kind ,kind) . ,members)
+                 (probe-members members (cons name scope) seed))
+                ((comp-mem-seq . ,members)
+                 (probe-members members scope seed))
+                ((telemetry (ident ,name) . ,_)
+                 (cons `(tlm ,(rsl->qid (cons name scope))) seed))
+                (,_ seed))))
+           (probe-members
+            (lambda (members scope seed)
+              (fold (lambda (member seed) (probe-form member scope seed))
+                    seed members))))
+    (reverse (probe-form tree scope '()))))
 
 (let* ((args (cdr (program-arguments)))
        (file (car args))
-       (port (open-input-file file))
-       )
- (pp (read-fpp-file file #:debug #f))
- #f)
-
+       (tree (read-fpp-file file))
+       (tlms (show-tlm tree '("foo"))))
+  (for-each (lambda (tlm) (simple-format #t "~s\n" (cadr tlm))) tlms))
 
 ;; --- last line ---
