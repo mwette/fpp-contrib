@@ -97,7 +97,7 @@
                   (struct-mem-2 "format" string ($$ (cons `(format ,$3) $1))))
 
     (port-defn (port-defn-2 ($$ reverse $1)))
-    (port-defn-0 ("port" ident ($$ (list ident 'port-defn))))
+    (port-defn-0 ("port" ident ($$ (list $2 'port-defn))))
     (port-defn-1 (port-defn-0)
                  (port-defn-0 "(" param-list ")" ($$ (cons $3 $1))))
     (port-defn-2 (port-defn-1)
@@ -107,8 +107,8 @@
     ;; === component spec ===============
 
     (component-defn
-     (comp-kind ident "{" comp-mem-seq "}"
-                ($$ `(comp-defn (@ (kind ,$1)) ,$2 ,(reverse $4)))))
+     (comp-kind "component" ident "{" comp-mem-seq "}"
+                ($$ `(comp-defn $3 (kind ,$1) ,(tl->list $5)))))
     (comp-kind ("active") ("passive") ("queued"))
     (comp-mem-seq
      ($empty ($$ (make-tl 'mem-seq)))
@@ -130,50 +130,68 @@
      (stmach-inst))
 
     (port-inst
-     (gen-port-inst-4)
-     (spc-port-inst-3))
+     (gen-port-inst-4 ($$ (reverse $1)))
+     (spc-port-inst-3 ($$ (reverse $1))))
     
     (gen-port-inst-0
-     (input-port-kind "input" "port" ident ":")
-     ("output" "port" ident ":"))
-    (gen-port-inst-1 (gen-port-inst-0) (gen-port-inst-0 expr))
-    (gen-port-inst-2 (gen-port-inst-1 qual-ident) (gen-port-inst-1 "serial"))
-    (gen-port-inst-3 (gen-port-inst-2) (gen-port-inst-2 "priority" expr))
-    (gen-port-inst-4 (gen-port-inst-3) (gen-port-inst-3 queue-full-beh))
+     (input-port-kind "input" "port" ident ":"
+                      ($$ (list `(kind ,$1) $4 'input-port)))
+     ("output" "port" ident ":" ($$ (list $3 'output-port))))
+    (gen-port-inst-1 (gen-port-inst-0)
+                     (gen-port-inst-0 "[" expr "]" ($$ (cons $3 $1))))
+    (gen-port-inst-2 (gen-port-inst-1 qual-ident ($$ (cons $2 $1)))
+                     (gen-port-inst-1 "serial" ($$ (cons $2 $1))))
+    (gen-port-inst-3 (gen-port-inst-2)
+                     (gen-port-inst-2 "priority" expr
+                                      ($$ (cons `(prio ,$3) $1))))
+    (gen-port-inst-4 (gen-port-inst-3)
+                     (gen-port-inst-3 queue-full-beh ($$ (cons $2 $1))))
 
-    (spc-port-inst-0 (spc-port-kind "port" ident ":"))
-    (spc-port-inst-1 (spc-port-inst-0) (input-port-kind spc-port-inst-0))
-    (spc-port-inst-2 (spc-port-inst-1) (spc-port-inst-1 "priority" expr))
-    (spc-port-inst-3 (spc-port-inst-2) (spc-port-inst-2 queue-full-beh))
+    (spc-port-inst-0
+     (spc-port-kind "port" ident ($$ (list `(spc-kind $1) $3 'port))))
+    (spc-port-inst-1 (spc-port-inst-0)
+                     (input-port-kind spc-port-inst-0 ($$ (cons `(kind $1) $2))))
+    (spc-port-inst-2 (spc-port-inst-1)
+                     (spc-port-inst-1 "priority" expr
+                                      ($$ (cons `(priority $3) $1))))
+    (spc-port-inst-3 (spc-port-inst-2)
+                     (spc-port-inst-2 queue-full-beh ($$ (cons $2 $1))))
     
-    (int-port-spec (int-port-defn-3))
-    (int-port-defn-0 ("internal" "port" ident))
-    (int-port-defn-1 (int-port-defn-0) (int-port-defn-0 "(" param-list ")"))
-    (int-port-defn-2 (int-port-defn-1) (int-port-defn-1 "priority" expr))
-    (int-port-defn-3 (int-port-defn-2) (int-port-defn-2 queue-full-beh))
+    (int-port-spec (int-port-defn-3 ($$ (reverse $1))))
+    (int-port-defn-0 ("internal" "port" ident ($$ (list $3 'int-port))))
+    (int-port-defn-1 (int-port-defn-0)
+                     (int-port-defn-0 "(" param-list ")" ($$ (cons $3 $1))))
+    (int-port-defn-2 (int-port-defn-1)
+                     (int-port-defn-1 "priority" expr ($$ (cons `(prio $3) $1))))
+    (int-port-defn-3 (int-port-defn-2)
+                     (int-port-defn-2 queue-full-beh ($$ (cons $2 $1))))
 
-    (command-spec (cmd-spec-4))
-    (cmd-spec-0 (input-port-kind "command" ident))
-    (cmd-spec-1 (cmd-spec-0) (cmd-spec-0 "(" param-list ")"))
-    (cmd-spec-2 (cmd-spec-1) (cmd-spec-1 "opcode" expr))
-    (cmd-spec-3 (cmd-spec-2) (cmd-spec-2 "priority" expr))
-    (cmd-spec-4 (cmd-spec-3) (cmd-spec-3 queue-full-beh))
+    (command-spec (cmd-spec-4 ($$ (reverse $1))))
+    (cmd-spec-0 (input-port-kind "command" ident
+                                 ($$ (list `(kind $1) $3 'command))))
+    (cmd-spec-1 (cmd-spec-0)
+                (cmd-spec-0 "(" param-list ")" ($$ (cons $3 $1))))
+    (cmd-spec-2 (cmd-spec-1)
+                (cmd-spec-1 "opcode" expr ($$ (cons '(opcode ,$3) $1))))
+    (cmd-spec-3 (cmd-spec-2)
+                (cmd-spec-2 "priority" expr ($$ (cons `(prio $3) $1))))
+    (cmd-spec-4 (cmd-spec-3)
+                (cmd-spec-3 queue-full-beh ($$ (cons $2 $1))))
     
     (spc-port-kind
-     ("command" "recv")
-     ("command" "reg")
-     ("command" "resp")
+     ("command" "recv" ($$ "command-receive"))
+     ("command" "reg" ($$ "command-reg"))
+     ("command" "resp" ($$ "command-resp"))
      ("event")
-     ("param" "get")
-     ("param" "set")
-     ("product" "get")
-     ("product" "recv")
-     ("product" "request")
-     ("product" "send")
+     ("param" "get" ($$ "param-get"))
+     ("param" "set" ($$ "param-set"))
+     ("product" "get" ($$ "product-get"))
+     ("product" "recv" ($$ "product-recv"))
+     ("product" "request" ($$ "product-request"))
+     ("product" "send" ($$ "product-send"))
      ("telemetry")
-     ("text" "event")
-     ("time" "get")
-     )
+     ("text" "event" ($$ "text-event"))
+     ("time" "get" ($$ "time-get")))
 
     (input-port-kind
      ("async" ($$ 'async))
@@ -184,12 +202,21 @@
     (event-spec-0 ("event" ident ($$ (list $2 'event-spec))))
     (event-spec-1 (event-spec-0)
                   (event-spec-0 "(" param-list ")" ($$ (cons $3 $1))))
-    (event-spec-2 (event-spec-1 "severity" expr ($$ (cons `(severity ,$3) $1))))
+    (event-spec-2 (event-spec-1 "severity" severity
+                                ($$ (cons `(severity ,$3) $1))))
     (event-spec-3 (event-spec-2)
                   (event-spec-2 "id" expr ($$ (cons `(id ,$3) $1))))
     (event-spec-4 (event-spec-3 "format" string ($$ (cons `(format ,$3) $1))))
     (event-spec-5 (event-spec-4)
                   (event-spec-4 "throttle" expr ($$ (cons `(throttle ,$3) $1))))
+    (severity
+     ("activity" "high" ($$ "activity-high"))
+     ("activity" "low" ($$ "activity-low"))
+     ("command")
+     ("diagnostic")
+     ("fatal")
+     ("warning" "high" ($$ "warning-high"))
+     ("warning" "low" ($$ "warning-low")))
 
     (param-spec (param-spec-4 ($$ (reverse $1))))
     (param-spec-0 ("param" ident ":" type-name ($$ (list $4 $2 'param))))
@@ -212,10 +239,10 @@
                 (tlm-chan-2 "format" string ($$ (cons '(id ,$3) $1))))
     (tlm-chan-4 (tlm-chan-3)
                 (tlm-chan-3 "low" "{" tlm-lim-seq "}"
-                            ($$ (cons '(id ,(tl->list $3) $1)))))
+                            ($$ (cons `(id ,(tl->list $3)) $1))))
     (tlm-chan-5 (tlm-chan-4)
                 (tlm-chan-4 "high" "{" tlm-lim-seq "}"
-                            ($$ (cons '(id ,(tl->list $3)) $1))))
+                            ($$ (cons `(id ,(tl->list $3)) $1))))
     (tlm-update
      ("always" ($$ "always"))
      ("on" "change" ($$ "on-change")))
@@ -233,16 +260,16 @@
     (record-spec-1 (record-spec-0)
                    (record-spec-0 "array" ($$ (cons '(array) $1))))
     (record-spec-2 (record-spec-1)
-                   (record-spec-1 "id" expr ($$ (cons '(id ,$3)))))
+                   (record-spec-1 "id" expr ($$ (cons '(id ,$3) $1))))
 
     (prod-cont-spec (cont-spec-2))
     (cont-spec-0 ("product" "container" ident
                   ($$ (list $3 'prod-cont))))
     (cont-spec-1 (cont-spec-0)
-                 (cont-spec-0 "id" expr ($$ (cons '(id ,$3)))))
+                 (cont-spec-0 "id" expr ($$ (cons '(id ,$3) $1))))
     (cont-spec-2 (cont-spec-1)
                  (cont-spec-1 "default" "priority" expr
-                              ($$ (cons '(def-prio ,$4)))))
+                              ($$ (cons `(def-prio ,$4) $1))))
 
 
     ;; === instance spec ================
@@ -270,7 +297,7 @@
 
     (topology-defn
      ("topology" ident "{" topo-mem-seq "}"
-      ($$ (topology-defn $2 (tl->list $4)))))
+      ($$ `(topology-defn ,$2 ,(tl->list $4)))))
     (topo-mem-seq
      ($empty ($$ (make-tl 'topo-mem-seq)))
      (topo-mem mem-sep topo-mem-seq ($$ (tl-insert $3 $1))))
@@ -304,10 +331,10 @@
      ("unmatched" conn-from "->" conn-to ($$ `(unmatched-conn ,$1 ,$3))))
     (conn-from
      (qual-ident ($$ `(from ,$1)))
-     (qual-ident "[" expr "]" ($$ (`from ,$1 ,$3))))
+     (qual-ident "[" expr "]" ($$ `(from ,$1 ,$3))))
     (conn-to
      (qual-ident ($$ `(to ,$1)))
-     (qual-ident "[" expr "]" ($$ (`to ,$1 ,$3))))
+     (qual-ident "[" expr "]" ($$ `(to ,$1 ,$3))))
 
     (tlm-pktset-spec
      ("telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}"
@@ -318,7 +345,7 @@
 
     (tlm-pktgrp-mem-seq
      ($empty ($$ (make-tl 'tlm-pktgrp-mem-seq)))
-     (tlm-pktgrp-mem elt-sep tlm-pktgrp-mem-seq ($$ (tl->insert $3 $1))))
+     (tlm-pktgrp-mem elt-sep tlm-pktgrp-mem-seq ($$ (tl-insert $3 $1))))
     (tlm-pktgrp-mem
      (include-spec)
      (tlm-pkt-spec))
@@ -338,7 +365,7 @@
 
     (tlm-chan-id-seq
      ($empty ($$ (make-tl 'tlm-chanid-seq)))
-     (tlm-chan-id-seq elt-sep qual-ident ($$ (tl->insert $3 $1))))
+     (tlm-chan-id-seq elt-sep qual-ident ($$ (tl-insert $3 $1))))
 
 
     ;; ==================================
@@ -351,7 +378,8 @@
      ("ref" ident ":" type-name ($$ `(param-ref ,$1 ,$3))))
 
     (queue-full-beh
-     ("assert") ("block") ("drop") ("hook"))
+     (queue-full-beh-1 ($$ `(q-full-beh ,$1))))
+    (queue-full-beh-1 ("assert") ("block") ("drop") ("hook"))
 
     (loc-spec
      ("locate" "instance" qual-ident "at" string
@@ -379,12 +407,12 @@
      (add-expr ($$ `(expr ,$1))))
     (add-expr
      (mul-expr)
-     (add-expr "+" mul-expr ($$ `(add $1 $3)))
-     (add-expr "-" mul-expr ($$ `(sub $1 $3))))
+     (add-expr "+" mul-expr ($$ `(add ,$1 ,$3)))
+     (add-expr "-" mul-expr ($$ `(sub ,$1 ,$3))))
     (mul-expr
      (unary-expr)
-     (mul-expr "*" unary-expr ($$ `(mul $1 $3)))
-     (mul-expr "/" unary-expr ($$ `(div $1 $3))))
+     (mul-expr "*" unary-expr ($$ `(mul ,$1 ,$3)))
+     (mul-expr "/" unary-expr ($$ `(div ,$1 ,$3))))
     (unary-expr
      (prim-expr)
      ("-" unary-expr ($$ `(neg ,$2))))
@@ -414,12 +442,13 @@
      (qual-ident-1 "." ident ($$ (tl-append $1 (sx-ref $3 1)))))
     (qual-ident-seq
      ($empty ($$ (make-tl 'qual-ident-seq)))
-     (qual-ident elt-sep qual-ident-seq ($$ (tl->insert $3 $1))))
+     (qual-ident elt-sep qual-ident-seq ($$ (tl-insert $3 $1))))
 
     (index
      ("[" expr "]" ($$ `(index ,$2))))
 
     (type-name
+     (ident ($$ `(type-name ,(sx-ref $1 1))))
      ("I8" ($$ `(type-name $1))) ("U8" ($$ `(type-name $1)))
      ("I16" ($$ `(type-name $1))) ("U16" ($$ `(type-name $1)))
      ("I32" ($$ `(type-name $1))) ("U32" ($$ `(type-name $1)))
