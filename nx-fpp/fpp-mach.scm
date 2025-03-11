@@ -180,41 +180,69 @@
      ("guarded" ($$ 'guarded))
      ("sync" ($$ 'async)))
 
-    (event-spec (event-spec-5))
-    (event-spec-0 ("event" ident))
-    (event-spec-1 (event-spec-0) (event-spec-0 "(" param-list ")"))
-    (event-spec-2 (event-spec-1 "severity" expr))
-    (event-spec-3 (event-spec-2) (event-spec-2 "id" expr))
-    (event-spec-4 (event-spec-3 "format" string))
-    (event-spec-5 (event-spec-4) (event-spec-4 "throttle" expr))
+    (event-spec (event-spec-5 ($$ (reverse $1))))
+    (event-spec-0 ("event" ident ($$ (list $2 'event-spec))))
+    (event-spec-1 (event-spec-0)
+                  (event-spec-0 "(" param-list ")" ($$ (cons $3 $1))))
+    (event-spec-2 (event-spec-1 "severity" expr ($$ (cons `(severity ,$3) $1))))
+    (event-spec-3 (event-spec-2)
+                  (event-spec-2 "id" expr ($$ (cons `(id ,$3) $1))))
+    (event-spec-4 (event-spec-3 "format" string ($$ (cons `(format ,$3) $1))))
+    (event-spec-5 (event-spec-4)
+                  (event-spec-4 "throttle" expr ($$ (cons `(throttle ,$3) $1))))
 
-    (param-spec (param-spec-4))
-    (param-spec-0 ("param" ident ":" type-name))
-    (param-spec-1 (param-spec-0) (param-spec-0 "default" expr))
-    (param-spec-2 (param-spec-1) (param-spec-1 "id" expr))
-    (param-spec-3 (param-spec-2) (param-spec-2 "set" "opcode" expr))
-    (param-spec-4 (param-spec-3) (param-spec-3 "save" "opcode" expr))
+    (param-spec (param-spec-4 ($$ (reverse $1))))
+    (param-spec-0 ("param" ident ":" type-name ($$ (list $4 $2 'param))))
+    (param-spec-1 (param-spec-0)
+                  (param-spec-0 "default" expr ($$ (cons `(default ,$3) $1))))
+    (param-spec-2 (param-spec-1)
+                  (param-spec-1 "id" expr ($$ (cons `(id ,$3) $1))))
+    (param-spec-3 (param-spec-2)
+                  (param-spec-2 "set" "opcode" expr ($$ (cons `(set ,$3) $1))))
+    (param-spec-4 (param-spec-3)
+                  (param-spec-3 "save" "opcode" expr ($$ (cons `(save ,$3) $1))))
 
-    (tlm-chan-spec (tlm-chan-5))
-    (tlm-chan-0 ("telemetry" ident ":" type-name))
-    (tlm-chan-1 (tlm-chan-0) (tlm-chan-0 "id" expr))
-    (tlm-chan-2 (tlm-chan-1) (tlm-chan-1 "update" tlm-update))
-    (tlm-chan-3 (tlm-chan-2) (tlm-chan-2 "format" string))
-    (tlm-chan-4 (tlm-chan-3) (tlm-chan-3 "low" "{" tlm-lim-seq "}"))
-    (tlm-chan-5 (tlm-chan-4) (tlm-chan-4 "high" "{" tlm-lim-seq "}"))
-    (tlm-update ("always" ($$ 'always)) ("on" "change" ($$ 'on-change)))
-    (tlm-lim-seq (tlm-lim) (tlm-lim-seq elt-sep tlm-lim))
-    (tlm-lim ("red" expr) ("orange" expr) ("yellow" expr))
+    (tlm-chan-spec (tlm-chan-5 ($$ (reverse $1))))
+    (tlm-chan-0 ("telemetry" ident ":" type-name ($$ (list $4 $2 'telemetry))))
+    (tlm-chan-1 (tlm-chan-0)
+                (tlm-chan-0 "id" expr ($$ (cons '(id ,$3) $1))))
+    (tlm-chan-2 (tlm-chan-1)
+                (tlm-chan-1 "update" tlm-update ($$ (cons '(update ,$3) $1))))
+    (tlm-chan-3 (tlm-chan-2)
+                (tlm-chan-2 "format" string ($$ (cons '(id ,$3) $1))))
+    (tlm-chan-4 (tlm-chan-3)
+                (tlm-chan-3 "low" "{" tlm-lim-seq "}"
+                            ($$ (cons '(id ,(tl->list $3) $1)))))
+    (tlm-chan-5 (tlm-chan-4)
+                (tlm-chan-4 "high" "{" tlm-lim-seq "}"
+                            ($$ (cons '(id ,(tl->list $3)) $1))))
+    (tlm-update
+     ("always" ($$ "always"))
+     ("on" "change" ($$ "on-change")))
+    (tlm-lim-seq
+     ($empty ($$ (make-tl 'tlm-lim-seq)))
+     (tlm-lim elt-sep tlm-lim-seq ($$ (tl-insert $3 $1))))
+    (tlm-lim
+     ("red" expr ($$ `(tlm-lim ,$1 ,$2)))
+     ("orange" expr ($$ `(tlm-lim ,$1 ,$2)))
+     ("yellow" expr ($$ `(tlm-lim ,$1 ,$2))))
 
-    (record-spec (record-spec-2))
-    (record-spec-0 ("product" "record" ident ":" type-name))
-    (record-spec-1 (record-spec-0) (record-spec-0 "array"))
-    (record-spec-2 (record-spec-1) (record-spec-1 "id" expr))
+    (record-spec (record-spec-2 ($$ (reverse $1))))
+    (record-spec-0 ("product" "record" ident ":" type-name
+                    ($$ (list $5 $3 'product-record))))
+    (record-spec-1 (record-spec-0)
+                   (record-spec-0 "array" ($$ (cons '(array) $1))))
+    (record-spec-2 (record-spec-1)
+                   (record-spec-1 "id" expr ($$ (cons '(id ,$3)))))
 
     (prod-cont-spec (cont-spec-2))
-    (cont-spec-0 ("product" "container" ident))
-    (cont-spec-1 (cont-spec-0) (cont-spec-0 "id" expr))
-    (cont-spec-2 (cont-spec-1) (cont-spec-1 "default" "priority" expr))
+    (cont-spec-0 ("product" "container" ident
+                  ($$ (list $3 'product-container))))
+    (cont-spec-1 (cont-spec-0)
+                 (cont-spec-0 "id" expr ($$ (cons '(id ,$3)))))
+    (cont-spec-2 (cont-spec-1)
+                 (cont-spec-1 "default" "priority" expr
+                              ($$ (cons '(def-prio ,$4)))))
 
 
     ;; === instance spec ================
@@ -320,11 +348,11 @@
     ;; ==================================
 
     (param-list
-     (formal-param)
-     (param-list elt-sep formal-param))
+     ($empty ($$ (make-tl 'param-list)))
+     (formal-param elt-sep param-list ($$ (tl-insert $3 $1))))
     (formal-param
-     (ident ":" type-name)
-     ("ref" ident ":" type-name))
+     (ident ":" type-name ($$ `(param ,$1 ,$3)))
+     ("ref" ident ":" type-name ($$ `(param-ref ,$1 ,$3))))
 
     (queue-full-beh
      ("assert" ($$ 'assert))
@@ -332,7 +360,6 @@
      ("drop" ($$ 'drop))
      ("hook" ($$ 'hook)))
 
-    ;;(specLoc
     (loc-spec
      ("locate" "instance" qual-ident "at" string)
      ("locate" "component" qual-ident "at" string)
@@ -343,10 +370,8 @@
      ("locate" "type" qual-ident "at" string)
      )
 
-    ;;(specPortMatching)
     (port-match-spec
-     ("match" ident "with" ident)
-     )
+     ("match" ident "with" ident ($$ `(match ,$2 ,$4))))
 
     ;; === expr's and prim's ===========
 
