@@ -1,10 +1,13 @@
 #!/bin/bash
 # -*- scheme -*-
 
+NYACC=$HOME/repo/sv/nyacc/current
+GUILE_LOAD_PATH=.:$NYACC
+
 exec guile $0 "$@"
 !#
 
-(use-modules (fpp parser))
+(use-modules (fpp-parser))
 
 (use-modules (ice-9 pretty-print))
 (define pp pretty-print)
@@ -13,7 +16,7 @@ exec guile $0 "$@"
        (file (car args))
        (port (open-input-file file))
        )
- (pp (read-fpp-file file))
+ (pp (read-fpp-file file #:debug #f))
  #f)
 
 
