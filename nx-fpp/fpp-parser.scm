@@ -20,11 +20,15 @@
 (include-from-path "mach.d/fpp-tab.scm")
 (include-from-path "mach.d/fpp-act.scm")
 
-(define read-comm (make-comm-reader '(("#" . "\n")) #:eat-newline #f))
-(define read-code-anno (make-comm-reader '(("@<" . "\n")) #:eat-newline #f))
-(define read-lone-anno (make-comm-reader '(("@" . "\n")) #:eat-newline #f))
+(define read-comm (make-comm-reader '(("#" . "\n"))))
+(define read-code-anno (make-comm-reader '(("@<" . "\n"))))
+(define read-lone-anno (make-comm-reader '(("@" . "\n"))))
+(define (mk-anno v s)
+  (let* ((x (string-index s (lambda (c) (not (char-whitespace? c))))))
+    (cons v (substring s x))))
 
 (define (swap pair) (cons (cdr pair) (car pair)))
+(define (skip-ws ch) (if (char-whitespace? ch) (skip-ws (read-char)) ch))
 
 (define-public make-fpp-lexer-generator
   (let* ((match-table fpp-mtab)
@@ -38,23 +42,26 @@
          (symtab (filter-mt symbol? match-table))
          (read-chseq (make-chseq-reader chrseq))
          (newline-val (assoc-ref chrseq "\n"))
+         (lone-anno-val (assoc-ref fpp-mtab '$lone-anno))
+         (code-anno-val (assoc-ref fpp-mtab '$code-anno))
          (assc-$ (lambda (pair) (cons (assq-ref symtab (car pair)) (cdr pair)))))
     (lambda ()
       (define (loop ch)
         (cond
          ((eof-object? ch) (assc-$ (cons '$end ch)))
-         ((char=? ch #\\) (read-char) (loop (read-char))) ;; kludgy
          ((eqv? ch #\newline) (cons newline-val "\n"))
          ((char-set-contains? space-cs ch) (loop (read-char)))
          ((read-comm ch #f) (loop (read-char)))
-         ((read-code-anno ch #f) => assc-$)
-         ((read-lone-anno ch #f) => assc-$)
+         ((read-code-anno ch) => (lambda (p) (mk-anno code-anno-val (cdr p))))
+         ((read-lone-anno ch) => (lambda (p) (mk-anno lone-anno-val (cdr p))))
          ((read-ident ch) => (lambda (s)
                                (or (and=> (assoc s kwstab) swap)
                                    (assc-$ (cons '$ident s)))))
          ((read-c-num ch) => assc-$)
          ((read-string ch) => assc-$)
          ((read-chseq ch))
+         ((char=? ch #\\) (loop (skip-ws (read-char))))
+         ((char=? ch #\return) (loop (read-char)))
          (else (cons ch (string ch)))))
       (if #t                  ; read properties
           (lambda ()
