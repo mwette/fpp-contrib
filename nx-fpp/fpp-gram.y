@@ -37,7 +37,6 @@
 %token MACHINE
 %token STATE
 %token CNSTANT
-%token COMPONENT
 %token LOCATE
 %token HOOK
 %token DROP
@@ -69,10 +68,14 @@
 %token CHANGE
 %token ON
 %token ALWAYS
-%token HIGH
-%token LOW
 %token UPDATE
 %token SAVE
+%token WARNING
+%token FATAL
+%token DIAGNOSTIC
+%token LOW
+%token HIGH
+%token ACTIVITY
 %token THROTTLE
 %token ID
 %token SEVERITY
@@ -102,6 +105,7 @@
 %token QUEUED
 %token PASSIVE
 %token ACTIVE
+%token COMPONENT
 %token ChSeq_62_45
 %token ')'
 %token '('
@@ -185,7 +189,7 @@ port_defn_1: port_defn_0 ;
 port_defn_1: port_defn_0 '(' param_list ')' ;
 port_defn_2: port_defn_1 ;
 port_defn_2: port_defn_1 ChSeq_62_45 type_name ;
-component_defn: comp_kind ident '{' comp_mem_seq '}' ;
+component_defn: comp_kind COMPONENT ident '{' comp_mem_seq '}' ;
 comp_kind: ACTIVE ;
 comp_kind: PASSIVE ;
 comp_kind: QUEUED ;
@@ -210,14 +214,14 @@ port_inst: spc_port_inst_3 ;
 gen_port_inst_0: input_port_kind INPUT PORT ident ':' ;
 gen_port_inst_0: OUTPUT PORT ident ':' ;
 gen_port_inst_1: gen_port_inst_0 ;
-gen_port_inst_1: gen_port_inst_0 expr ;
+gen_port_inst_1: gen_port_inst_0 '[' expr ']' ;
 gen_port_inst_2: gen_port_inst_1 qual_ident ;
 gen_port_inst_2: gen_port_inst_1 SERIAL ;
 gen_port_inst_3: gen_port_inst_2 ;
 gen_port_inst_3: gen_port_inst_2 PRIORITY expr ;
 gen_port_inst_4: gen_port_inst_3 ;
 gen_port_inst_4: gen_port_inst_3 queue_full_beh ;
-spc_port_inst_0: spc_port_kind PORT ident ':' ;
+spc_port_inst_0: spc_port_kind PORT ident ;
 spc_port_inst_1: spc_port_inst_0 ;
 spc_port_inst_1: input_port_kind spc_port_inst_0 ;
 spc_port_inst_2: spc_port_inst_1 ;
@@ -262,12 +266,19 @@ event_spec: event_spec_5 ;
 event_spec_0: EVENT ident ;
 event_spec_1: event_spec_0 ;
 event_spec_1: event_spec_0 '(' param_list ')' ;
-event_spec_2: event_spec_1 SEVERITY expr ;
+event_spec_2: event_spec_1 SEVERITY severity ;
 event_spec_3: event_spec_2 ;
 event_spec_3: event_spec_2 ID expr ;
 event_spec_4: event_spec_3 FORMAT string ;
 event_spec_5: event_spec_4 ;
 event_spec_5: event_spec_4 THROTTLE expr ;
+severity: ACTIVITY HIGH ;
+severity: ACTIVITY LOW ;
+severity: COMMAND ;
+severity: DIAGNOSTIC ;
+severity: FATAL ;
+severity: WARNING HIGH ;
+severity: WARNING LOW ;
 param_spec: param_spec_4 ;
 param_spec_0: PARAM ident ':' type_name ;
 param_spec_1: param_spec_0 ;
@@ -292,8 +303,8 @@ tlm_chan_5: tlm_chan_4 ;
 tlm_chan_5: tlm_chan_4 HIGH '{' tlm_lim_seq '}' ;
 tlm_update: ALWAYS ;
 tlm_update: ON CHANGE ;
-tlm_lim_seq: tlm_lim ;
-tlm_lim_seq: tlm_lim_seq elt_sep tlm_lim ;
+tlm_lim_seq: %empty ;
+tlm_lim_seq: tlm_lim elt_sep tlm_lim_seq ;
 tlm_lim: RED expr ;
 tlm_lim: ORANGE expr ;
 tlm_lim: YELLOW expr ;
@@ -343,46 +354,39 @@ pattern_kind: EVENT ;
 pattern_kind: HEALTH ;
 pattern_kind: PARAM ;
 pattern_kind: TELEMETRY ;
-pattern_kind: TEXT EVENT ;
 pattern_kind: TIME ;
+pattern_kind: TEXT EVENT ;
 conn_seq: %empty ;
 conn_seq: connection elt_sep conn_seq ;
-connection: connection_4 ;
-connection_0: qual_ident ;
-connection_1: connection_0 ;
-connection_1: UNMATCHED connection_0 ;
-connection_2: connection_1 ;
-connection_2: connection_1 '[' expr ']' ;
-connection_3: connection_2 ChSeq_62_45 qual_ident ;
-connection_4: connection_3 ;
-connection_4: connection_3 '[' expr ']' ;
-tlm_pktset_spec: tlm_pktset_spec_1 ;
-tlm_pktset_spec_0: TELEMETRY PACKETS ident '{' tlm_pktgrp_mem_seq '}' ;
-tlm_pktset_spec_1: tlm_pktset_spec_0 ;
-tlm_pktset_spec_1: tlm_pktset_spec_0 OMIT '{' tlm_chan_id_seq '}' ;
+connection: conn_from ChSeq_62_45 conn_to ;
+connection: UNMATCHED conn_from ChSeq_62_45 conn_to ;
+conn_from: qual_ident ;
+conn_from: qual_ident '[' expr ']' ;
+conn_to: qual_ident ;
+conn_to: qual_ident '[' expr ']' ;
+tlm_pktset_spec: TELEMETRY PACKETS ident '{' tlm_pktgrp_mem_seq '}' ;
+tlm_pktset_spec: TELEMETRY PACKETS ident '{' tlm_pktgrp_mem_seq '}' OMIT '{' tlm_chan_id_seq '}' ;
 tlm_pktgrp_mem_seq: %empty ;
 tlm_pktgrp_mem_seq: tlm_pktgrp_mem elt_sep tlm_pktgrp_mem_seq ;
 tlm_pktgrp_mem: include_spec ;
 tlm_pktgrp_mem: tlm_pkt_spec ;
-tlm_pkt_spec: tlm_pkt_spec_2 ;
-tlm_pkt_spec_0: PACKET ident ;
-tlm_pkt_spec_1: tlm_pkt_spec_0 ;
-tlm_pkt_spec_1: tlm_pkt_spec_0 ID expr ;
-tlm_pkt_spec_2: tlm_pkt_spec_1 GROUP expr '{' tlm_pkt_mem_seq '}' ;
+tlm_pkt_spec: PACKET ident GROUP expr '{' tlm_pkt_mem_seq '}' ;
+tlm_pkt_spec: PACKET ident GROUP expr ID expr '{' tlm_pkt_mem_seq '}' ;
 tlm_pkt_mem_seq: %empty ;
 tlm_pkt_mem_seq: tlm_pkt_mem elt_sep tlm_pkt_mem_seq ;
 tlm_pkt_mem: include_spec ;
 tlm_pkt_mem: qual_ident ;
-tlm_chan_id_seq: qual_ident ;
+tlm_chan_id_seq: %empty ;
 tlm_chan_id_seq: tlm_chan_id_seq elt_sep qual_ident ;
-param_list: formal_param ;
-param_list: param_list elt_sep formal_param ;
+param_list: %empty ;
+param_list: formal_param elt_sep param_list ;
 formal_param: ident ':' type_name ;
 formal_param: REF ident ':' type_name ;
-queue_full_beh: ASSERT ;
-queue_full_beh: BLOCK ;
-queue_full_beh: DROP ;
-queue_full_beh: HOOK ;
+queue_full_beh: queue_full_beh_1 ;
+queue_full_beh_1: ASSERT ;
+queue_full_beh_1: BLOCK ;
+queue_full_beh_1: DROP ;
+queue_full_beh_1: HOOK ;
 loc_spec: LOCATE INSTANCE qual_ident AT string ;
 loc_spec: LOCATE COMPONENT qual_ident AT string ;
 loc_spec: LOCATE CNSTANT qual_ident AT string ;
@@ -407,7 +411,7 @@ prim_expr: '[' expr_seq ']' ;
 prim_expr: '{' struct_elt_seq '}' ;
 prim_expr: '(' expr ')' ;
 expr_seq: expr ;
-expr_seq: expr elt_sep expr ;
+expr_seq: expr elt_sep expr_seq ;
 struct_elt_seq: %empty ;
 struct_elt_seq: ident '=' expr elt_sep struct_elt_seq ;
 number: _float ;
@@ -417,9 +421,10 @@ string: _string ;
 qual_ident: qual_ident_1 ;
 qual_ident_1: ident ;
 qual_ident_1: qual_ident_1 '.' ident ;
-qual_ident_seq: qual_ident ;
-qual_ident_seq: qual_ident_seq elt_sep qual_ident ;
+qual_ident_seq: %empty ;
+qual_ident_seq: qual_ident elt_sep qual_ident_seq ;
 index: '[' expr ']' ;
+type_name: ident ;
 type_name: I8 ;
 type_name: U8 ;
 type_name: I16 ;

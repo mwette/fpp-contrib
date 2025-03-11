@@ -3,7 +3,7 @@
 ;; Copyright (C) 2025 Matthew Wette
 ;; SPDX-License-Identifier: Apache-2.0
 
-(define-module (fpp parser)
+(define-module (fpp-parser)
   #:export (parse-fpp read-fpp-file)
   #:use-module (nyacc lex)
   #:use-module (nyacc parse)
@@ -17,8 +17,8 @@
 (define (pperr exp)
   (pretty-print exp (current-error-port) #:per-line-prefix "  "))
 
-(include-from-path "fpp/mach.d/fpp-tab.scm")
-(include-from-path "fpp/mach.d/fpp-act.scm")
+(include-from-path "mach.d/fpp-tab.scm")
+(include-from-path "mach.d/fpp-act.scm")
 
 (define read-comm (make-comm-reader '(("#" . "\n")) #:eat-newline #f))
 (define read-code-anno (make-comm-reader '(("@<" . "\n")) #:eat-newline #f))
@@ -83,9 +83,10 @@
       (newline (current-error-port))
       #f)))
 
-(define (read-fpp-file filename)
+(define* (read-fpp-file filename #:key debug)
   (let* ((port (open-input-file filename))
-         (tree (with-input-from-port port parse-fpp))
+         (tree (with-input-from-port port
+                 (lambda() (parse-fpp #:debug debug))))
          )
     ; need to augment tree with filename ???
     tree))

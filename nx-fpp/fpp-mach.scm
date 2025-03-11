@@ -33,7 +33,7 @@
     (include-spec ("include" string ($$ `(include ,$2))))
 
     (translation-unit
-     (module-mem-seq ($$ `(trans-unit ,(tl->list $1)))))
+     (module-mem-seq ($$ `(trans-unit ,@(sx-tail (tl->list $1))))))
 
     (module-mem-seq
      ($empty ($$ (make-tl 'module-mem-set)))
@@ -108,7 +108,7 @@
 
     (component-defn
      (comp-kind "component" ident "{" comp-mem-seq "}"
-                ($$ `(comp-defn $3 (kind ,$1) ,(tl->list $5)))))
+                ($$ `(comp-defn ,$3 (kind ,$1) ,(tl->list $5)))))
     (comp-kind ("active") ("passive") ("queued"))
     (comp-mem-seq
      ($empty ($$ (make-tl 'mem-seq)))
@@ -148,9 +148,10 @@
                      (gen-port-inst-3 queue-full-beh ($$ (cons $2 $1))))
 
     (spc-port-inst-0
-     (spc-port-kind "port" ident ($$ (list `(spc-kind $1) $3 'port))))
+     (spc-port-kind "port" ident ($$ (list `(spc-kind ,$1) $3 'port))))
     (spc-port-inst-1 (spc-port-inst-0)
-                     (input-port-kind spc-port-inst-0 ($$ (cons `(kind $1) $2))))
+                     (input-port-kind spc-port-inst-0
+                                      ($$ (cons `(kind ,$1) $2))))
     (spc-port-inst-2 (spc-port-inst-1)
                      (spc-port-inst-1 "priority" expr
                                       ($$ (cons `(priority $3) $1))))
@@ -168,11 +169,11 @@
 
     (command-spec (cmd-spec-4 ($$ (reverse $1))))
     (cmd-spec-0 (input-port-kind "command" ident
-                                 ($$ (list `(kind $1) $3 'command))))
+                                 ($$ (list `(kind ,$1) $3 'command))))
     (cmd-spec-1 (cmd-spec-0)
                 (cmd-spec-0 "(" param-list ")" ($$ (cons $3 $1))))
     (cmd-spec-2 (cmd-spec-1)
-                (cmd-spec-1 "opcode" expr ($$ (cons '(opcode ,$3) $1))))
+                (cmd-spec-1 "opcode" expr ($$ (cons `(opcode ,$3) $1))))
     (cmd-spec-3 (cmd-spec-2)
                 (cmd-spec-2 "priority" expr ($$ (cons `(prio $3) $1))))
     (cmd-spec-4 (cmd-spec-3)
@@ -225,24 +226,24 @@
     (param-spec-2 (param-spec-1)
                   (param-spec-1 "id" expr ($$ (cons `(id ,$3) $1))))
     (param-spec-3 (param-spec-2)
-                  (param-spec-2 "set" "opcode" expr ($$ (cons `(set ,$3) $1))))
+                  (param-spec-2 "set" "opcode" expr ($$ (cons `(set ,$4) $1))))
     (param-spec-4 (param-spec-3)
-                  (param-spec-3 "save" "opcode" expr ($$ (cons `(save ,$3) $1))))
+                  (param-spec-3 "save" "opcode" expr ($$ (cons `(save ,$4) $1))))
 
     (tlm-chan-spec (tlm-chan-5 ($$ (reverse $1))))
     (tlm-chan-0 ("telemetry" ident ":" type-name ($$ (list $4 $2 'telemetry))))
     (tlm-chan-1 (tlm-chan-0)
-                (tlm-chan-0 "id" expr ($$ (cons '(id ,$3) $1))))
+                (tlm-chan-0 "id" expr ($$ (cons `(id ,$3) $1))))
     (tlm-chan-2 (tlm-chan-1)
                 (tlm-chan-1 "update" tlm-update ($$ (cons '(update ,$3) $1))))
     (tlm-chan-3 (tlm-chan-2)
-                (tlm-chan-2 "format" string ($$ (cons '(id ,$3) $1))))
+                (tlm-chan-2 "format" string ($$ (cons `(id ,$3) $1))))
     (tlm-chan-4 (tlm-chan-3)
                 (tlm-chan-3 "low" "{" tlm-lim-seq "}"
-                            ($$ (cons `(id ,(tl->list $3)) $1))))
+                            ($$ (cons `(id ,(tl->list $4)) $1))))
     (tlm-chan-5 (tlm-chan-4)
                 (tlm-chan-4 "high" "{" tlm-lim-seq "}"
-                            ($$ (cons `(id ,(tl->list $3)) $1))))
+                            ($$ (cons `(id ,(tl->list $4)) $1))))
     (tlm-update
      ("always" ($$ "always"))
      ("on" "change" ($$ "on-change")))
@@ -449,13 +450,13 @@
 
     (type-name
      (ident ($$ `(type-name ,(sx-ref $1 1))))
-     ("I8" ($$ `(type-name $1))) ("U8" ($$ `(type-name $1)))
-     ("I16" ($$ `(type-name $1))) ("U16" ($$ `(type-name $1)))
-     ("I32" ($$ `(type-name $1))) ("U32" ($$ `(type-name $1)))
-     ("I64" ($$ `(type-name $1))) ("U64" ($$ `(type-name $1)))
-     ("F32" ($$ `(type-name $1))) ("F64" ($$ `(type-name $1)))
-     ("bool" ($$ `(type-name $1))) ("string" ($$ `(type-name $1)))
-     ("string" "size" expr ($$ `(type-name (@ (size ,$3)) $1))))
+     ("I8" ($$ `(type-name ,$1))) ("U8" ($$ `(type-name ,$1)))
+     ("I16" ($$ `(type-name ,$1))) ("U16" ($$ `(type-name ,$1)))
+     ("I32" ($$ `(type-name ,$1))) ("U32" ($$ `(type-name ,$1)))
+     ("I64" ($$ `(type-name ,$1))) ("U64" ($$ `(type-name ,$1)))
+     ("F32" ($$ `(type-name ,$1))) ("F64" ($$ `(type-name ,$1)))
+     ("bool" ($$ `(type-name ,$1))) ("string" ($$ `(type-name ,$1)))
+     ("string" "size" expr ($$ `(type-name (@ (size ,$3)) ,$1))))
 
 
     ;; === state machines ==============
