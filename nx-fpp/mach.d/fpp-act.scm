@@ -24,7 +24,7 @@
    ;; translation-unit => module-mem-seq
    (lambda ($1 . $rest) `(trans-unit ,@(sx-tail (tl->list $1))))
    ;; module-mem-seq => 
-   (lambda $rest (make-tl 'module-mem-set))
+   (lambda $rest (make-tl 'module-mem-seq))
    ;; module-mem-seq => mod-mem mem-sep module-mem-seq
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
    ;; mod-mem => lone-anno
@@ -82,9 +82,9 @@
    ;; enum-mem-seq => enum-mem elt-sep enum-mem-seq
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
    ;; enum-mem => ident
-   (lambda ($1 . $rest) `(enum $1))
+   (lambda ($1 . $rest) `(enum ,$1))
    ;; enum-mem => ident "=" expr
-   (lambda ($3 $2 $1 . $rest) `(enum $1 $3))
+   (lambda ($3 $2 $1 . $rest) `(enum ,$1 ,$3))
    ;; struct-defn => struct-defn-1
    (lambda ($1 . $rest) (reverse $1))
    ;; struct-defn-0 => "struct" ident "{" struct-mem-seq "}"
@@ -136,7 +136,7 @@
    ;; comp-kind => "queued"
    (lambda ($1 . $rest) $1)
    ;; comp-mem-seq => 
-   (lambda $rest (make-tl 'mem-seq))
+   (lambda $rest (make-tl 'comp-mem-seq))
    ;; comp-mem-seq => comp-mem mem-sep comp-mem-seq
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
    ;; comp-mem => lone-anno
@@ -270,11 +270,11 @@
    ;; spc-port-kind => "time" "get"
    (lambda ($2 $1 . $rest) "time-get")
    ;; input-port-kind => "async"
-   (lambda ($1 . $rest) 'async)
+   (lambda ($1 . $rest) $1)
    ;; input-port-kind => "guarded"
-   (lambda ($1 . $rest) 'guarded)
+   (lambda ($1 . $rest) $1)
    ;; input-port-kind => "sync"
-   (lambda ($1 . $rest) 'async)
+   (lambda ($1 . $rest) $1)
    ;; event-spec => event-spec-5
    (lambda ($1 . $rest) (reverse $1))
    ;; event-spec-0 => "event" ident
@@ -541,7 +541,7 @@
    (lambda ($5 $4 $3 $2 $1 . $rest) `(loc-inst ,$3 (at ,$5)))
    ;; loc-spec => "locate" "component" qual-ident "at" string
    (lambda ($5 $4 $3 $2 $1 . $rest) `(loc-comp ,$3 (at ,$5)))
-   ;; loc-spec => "locate" "cnstant" qual-ident "at" string
+   ;; loc-spec => "locate" "constant" qual-ident "at" string
    (lambda ($5 $4 $3 $2 $1 . $rest) `(loc-const ,$3 (at ,$5)))
    ;; loc-spec => "locate" "port" qual-ident "at" string
    (lambda ($5 $4 $3 $2 $1 . $rest) `(loc-port ,$3 (at ,$5)))

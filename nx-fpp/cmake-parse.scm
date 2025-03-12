@@ -153,7 +153,7 @@
  
 (define (p-body tok)
   (let loop ((pts '()) (tok tok))
-    (sf "body: tok=~s\n" tok)
+    ;;(sf "body: tok=~s\n" tok)
     (cond
      ((tok-is? tok 'comm) (loop pts (get-tok)))
      ((tok-is? tok 'nl) (loop pts (get-tok)))
@@ -163,7 +163,6 @@
      (else
       (sf "parse-error: ~s:tok=~s\n" (port-line (current-input-port)) tok)
       (quit)))))
-
 
 (define (layout-tree body)
   (define (layout-if bpts) ;; if rest
@@ -200,12 +199,24 @@
   (with-input-from-file file
     (lambda () (p-body (get-tok)))))
 
-(let* ((file "CMakeLists.txt")
+(define (find-stuff body)
+  (let loop ((srcs '()) (dirs '()) (pts (cdr body)))
+    (match pts
+      ((`(stmt "add_fprime_subdirectory" (arglist (q-lit . ,dir))) . rest)
+       (loop srcs (cons dir dirs) rest))
+      ((`(stmt "set" (arglist (word . "SOURCE_FILES") . ,files)) . rest)
+       (loop (append (map cdr files) srcs) dirs rest))
+      ((stmt . rest) (loop srcs dirs rest))
+      ('() `(lists (srcs ,@srcs) (dirs ,@dirs))))))
+          
+(let* ((file "/tmp/CMakeLists.txt")
        (body (parse-cmake-file file))
-       (tree (layout-tree body))
+       ;;(tree (layout-tree body))
+       (stuff (find-stuff body))
        )
   ;;(pp body)
-  (pp tree)
+  ;;(pp tree)
+  (pp stuff)
   #f)
 
 ;; --- last line ---

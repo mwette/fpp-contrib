@@ -263,7 +263,7 @@
 262 queue-full-beh-1 => "hook"
 263 loc-spec => "locate" "instance" qual-ident "at" string
 264 loc-spec => "locate" "component" qual-ident "at" string
-265 loc-spec => "locate" "cnstant" qual-ident "at" string
+265 loc-spec => "locate" "constant" qual-ident "at" string
 266 loc-spec => "locate" "port" qual-ident "at" string
 267 loc-spec => "locate" "state" "machine" qual-ident "at" string
 268 loc-spec => "locate" "topology" qual-ident "at" string
@@ -391,7 +391,7 @@
 	topology-defn => . "topology" ident "{" topo-mem-seq "}"
 	loc-spec => . "locate" "instance" qual-ident "at" string
 	loc-spec => . "locate" "component" qual-ident "at" string
-	loc-spec => . "locate" "cnstant" qual-ident "at" string
+	loc-spec => . "locate" "constant" qual-ident "at" string
 	loc-spec => . "locate" "port" qual-ident "at" string
 	loc-spec => . "locate" "state" "machine" qual-ident "at" string
 	loc-spec => . "locate" "topology" qual-ident "at" string
@@ -599,12 +599,12 @@
 	loc-spec => "locate" . "topology" qual-ident "at" string
 	loc-spec => "locate" . "state" "machine" qual-ident "at" string
 	loc-spec => "locate" . "port" qual-ident "at" string
-	loc-spec => "locate" . "cnstant" qual-ident "at" string
+	loc-spec => "locate" . "constant" qual-ident "at" string
 	loc-spec => "locate" . "component" qual-ident "at" string
 	loc-spec => "locate" . "instance" qual-ident "at" string
 		"instance" => shift 64
 		"component" => shift 65
-		"cnstant" => shift 66
+		"constant" => shift 66
 		"port" => shift 67
 		"state" => shift 68
 		"topology" => shift 69
@@ -770,7 +770,7 @@
 	topology-defn => . "topology" ident "{" topo-mem-seq "}"
 	loc-spec => . "locate" "instance" qual-ident "at" string
 	loc-spec => . "locate" "component" qual-ident "at" string
-	loc-spec => . "locate" "cnstant" qual-ident "at" string
+	loc-spec => . "locate" "constant" qual-ident "at" string
 	loc-spec => . "locate" "port" qual-ident "at" string
 	loc-spec => . "locate" "state" "machine" qual-ident "at" string
 	loc-spec => . "locate" "topology" qual-ident "at" string
@@ -918,7 +918,7 @@
 		qual-ident-1 => shift 95
 		qual-ident => shift 145
 
-66:	loc-spec => "locate" "cnstant" . qual-ident "at" string
+66:	loc-spec => "locate" "constant" . qual-ident "at" string
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
@@ -1754,7 +1754,7 @@
 143:	loc-spec => "locate" "port" qual-ident . "at" string
 		"at" => shift 181
 
-144:	loc-spec => "locate" "cnstant" qual-ident . "at" string
+144:	loc-spec => "locate" "constant" qual-ident . "at" string
 		"at" => shift 180
 
 145:	loc-spec => "locate" "component" qual-ident . "at" string
@@ -1891,7 +1891,7 @@
 	topology-defn => . "topology" ident "{" topo-mem-seq "}"
 	loc-spec => . "locate" "instance" qual-ident "at" string
 	loc-spec => . "locate" "component" qual-ident "at" string
-	loc-spec => . "locate" "cnstant" qual-ident "at" string
+	loc-spec => . "locate" "constant" qual-ident "at" string
 	loc-spec => . "locate" "port" qual-ident "at" string
 	loc-spec => . "locate" "state" "machine" qual-ident "at" string
 	loc-spec => . "locate" "topology" qual-ident "at" string
@@ -2364,7 +2364,7 @@
 		'$string => shift 55
 		string => shift 259
 
-180:	loc-spec => "locate" "cnstant" qual-ident "at" . string
+180:	loc-spec => "locate" "constant" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 55
 		string => shift 258
@@ -3214,7 +3214,7 @@
 		"\n" => reduce 266
 		$default => reduce 266
 
-258:	loc-spec => "locate" "cnstant" qual-ident "at" string .
+258:	loc-spec => "locate" "constant" qual-ident "at" string .
 		"\n" => reduce 265
 		$default => reduce 265
 

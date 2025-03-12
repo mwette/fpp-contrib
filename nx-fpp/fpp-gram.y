@@ -36,7 +36,6 @@
 %token MATCH
 %token MACHINE
 %token STATE
-%token CNSTANT
 %token LOCATE
 %token HOOK
 %token DROP
@@ -400,7 +399,7 @@ queue_full_beh_1: DROP ;
 queue_full_beh_1: HOOK ;
 loc_spec: LOCATE INSTANCE qual_ident AT string ;
 loc_spec: LOCATE COMPONENT qual_ident AT string ;
-loc_spec: LOCATE CNSTANT qual_ident AT string ;
+loc_spec: LOCATE CONSTANT qual_ident AT string ;
 loc_spec: LOCATE PORT qual_ident AT string ;
 loc_spec: LOCATE STATE MACHINE qual_ident AT string ;
 loc_spec: LOCATE TOPOLOGY qual_ident AT string ;
