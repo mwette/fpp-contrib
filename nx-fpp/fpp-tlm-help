@@ -69,6 +69,9 @@ exec guile $0 "$@"
                ((ignore (channel (@ (name ,name)))) (cons name seed))))
            '() forms))))
 
+(define (find-channels ilist ldict)
+  #f)
+
 ;; assume executed from dpl-dir
 (define (main args)
   (let* ((lfile (string-append (list-ref args 1) "/locs.fpp"))

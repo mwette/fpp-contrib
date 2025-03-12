@@ -541,7 +541,7 @@
    (lambda ($5 $4 $3 $2 $1 . $rest) `(loc-inst ,$3 (at ,$5)))
    ;; loc-spec => "locate" "component" qual-ident "at" string
    (lambda ($5 $4 $3 $2 $1 . $rest) `(loc-comp ,$3 (at ,$5)))
-   ;; loc-spec => "locate" "cnstant" qual-ident "at" string
+   ;; loc-spec => "locate" "constant" qual-ident "at" string
    (lambda ($5 $4 $3 $2 $1 . $rest) `(loc-const ,$3 (at ,$5)))
    ;; loc-spec => "locate" "port" qual-ident "at" string
    (lambda ($5 $4 $3 $2 $1 . $rest) `(loc-port ,$3 (at ,$5)))

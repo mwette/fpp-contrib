@@ -408,7 +408,7 @@
       ($$ `(loc-inst ,$3 (at ,$5))))
      ("locate" "component" qual-ident "at" string
       ($$ `(loc-comp ,$3 (at ,$5))))
-     ("locate" "cnstant" qual-ident "at" string
+     ("locate" "constant" qual-ident "at" string
       ($$ `(loc-const ,$3 (at ,$5))))
      ("locate" "port" qual-ident "at" string
       ($$ `(loc-port ,$3 (at ,$5))))
