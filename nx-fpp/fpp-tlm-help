@@ -4,6 +4,8 @@ FPPDIR=$(dirname $(realpath $0))
 GUILE_LOAD_PATH=$FPPDIR:$HOME/repo/sv/nyacc/current
 exec guile $0 "$@"
 !#
+;; Copyright (C) 2025 Matthew Wette
+;; SPDX-License-Identifier: Apache-2.0
 (use-modules ((srfi srfi-1) #:select (fold)))
 (use-modules (sxml simple))
 (use-modules (sxml match))
@@ -89,7 +91,7 @@ exec guile $0 "$@"
             (lambda (members scope seed)
               (fold (lambda (member seed) (probe-form member scope seed))
                     seed members))))
-    (reverse (probe-form tree scope '()))))
+    (reverse (probe-form tree scope seed))))
 
 (define (inst-chanl dname ilist ldict)
   (fold
