@@ -81,7 +81,7 @@ exec guile $0 "$@"
             ((module-defn (ident ,name) (module-mem-seq . ,members))
              (probe-members members seed))
             ((module-mem-seq . ,members) (probe-members members seed))
-            ((comp-defn (ident ,n) (kind ,k) . ,members)
+            ((component-defn (ident ,n) (kind ,k) . ,members)
              (probe-members members seed))
             ((comp-mem-seq . ,members) (probe-members members seed))
             ((telemetry (ident ,name) . ,_)
@@ -163,7 +163,8 @@ exec guile $0 "$@"
          (inst-cl (inst-chanl dname ilist ldict))
          (pkts-cl (pkts-chanl ptree))
          (addrem (add-rem inst-cl pkts-cl)))
-    (pp inst-cl)
+    ;;(pp inst-cl)
+    (pp addrem)
     ;; need to process includes
     #|
     (sf "remove from packets.xlm:\n")
