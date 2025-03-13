@@ -17,6 +17,7 @@
 (define (pperr exp)
   (pretty-print exp (current-error-port) #:per-line-prefix "  "))
 
+
 (include-from-path "mach.d/fpp-tab.scm")
 (include-from-path "mach.d/fpp-act.scm")
 
@@ -42,21 +43,26 @@
          (symtab (filter-mt symbol? match-table))
          (read-chseq (make-chseq-reader chrseq))
          (newline-val (assoc-ref chrseq "\n"))
+         (ident-val (assoc-ref match-table '$ident))
          (lone-anno-val (assoc-ref fpp-mtab '$lone-anno))
          (code-anno-val (assoc-ref fpp-mtab '$code-anno))
          (assc-$ (lambda (pair) (cons (assq-ref symtab (car pair)) (cdr pair)))))
     (lambda ()
       (define (loop ch)
         (cond
-         ((eof-object? ch) (assc-$ (cons '$end ch)))
+         ((eof-object? ch) ;;(assc-$ (cons '$end ch))
+          (if (pop-input) (loop (read-char)) (assc-$ (cons '$end ch))))
          ((eqv? ch #\newline) (cons newline-val "\n"))
          ((char-set-contains? space-cs ch) (loop (read-char)))
          ((read-comm ch #f) (loop (read-char)))
          ((read-code-anno ch) => (lambda (p) (mk-anno code-anno-val (cdr p))))
          ((read-lone-anno ch) => (lambda (p) (mk-anno lone-anno-val (cdr p))))
          ((read-ident ch) => (lambda (s)
-                               (or (and=> (assoc s kwstab) swap)
-                                   (assc-$ (cons '$ident s)))))
+                               (cond
+                                ((assoc s kwstab) => swap)
+                                ((char=? #\$ (string-ref s 0))
+                                 (cons ident-val (substring s 1)))
+                                (else (cons ident-val s)))))
          ((read-c-num ch) => assc-$)
          ((read-string ch) => assc-$)
          ((read-chseq ch))

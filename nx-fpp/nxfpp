@@ -1,6 +1,7 @@
 #!/bin/bash
 # -*- scheme -*-
-GUILE_LOAD_PATH=.:$HOME/repo/sv/nyacc/current
+FPPDIR=$(dirname $(realpath $0))
+GUILE_LOAD_PATH=$FPPDIR:$HOME/repo/sv/nyacc/current
 exec guile $0 "$@"
 !#
 (use-modules ((srfi srfi-1) #:select (fold)))
@@ -25,7 +26,7 @@ exec guile $0 "$@"
                  (probe-members members (cons name scope) seed))
                 ((module-mem-seq . ,members)
                  (probe-members members scope seed))
-                ((comp-defn (ident ,name) (kind ,kind) . ,members)
+                ((component-defn (ident ,name) (kind ,kind) . ,members)
                  (probe-members members (cons name scope) seed))
                 ((comp-mem-seq . ,members)
                  (probe-members members scope seed))
@@ -40,7 +41,7 @@ exec guile $0 "$@"
 
 (let* ((args (cdr (program-arguments)))
        (file (car args))
-       (tree (read-fpp-file file #:debug #t))
+       (tree (read-fpp-file file #:debug #f))
        ;;(tlms (show-tlm tree '("foo")))
        )
   ;;(for-each (lambda (tlm) (simple-format #t "~s\n" (cadr tlm))) tlms)

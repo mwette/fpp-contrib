@@ -5,7 +5,7 @@
 4 mem-sep => ";"
 5 mem-sep => "\n"
 6 mem-sep => mem-sep "\n"
-7 include-spec => "include" string
+7 include-spec => "include" '$string
 8 translation-unit => module-mem-seq
 9 module-mem-seq =>
 10 module-mem-seq => mod-mem mem-sep module-mem-seq
@@ -378,7 +378,7 @@
 	mod-mem => . array-defn
 	mod-mem => . enum-defn
 	mod-mem => . stmach-defn
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	module-defn => . "module" ident "{" module-mem-seq "}"
 	const-defn => . "constant" ident "=" expr
 	abs-type-defn => . "type" ident
@@ -486,77 +486,77 @@
 
 1:	comp-inst-0 => "instance" . ident ":" qual-ident "base" "id" expr
 	ident => . '$ident
-		'$ident => shift 57
-		ident => shift 88
+		'$ident => shift 56
+		ident => shift 87
 
 2:	comp-inst-1 => comp-inst-0 . "type" string
 	comp-inst-1 => comp-inst-0 .
-		"type" => shift 87
+		"type" => shift 86
 		"\n" => reduce 194
 		$default => reduce 194
 
 3:	comp-inst-2 => comp-inst-1 . "at" string
 	comp-inst-2 => comp-inst-1 .
-		"at" => shift 86
+		"at" => shift 85
 		"\n" => reduce 196
 		$default => reduce 196
 
 4:	comp-inst-3 => comp-inst-2 . "queue" "size" expr
 	comp-inst-3 => comp-inst-2 .
-		"queue" => shift 85
+		"queue" => shift 84
 		"\n" => reduce 198
 		$default => reduce 198
 
 5:	comp-inst-4 => comp-inst-3 . "stack" "size" expr
 	comp-inst-4 => comp-inst-3 .
-		"stack" => shift 84
+		"stack" => shift 83
 		"\n" => reduce 200
 		$default => reduce 200
 
 6:	enum-defn-0 => "enum" . ident
 	ident => . '$ident
-		'$ident => shift 57
-		ident => shift 83
+		'$ident => shift 56
+		ident => shift 82
 
 7:	comp-inst-5 => comp-inst-4 . "priority" expr
 	comp-inst-5 => comp-inst-4 .
-		"priority" => shift 82
+		"priority" => shift 81
 		"\n" => reduce 202
 		$default => reduce 202
 
 8:	port-defn-0 => "port" . ident
 	ident => . '$ident
-		'$ident => shift 57
-		ident => shift 81
+		'$ident => shift 56
+		ident => shift 80
 
 9:	enum-defn-1 => enum-defn-0 . ":" type-name
 	enum-defn-1 => enum-defn-0 .
-		":" => shift 80
+		":" => shift 79
 		$default => reduce 31
 
 10:	comp-inst-6 => comp-inst-5 . "cpu" expr
 	comp-inst-6 => comp-inst-5 .
-		"cpu" => shift 79
+		"cpu" => shift 78
 		"\n" => reduce 204
 		$default => reduce 204
 
 11:	port-defn-1 => port-defn-0 . "(" param-list ")"
 	port-defn-1 => port-defn-0 .
-		"(" => shift 78
+		"(" => shift 77
 		"\n" => reduce 56
 		$default => reduce 56
 
 12:	struct-defn-0 => "struct" . ident "{" struct-mem-seq "}"
 	ident => . '$ident
-		'$ident => shift 57
-		ident => shift 77
+		'$ident => shift 56
+		ident => shift 76
 
 13:	enum-defn-2 => enum-defn-1 . "{" enum-mem-seq "}"
-		"{" => shift 76
+		"{" => shift 75
 
 14:	comp-inst-7 => comp-inst-6 . "{" string "}"
 	comp-inst-7 => comp-inst-6 .
-		"{" => shift 75
+		"{" => shift 74
 		"\n" => reduce 206
 		$default => reduce 206
 
@@ -571,25 +571,25 @@
 
 18:	port-defn-2 => port-defn-1 . "->" type-name
 	port-defn-2 => port-defn-1 .
-		"->" => shift 74
+		"->" => shift 73
 		"\n" => reduce 58
 		$default => reduce 58
 
 19:	struct-defn-1 => struct-defn-0 . "default" expr
 	struct-defn-1 => struct-defn-0 .
-		"default" => shift 73
+		"default" => shift 72
 		"\n" => reduce 42
 		$default => reduce 42
 
 20:	enum-defn-3 => enum-defn-2 . "default" expr
 	enum-defn-3 => enum-defn-2 .
-		"default" => shift 72
+		"default" => shift 71
 		"\n" => reduce 34
 		$default => reduce 34
 
 21:	stmach-defn => "state" . "machine" ident "{" stmach-mem-seq "}"
 	stmach-defn => "state" . "machine" ident
-		"machine" => shift 71
+		"machine" => shift 70
 
 22:	lone-anno => '$lone-anno .
 		"\n" => reduce 294
@@ -602,25 +602,25 @@
 	loc-spec => "locate" . "constant" qual-ident "at" string
 	loc-spec => "locate" . "component" qual-ident "at" string
 	loc-spec => "locate" . "instance" qual-ident "at" string
-		"instance" => shift 64
-		"component" => shift 65
-		"constant" => shift 66
-		"port" => shift 67
-		"state" => shift 68
-		"topology" => shift 69
-		"type" => shift 70
+		"instance" => shift 63
+		"component" => shift 64
+		"constant" => shift 65
+		"port" => shift 66
+		"state" => shift 67
+		"topology" => shift 68
+		"type" => shift 69
 
 24:	topology-defn => "topology" . ident "{" topo-mem-seq "}"
 	ident => . '$ident
-		'$ident => shift 57
-		ident => shift 63
+		'$ident => shift 56
+		ident => shift 62
 
 25:	comp-inst-defn => comp-inst-7 .
 		"\n" => reduce 192
 		$default => reduce 192
 
 26:	component-defn => comp-kind . "component" ident "{" comp-mem-seq "}"
-		"component" => shift 62
+		"component" => shift 61
 
 27:	port-defn => port-defn-2 .
 		"\n" => reduce 54
@@ -636,28 +636,26 @@
 
 30:	array-defn => "array" . ident "=" index ident
 	ident => . '$ident
-		'$ident => shift 57
-		ident => shift 61
+		'$ident => shift 56
+		ident => shift 60
 
 31:	abs-type-defn => "type" . ident
 	ident => . '$ident
-		'$ident => shift 57
-		ident => shift 60
+		'$ident => shift 56
+		ident => shift 59
 
 32:	const-defn => "constant" . ident "=" expr
 	ident => . '$ident
-		'$ident => shift 57
-		ident => shift 59
+		'$ident => shift 56
+		ident => shift 58
 
 33:	module-defn => "module" . ident "{" module-mem-seq "}"
 	ident => . '$ident
-		'$ident => shift 57
-		ident => shift 58
+		'$ident => shift 56
+		ident => shift 57
 
-34:	include-spec => "include" . string
-	string => . '$string
+34:	include-spec => "include" . '$string
 		'$string => shift 55
-		string => shift 56
 
 35:	mod-mem => stmach-defn .
 		"\n" => reduce 24
@@ -757,7 +755,7 @@
 	mod-mem => . array-defn
 	mod-mem => . enum-defn
 	mod-mem => . stmach-defn
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	module-defn => . "module" ident "{" module-mem-seq "}"
 	const-defn => . "constant" ident "=" expr
 	abs-type-defn => . "type" ident
@@ -863,112 +861,107 @@
 		"\n" => shift 153
 		$default => reduce 9
 
-55:	string => '$string .
-		"\n" => reduce 293
-		'$code-anno => reduce 293
-		$default => reduce 293
-
-56:	include-spec => "include" string .
+55:	include-spec => "include" '$string .
 		"\n" => reduce 7
 		$default => reduce 7
 
-57:	ident => '$ident .
+56:	ident => '$ident .
 		"\n" => reduce 292
 		'$code-anno => reduce 292
 		$default => reduce 292
 
-58:	module-defn => "module" ident . "{" module-mem-seq "}"
+57:	module-defn => "module" ident . "{" module-mem-seq "}"
 		"{" => shift 151
 
-59:	const-defn => "constant" ident . "=" expr
+58:	const-defn => "constant" ident . "=" expr
 		"=" => shift 150
 
-60:	abs-type-defn => "type" ident .
+59:	abs-type-defn => "type" ident .
 		"\n" => reduce 27
 		$default => reduce 27
 
-61:	array-defn => "array" ident . "=" index ident
+60:	array-defn => "array" ident . "=" index ident
 		"=" => shift 149
 
-62:	component-defn => comp-kind "component" . ident "{" comp-mem-seq "}"
+61:	component-defn => comp-kind "component" . ident "{" comp-mem-seq "}"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 148
 
-63:	topology-defn => "topology" ident . "{" topo-mem-seq "}"
+62:	topology-defn => "topology" ident . "{" topo-mem-seq "}"
 		"{" => shift 147
 
-64:	loc-spec => "locate" "instance" . qual-ident "at" string
+63:	loc-spec => "locate" "instance" . qual-ident "at" string
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 146
 
-65:	loc-spec => "locate" "component" . qual-ident "at" string
+64:	loc-spec => "locate" "component" . qual-ident "at" string
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 145
 
-66:	loc-spec => "locate" "constant" . qual-ident "at" string
+65:	loc-spec => "locate" "constant" . qual-ident "at" string
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 144
 
-67:	loc-spec => "locate" "port" . qual-ident "at" string
+66:	loc-spec => "locate" "port" . qual-ident "at" string
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 143
 
-68:	loc-spec => "locate" "state" . "machine" qual-ident "at" string
+67:	loc-spec => "locate" "state" . "machine" qual-ident "at" string
 		"machine" => shift 142
 
-69:	loc-spec => "locate" "topology" . qual-ident "at" string
+68:	loc-spec => "locate" "topology" . qual-ident "at" string
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 141
 
-70:	loc-spec => "locate" "type" . qual-ident "at" string
+69:	loc-spec => "locate" "type" . qual-ident "at" string
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 140
 
-71:	stmach-defn => "state" "machine" . ident
+70:	stmach-defn => "state" "machine" . ident
 	ident => . '$ident
 	stmach-defn => "state" "machine" . ident "{" stmach-mem-seq "}"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 139
 
-72:	enum-defn-3 => enum-defn-2 "default" . expr
+71:	enum-defn-3 => enum-defn-2 "default" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -991,10 +984,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -1010,7 +1003,7 @@
 		add-expr => shift 108
 		expr => shift 138
 
-73:	struct-defn-1 => struct-defn-0 "default" . expr
+72:	struct-defn-1 => struct-defn-0 "default" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -1033,10 +1026,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -1052,7 +1045,7 @@
 		add-expr => shift 108
 		expr => shift 137
 
-74:	port-defn-2 => port-defn-1 "->" . type-name
+73:	port-defn-2 => port-defn-1 "->" . type-name
 	type-name => . qual-ident
 	type-name => . "I8"
 	type-name => . "U8"
@@ -1071,7 +1064,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"string" => shift 110
@@ -1089,27 +1082,27 @@
 		qual-ident => shift 122
 		type-name => shift 136
 
-75:	comp-inst-7 => comp-inst-6 "{" . string "}"
+74:	comp-inst-7 => comp-inst-6 "{" . string "}"
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 135
 
-76:	enum-defn-2 => enum-defn-1 "{" . enum-mem-seq "}"
+75:	enum-defn-2 => enum-defn-1 "{" . enum-mem-seq "}"
 	enum-mem-seq => .
 	enum-mem-seq => . enum-mem elt-sep enum-mem-seq
 	enum-mem => . ident
 	enum-mem => . ident "=" expr
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 132
 		enum-mem => shift 133
 		enum-mem-seq => shift 134
 		$default => reduce 36
 
-77:	struct-defn-0 => "struct" ident . "{" struct-mem-seq "}"
+76:	struct-defn-0 => "struct" ident . "{" struct-mem-seq "}"
 		"{" => shift 131
 
-78:	port-defn-1 => port-defn-0 "(" . param-list ")"
+77:	port-defn-1 => port-defn-0 "(" . param-list ")"
 	param-list => . param-list-1
 	param-list-1 => .
 	param-list-1 => . formal-param elt-sep param-list-1
@@ -1118,7 +1111,7 @@
 	formal-param-1 => . ident ":" type-name
 	formal-param-1 => . "ref" ident ":" type-name
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		"ref" => shift 125
 		ident => shift 126
 		formal-param-1 => shift 127
@@ -1127,7 +1120,7 @@
 		param-list => shift 130
 		$default => reduce 252
 
-79:	comp-inst-6 => comp-inst-5 "cpu" . expr
+78:	comp-inst-6 => comp-inst-5 "cpu" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -1150,10 +1143,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -1169,7 +1162,7 @@
 		add-expr => shift 108
 		expr => shift 124
 
-80:	enum-defn-1 => enum-defn-0 ":" . type-name
+79:	enum-defn-1 => enum-defn-0 ":" . type-name
 	type-name => . qual-ident
 	type-name => . "I8"
 	type-name => . "U8"
@@ -1188,7 +1181,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"string" => shift 110
@@ -1206,11 +1199,11 @@
 		qual-ident => shift 122
 		type-name => shift 123
 
-81:	port-defn-0 => "port" ident .
+80:	port-defn-0 => "port" ident .
 		"\n" => reduce 55
 		$default => reduce 55
 
-82:	comp-inst-5 => comp-inst-4 "priority" . expr
+81:	comp-inst-5 => comp-inst-4 "priority" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -1233,10 +1226,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -1252,37 +1245,42 @@
 		add-expr => shift 108
 		expr => shift 109
 
-83:	enum-defn-0 => "enum" ident .
+82:	enum-defn-0 => "enum" ident .
 		$default => reduce 30
 
-84:	comp-inst-4 => comp-inst-3 "stack" . "size" expr
+83:	comp-inst-4 => comp-inst-3 "stack" . "size" expr
 		"size" => shift 93
 
-85:	comp-inst-3 => comp-inst-2 "queue" . "size" expr
+84:	comp-inst-3 => comp-inst-2 "queue" . "size" expr
 		"size" => shift 92
 
-86:	comp-inst-2 => comp-inst-1 "at" . string
+85:	comp-inst-2 => comp-inst-1 "at" . string
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 91
 
-87:	comp-inst-1 => comp-inst-0 "type" . string
+86:	comp-inst-1 => comp-inst-0 "type" . string
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 90
 
-88:	comp-inst-0 => "instance" ident . ":" qual-ident "base" "id" expr
-		":" => shift 89
+87:	comp-inst-0 => "instance" ident . ":" qual-ident "base" "id" expr
+		":" => shift 88
 
-89:	comp-inst-0 => "instance" ident ":" . qual-ident "base" "id" expr
+88:	comp-inst-0 => "instance" ident ":" . qual-ident "base" "id" expr
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 218
+
+89:	string => '$string .
+		"\n" => reduce 293
+		'$code-anno => reduce 293
+		$default => reduce 293
 
 90:	comp-inst-1 => comp-inst-0 "type" string .
 		"\n" => reduce 195
@@ -1315,10 +1313,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -1357,10 +1355,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -1421,10 +1419,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -1444,7 +1442,7 @@
 	struct-elt-seq => .
 	struct-elt-seq => . ident "=" expr elt-sep struct-elt-seq
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 212
 		struct-elt-seq => shift 213
 		$default => reduce 288
@@ -1474,10 +1472,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -1525,10 +1523,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -1649,7 +1647,7 @@
 
 125:	formal-param-1 => "ref" . ident ":" type-name
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 203
 
 126:	formal-param-1 => ident . ":" type-name
@@ -1687,7 +1685,7 @@
 	struct-mem-1 => . struct-mem-0 "[" expr "]"
 	struct-mem-0 => . ident ":"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 192
 		struct-mem-0 => shift 193
 		struct-mem-1 => shift 194
@@ -1746,7 +1744,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 182
@@ -1772,7 +1770,7 @@
 	topo-mem => . tlm-pktset-spec
 	topo-mem => . "import" qual-ident
 	topo-mem => . include-spec
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	comp-inst-spec => . "instance" ident
 	comp-inst-spec => . "private" "instance" ident
 	conn-graph-spec => . "connections" ident "{" conn-seq "}"
@@ -1842,10 +1840,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -1878,7 +1876,7 @@
 	mod-mem => . array-defn
 	mod-mem => . enum-defn
 	mod-mem => . stmach-defn
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	module-defn => . "module" ident "{" module-mem-seq "}"
 	const-defn => . "constant" ident "=" expr
 	abs-type-defn => . "type" ident
@@ -2021,10 +2019,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -2042,7 +2040,7 @@
 
 157:	array-defn => "array" ident "=" index . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 347
 
 158:	component-defn => comp-kind "component" ident "{" . comp-mem-seq "}"
@@ -2063,7 +2061,7 @@
 	comp-mem => . tlm-chan-spec
 	comp-mem => . stmach-defn
 	comp-mem => . stmach-inst
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	enum-defn => . enum-defn-3
 	struct-defn => . struct-defn-1
 	port-inst => . gen-port-inst-4
@@ -2302,7 +2300,7 @@
 
 167:	conn-graph-spec => "connections" . ident "{" conn-seq "}"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 266
 
 168:	comp-inst-spec => "private" . "instance" ident
@@ -2310,7 +2308,7 @@
 
 169:	comp-inst-spec => "instance" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 264
 
 170:	topo-mem => include-spec .
@@ -2322,7 +2320,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 263
@@ -2356,22 +2354,22 @@
 
 178:	loc-spec => "locate" "instance" qual-ident "at" . string
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 260
 
 179:	loc-spec => "locate" "component" qual-ident "at" . string
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 259
 
 180:	loc-spec => "locate" "constant" qual-ident "at" . string
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 258
 
 181:	loc-spec => "locate" "port" qual-ident "at" . string
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 257
 
 182:	loc-spec => "locate" "state" "machine" qual-ident . "at" string
@@ -2379,12 +2377,12 @@
 
 183:	loc-spec => "locate" "topology" qual-ident "at" . string
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 255
 
 184:	loc-spec => "locate" "type" qual-ident "at" . string
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 254
 
 185:	stmach-defn => "state" "machine" ident "{" . stmach-mem-seq "}"
@@ -2439,7 +2437,7 @@
 	enum-mem => . ident
 	enum-mem => . ident "=" expr
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 132
 		enum-mem => shift 133
 		enum-mem-seq => shift 243
@@ -2469,10 +2467,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -2515,7 +2513,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"string" => shift 110
@@ -2570,7 +2568,7 @@
 	formal-param-1 => . ident ":" type-name
 	formal-param-1 => . "ref" ident ":" type-name
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		"ref" => shift 125
 		ident => shift 126
 		formal-param-1 => shift 127
@@ -2602,7 +2600,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"string" => shift 110
@@ -2646,10 +2644,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -2684,10 +2682,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -2720,10 +2718,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -2753,10 +2751,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -2785,10 +2783,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -2830,7 +2828,7 @@
 
 215:	qual-ident-1 => qual-ident-1 "." . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 220
 
 216:	comp-inst-4 => comp-inst-3 "stack" "size" expr .
@@ -2885,10 +2883,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -2935,10 +2933,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -3008,7 +3006,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"string" => shift 110
@@ -3055,7 +3053,7 @@
 	struct-mem-1 => . struct-mem-0 "[" expr "]"
 	struct-mem-0 => . ident ":"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 192
 		struct-mem-0 => shift 193
 		struct-mem-1 => shift 194
@@ -3072,7 +3070,7 @@
 
 238:	struct-mem-3 => struct-mem-2 "format" . string
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 441
 
 239:	struct-mem-2 => struct-mem-1 type-name .
@@ -3103,10 +3101,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -3136,7 +3134,7 @@
 	ident => . '$ident
 	state-defn => "state" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 439
 
 245:	stmach-mem => state-defn .
@@ -3160,26 +3158,26 @@
 	ident => . '$ident
 	stmach-mem => "signal" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 432
 
 248:	stmach-mem => "guard" . ident ":" type-name
 	ident => . '$ident
 	stmach-mem => "guard" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 431
 
 249:	stmach-mem => "action" . ident ":" type-name
 	ident => . '$ident
 	stmach-mem => "action" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 430
 
 250:	stmach-mem => "choice" . ident "{" "if" ident trans-expr "else" trans-expr "}"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 429
 
 251:	stmach-mem => lone-anno .
@@ -3207,7 +3205,7 @@
 
 256:	loc-spec => "locate" "state" "machine" qual-ident "at" . string
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 426
 
 257:	loc-spec => "locate" "port" qual-ident "at" string .
@@ -3240,7 +3238,7 @@
 	topo-mem => . tlm-pktset-spec
 	topo-mem => . "import" qual-ident
 	topo-mem => . include-spec
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	comp-inst-spec => . "instance" ident
 	comp-inst-spec => . "private" "instance" ident
 	conn-graph-spec => . "connections" ident "{" conn-seq "}"
@@ -3290,7 +3288,7 @@
 
 265:	comp-inst-spec => "private" "instance" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 424
 
 266:	conn-graph-spec => "connections" ident . "{" conn-seq "}"
@@ -3304,7 +3302,7 @@
 	ident => . '$ident
 	tlm-pktset-spec => "telemetry" "packets" . ident "{" tlm-pktgrp-mem-seq "}" "omit" "{" tlm-chan-id-seq "}"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 421
 
 269:	pattern-kind => "text" "event" .
@@ -3330,7 +3328,7 @@
 274:	tlm-chan-0 => "telemetry" . ident ":" type-name
 	ident => . '$ident
 	spc-port-kind => "telemetry" .
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 416
 		$default => reduce 128
 
@@ -3340,13 +3338,13 @@
 	spc-port-kind => "param" . "get"
 		"get" => shift 413
 		"set" => shift 414
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 415
 
 276:	event-spec-0 => "event" . ident
 	ident => . '$ident
 	spc-port-kind => "event" .
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 412
 		$default => reduce 121
 
@@ -3481,7 +3479,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 381
@@ -3669,7 +3667,7 @@
 
 320:	port-match-spec => "match" . ident "with" ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 353
 
 321:	prod-cont-spec => cont-spec-2 .
@@ -3816,7 +3814,7 @@
 	comp-mem => . tlm-chan-spec
 	comp-mem => . stmach-defn
 	comp-mem => . stmach-inst
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	enum-defn => . enum-defn-3
 	struct-defn => . struct-defn-1
 	port-inst => . gen-port-inst-4
@@ -4039,7 +4037,7 @@
 	ident => . '$ident
 	stmach-inst-0 => "state" "machine" . "instance" ident ":" qual-ident
 		"instance" => shift 508
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 139
 
 356:	queue-full-beh-1 => "hook" .
@@ -4106,10 +4104,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4154,10 +4152,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4204,10 +4202,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4246,10 +4244,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4288,10 +4286,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4330,10 +4328,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4351,7 +4349,7 @@
 
 375:	event-spec-4 => event-spec-3 "format" . string
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 498
 
 376:	param-spec-3 => param-spec-2 "set" . "opcode" expr
@@ -4387,10 +4385,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4429,10 +4427,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4488,7 +4486,7 @@
 	spc-port-kind => "command" . "recv"
 	cmd-spec-0 => input-port-kind "command" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 492
 		"recv" => shift 409
 		"reg" => shift 410
@@ -4503,7 +4501,7 @@
 	formal-param-1 => . ident ":" type-name
 	formal-param-1 => . "ref" ident ":" type-name
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		"ref" => shift 125
 		ident => shift 126
 		formal-param-1 => shift 127
@@ -4535,10 +4533,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4577,10 +4575,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4619,10 +4617,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4640,17 +4638,17 @@
 
 394:	tlm-chan-3 => tlm-chan-2 "format" . string
 	string => . '$string
-		'$string => shift 55
+		'$string => shift 89
 		string => shift 487
 
 395:	record-spec-0 => "product" "record" . ident ":" type-name
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 486
 
 396:	cont-spec-0 => "product" "container" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 485
 
 397:	spc-port-kind => "product" "get" .
@@ -4688,10 +4686,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4709,12 +4707,12 @@
 
 402:	spc-port-inst-0 => spc-port-kind "port" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 483
 
 403:	int-port-defn-0 => "internal" "port" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 482
 
 404:	cmd-spec-1 => cmd-spec-0 "(" . param-list ")"
@@ -4726,7 +4724,7 @@
 	formal-param-1 => . ident ":" type-name
 	formal-param-1 => . "ref" ident ":" type-name
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		"ref" => shift 125
 		ident => shift 126
 		formal-param-1 => shift 127
@@ -4773,10 +4771,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4801,7 +4799,7 @@
 
 408:	gen-port-inst-0 => "output" "port" . ident ":"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 470
 
 409:	spc-port-kind => "command" "recv" .
@@ -4843,7 +4841,7 @@
 	formal-param-1 => . ident ":" type-name
 	formal-param-1 => . "ref" ident ":" type-name
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		"ref" => shift 125
 		ident => shift 126
 		formal-param-1 => shift 127
@@ -4875,10 +4873,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -4908,7 +4906,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 464
@@ -4924,7 +4922,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 459
@@ -5009,7 +5007,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 452
@@ -5087,10 +5085,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -5115,7 +5113,7 @@
 	struct-elt-seq => .
 	struct-elt-seq => . ident "=" expr elt-sep struct-elt-seq
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 212
 		struct-elt-seq => shift 566
 		"\n" => shift 234
@@ -5171,7 +5169,7 @@
 	action-seq => .
 	action-seq => . ident elt-sep action-seq
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 551
 		action-seq => shift 552
 		$default => reduce 357
@@ -5195,7 +5193,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"string" => shift 110
@@ -5232,7 +5230,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"string" => shift 110
@@ -5269,7 +5267,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"string" => shift 110
@@ -5305,7 +5303,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 459
@@ -5336,7 +5334,7 @@
 	tlm-pktgrp-mem-seq => . tlm-pktgrp-mem elt-sep tlm-pktgrp-mem-seq
 	tlm-pktgrp-mem => . include-spec
 	tlm-pktgrp-mem => . tlm-pkt-spec
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	tlm-pkt-spec => . "packet" ident "group" expr "{" tlm-pkt-mem-seq "}"
 	tlm-pkt-spec => . "packet" ident "group" expr "id" expr "{" tlm-pkt-mem-seq "}"
 	tlm-pktset-spec => "telemetry" "packets" ident "{" . tlm-pktgrp-mem-seq "}" "omit" "{" tlm-chan-id-seq "}"
@@ -5344,7 +5342,7 @@
 	tlm-pktgrp-mem-seq => . tlm-pktgrp-mem elt-sep tlm-pktgrp-mem-seq
 	tlm-pktgrp-mem => . include-spec
 	tlm-pktgrp-mem => . tlm-pkt-spec
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	tlm-pkt-spec => . "packet" ident "group" expr "{" tlm-pkt-mem-seq "}"
 	tlm-pkt-spec => . "packet" ident "group" expr "id" expr "{" tlm-pkt-mem-seq "}"
 		"packet" => shift 536
@@ -5381,7 +5379,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"string" => shift 110
@@ -5418,7 +5416,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"string" => shift 110
@@ -5521,7 +5519,7 @@
 
 493:	gen-port-inst-0 => input-port-kind "input" "port" . ident ":"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 522
 
 494:	stmach-inst-1 => stmach-inst-0 "priority" expr .
@@ -5569,10 +5567,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -5631,10 +5629,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -5690,10 +5688,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -5715,12 +5713,12 @@
 
 508:	stmach-inst-0 => "state" "machine" "instance" . ident ":" qual-ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 512
 
 509:	port-match-spec => "match" ident "with" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 511
 
 510:	comp-mem-seq => comp-mem mem-sep comp-mem-seq .
@@ -5760,10 +5758,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -5802,10 +5800,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -5844,10 +5842,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -5911,7 +5909,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"string" => shift 110
@@ -5970,7 +5968,7 @@
 	ident => . '$ident
 	tlm-pkt-spec => "packet" . ident "group" expr "{" tlm-pkt-mem-seq "}"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 590
 
 537:	tlm-pktgrp-mem => tlm-pkt-spec .
@@ -6000,7 +5998,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 586
@@ -6023,7 +6021,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 459
@@ -6041,7 +6039,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 583
@@ -6073,10 +6071,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -6094,7 +6092,7 @@
 
 547:	stmach-mem => "choice" ident "{" "if" . ident trans-expr "else" trans-expr "}"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 580
 
 548:	stmach-mem => "action" ident ":" type-name .
@@ -6122,7 +6120,7 @@
 
 553:	st-tran-spec-0 => "on" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 577
 
 554:	st-tran-spec-1 => st-tran-spec-0 . "if" ident
@@ -6170,7 +6168,7 @@
 
 561:	state-defn-mem => "choice" . ident "{" "if" ident trans-expr "else" trans-expr "}"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 570
 
 562:	state-defn-mem => "initial" . trans-expr
@@ -6278,7 +6276,7 @@
 
 576:	st-tran-spec-1 => st-tran-spec-0 "if" . ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 612
 
 577:	st-tran-spec-0 => "on" ident .
@@ -6293,7 +6291,7 @@
 	action-seq => .
 	action-seq => . ident elt-sep action-seq
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 551
 		action-seq => shift 611
 		"\n" => shift 234
@@ -6322,7 +6320,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 583
@@ -6364,7 +6362,7 @@
 	tlm-pktgrp-mem-seq => . tlm-pktgrp-mem elt-sep tlm-pktgrp-mem-seq
 	tlm-pktgrp-mem => . include-spec
 	tlm-pktgrp-mem => . tlm-pkt-spec
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	tlm-pkt-spec => . "packet" ident "group" expr "{" tlm-pkt-mem-seq "}"
 	tlm-pkt-spec => . "packet" ident "group" expr "id" expr "{" tlm-pkt-mem-seq "}"
 		"packet" => shift 536
@@ -6427,7 +6425,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 600
@@ -6486,10 +6484,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -6523,7 +6521,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 586
@@ -6554,10 +6552,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -6597,7 +6595,7 @@
 
 615:	state-defn-mem => "choice" ident "{" "if" . ident trans-expr "else" trans-expr "}"
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 626
 
 616:	stmach-mem => "choice" ident "{" "if" ident trans-expr "else" . trans-expr "}"
@@ -6654,10 +6652,10 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
-		'$string => shift 55
+		'$string => shift 89
 		'$fixed => shift 96
 		'$float => shift 97
 		"(" => shift 98
@@ -6678,12 +6676,12 @@
 	tlm-pkt-mem-seq => . tlm-pkt-mem elt-sep tlm-pkt-mem-seq
 	tlm-pkt-mem => . include-spec
 	tlm-pkt-mem => . qual-ident
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"include" => shift 34
@@ -6740,7 +6738,7 @@
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		qual-ident => shift 639
@@ -6773,12 +6771,12 @@
 	tlm-pkt-mem-seq => . tlm-pkt-mem elt-sep tlm-pkt-mem-seq
 	tlm-pkt-mem => . include-spec
 	tlm-pkt-mem => . qual-ident
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"include" => shift 34
@@ -6798,12 +6796,12 @@
 	tlm-pkt-mem-seq => . tlm-pkt-mem elt-sep tlm-pkt-mem-seq
 	tlm-pkt-mem => . include-spec
 	tlm-pkt-mem => . qual-ident
-	include-spec => . "include" string
+	include-spec => . "include" '$string
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
-		'$ident => shift 57
+		'$ident => shift 56
 		ident => shift 94
 		qual-ident-1 => shift 95
 		"include" => shift 34

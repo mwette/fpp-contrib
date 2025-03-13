@@ -24,7 +24,6 @@
 %token U8
 %token I8
 %token '.'
-%token _string
 %token _ident
 %token _fixed
 %token _float
@@ -123,6 +122,7 @@
 %token '}'
 %token '{'
 %token MODULE
+%token _string
 %token INCLUDE
 %token ';'
 %token '\n'
@@ -141,7 +141,7 @@ elt_sep: elt_sep '\n' ;
 mem_sep: ';' ;
 mem_sep: '\n' ;
 mem_sep: mem_sep '\n' ;
-include_spec: INCLUDE string ;
+include_spec: INCLUDE _string ;
 translation_unit: module_mem_seq ;
 module_mem_seq: %empty ;
 module_mem_seq: mod_mem mem_sep module_mem_seq ;
