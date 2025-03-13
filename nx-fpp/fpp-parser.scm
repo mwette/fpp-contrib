@@ -24,7 +24,7 @@
 (define read-code-anno (make-comm-reader '(("@<" . "\n"))))
 (define read-lone-anno (make-comm-reader '(("@" . "\n"))))
 (define (mk-anno v s)
-  (let* ((x (string-index s (lambda (c) (not (char-whitespace? c))))))
+  (let ((x (or (string-index s (lambda (c) (not (char-whitespace? c)))) 0)))
     (cons v (substring s x))))
 
 (define (swap pair) (cons (cdr pair) (car pair)))
