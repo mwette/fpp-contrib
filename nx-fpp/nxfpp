@@ -7,6 +7,9 @@ exec guile $0 "$@"
 (use-modules (sxml match))
 (use-modules (fpp-parser))
 
+(use-modules (ice-9 pretty-print))
+(define pp pretty-print)
+
 (define (rsl->qid sl)
   (string-join (reverse sl) "."))
 
@@ -37,8 +40,11 @@ exec guile $0 "$@"
 
 (let* ((args (cdr (program-arguments)))
        (file (car args))
-       (tree (read-fpp-file file))
-       (tlms (show-tlm tree '("foo"))))
-  (for-each (lambda (tlm) (simple-format #t "~s\n" (cadr tlm))) tlms))
+       (tree (read-fpp-file file #:debug #t))
+       ;;(tlms (show-tlm tree '("foo")))
+       )
+  ;;(for-each (lambda (tlm) (simple-format #t "~s\n" (cadr tlm))) tlms)
+  (pp tree)
+  )
 
 ;; --- last line ---
