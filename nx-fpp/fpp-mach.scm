@@ -43,7 +43,13 @@
     (elt-sep (",") ("\n") (elt-sep "\n"))
     (mem-sep (";") ("\n") (mem-sep "\n"))
 
-    (include-spec ("include" string ($$ `(include ,$2))))
+    (include-spec
+     ;;("include" string ($$ `(include ,$2))))
+     ("include" $string
+      ($$ (let* ((path (dirname (port-filename (current-input-port))))
+                 (path (string-append path "/" $2)))
+            (push-input (open-input-file path))
+            `(include ,$2)))))
 
     (translation-unit
      (module-mem-seq ($$ `(trans-unit ,@(sx-tail (tl->list $1))))))
@@ -126,7 +132,7 @@
 
     (component-defn
      (comp-kind "component" ident "{" comp-mem-seq "}"
-                ($$ `(comp-defn ,$3 (kind ,$1) ,(tl->list $5)))))
+                ($$ `(component-defn ,$3 (kind ,$1) ,(tl->list $5)))))
     (comp-kind ("active") ("passive") ("queued"))
     (comp-mem-seq
      ($empty ($$ (make-tl 'comp-mem-seq)))
@@ -373,7 +379,7 @@
      ("packet" ident "group" expr "{" tlm-pkt-mem-seq "}"
       ($$ `(packet ,$2 (group ,$4) (tl->list $6))))
      ("packet" ident "group" expr "id" expr "{" tlm-pkt-mem-seq "}"
-      ($$ `(packet ,$2 (group ,$4) (tl->list $6) (tl->list $8)))))
+      ($$ `(packet ,$2 (group ,$4) (id ,$6) (tl->list $8)))))
 
     (tlm-pkt-mem-seq
      ($empty ($$ (make-tl 'tlm-pkt-mem-seq)))

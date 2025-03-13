@@ -19,8 +19,12 @@
    (lambda ($1 . $rest) $1)
    ;; mem-sep => mem-sep "\n"
    (lambda ($2 $1 . $rest) $1)
-   ;; include-spec => "include" string
-   (lambda ($2 $1 . $rest) `(include ,$2))
+   ;; include-spec => "include" '$string
+   (lambda ($2 $1 . $rest)
+     (let* ((path (dirname (port-filename (current-input-port))))
+            (path (string-append path "/" $2)))
+       (push-input (open-input-file path))
+       `(include ,$2)))
    ;; translation-unit => module-mem-seq
    (lambda ($1 . $rest) `(trans-unit ,@(sx-tail (tl->list $1))))
    ;; module-mem-seq => 
@@ -128,7 +132,7 @@
    (lambda ($3 $2 $1 . $rest) (cons $3 $1))
    ;; component-defn => comp-kind "component" ident "{" comp-mem-seq "}"
    (lambda ($6 $5 $4 $3 $2 $1 . $rest)
-     `(comp-defn ,$3 (kind ,$1) ,(tl->list $5)))
+     `(component-defn ,$3 (kind ,$1) ,(tl->list $5)))
    ;; comp-kind => "active"
    (lambda ($1 . $rest) $1)
    ;; comp-kind => "passive"
@@ -500,7 +504,7 @@
      `(packet ,$2 (group ,$4) (tl->list $6)))
    ;; tlm-pkt-spec => "packet" ident "group" expr "id" expr "{" tlm-pkt-mem...
    (lambda ($9 $8 $7 $6 $5 $4 $3 $2 $1 . $rest)
-     `(packet ,$2 (group ,$4) (tl->list $6) (tl->list $8)))
+     `(packet ,$2 (group ,$4) (id ,$6) (tl->list $8)))
    ;; tlm-pkt-mem-seq => 
    (lambda $rest (make-tl 'tlm-pkt-mem-seq))
    ;; tlm-pkt-mem-seq => tlm-pkt-mem elt-sep tlm-pkt-mem-seq

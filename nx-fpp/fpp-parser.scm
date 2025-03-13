@@ -17,6 +17,7 @@
 (define (pperr exp)
   (pretty-print exp (current-error-port) #:per-line-prefix "  "))
 
+
 (include-from-path "mach.d/fpp-tab.scm")
 (include-from-path "mach.d/fpp-act.scm")
 
@@ -48,7 +49,8 @@
     (lambda ()
       (define (loop ch)
         (cond
-         ((eof-object? ch) (assc-$ (cons '$end ch)))
+         ((eof-object? ch) ;;(assc-$ (cons '$end ch))
+          (if (pop-input) (loop (read-char)) (assc-$ (cons '$end ch))))
          ((eqv? ch #\newline) (cons newline-val "\n"))
          ((char-set-contains? space-cs ch) (loop (read-char)))
          ((read-comm ch #f) (loop (read-char)))

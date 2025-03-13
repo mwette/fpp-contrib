@@ -6,13 +6,14 @@ exec guile $0 "$@"
 !#
 ;; Copyright (C) 2025 Matthew Wette
 ;; SPDX-License-Identifier: Apache-2.0
-(use-modules ((srfi srfi-1) #:select (fold)))
+(use-modules ((srfi srfi-1) #:select (fold fold-right)))
 (use-modules (sxml simple))
 (use-modules (sxml match))
 (use-modules (fpp-parser))
 (use-modules (ice-9 pretty-print))
 (define pp pretty-print)
 (use-modules (nyacc lang sx-util))
+(define (sf fmt . args) (apply simple-format #t fmt args))
 
 (define (fail fmt . args)
   (apply simple-format (current-error-port) fmt args)
@@ -23,43 +24,45 @@ exec guile $0 "$@"
   (string-join (reverse sl) "."))
 
 (define (locs->dict ltree)
-  (map (lambda (loc)
-         (sxml-match loc
-           ((loc-inst (qual-ident ,parts ...) (at (string ,path)))
-            (cons (string-join parts ".") (substring path 3)))
-           ((loc-comp (qual-ident ,parts ...) (at (string ,path)))
-            (cons (string-join parts ".") (substring path 3)))
-           ((loc-const (qual-ident ,parts ...) (at (string ,path)))
-            (cons (string-join parts ".") (substring path 3)))
-           ((loc-port (qual-ident ,parts ...) (at (string ,path)))
-            (cons (string-join parts ".") (substring path 3)))
-           ((loc-state (qual-ident ,parts ...) (at (string ,path)))
-            (cons (string-join parts ".") (substring path 3)))
-           ((loc-topo (qual-ident ,parts ...) (at (string ,path)))
-            (cons (string-join parts ".") (substring path 3)))
-           ((loc-type (qual-ident ,parts ...) (at (string ,path)))
-            (cons (string-join parts ".") (substring path 3)))))
-       (cdr ltree)))
+  (map
+   (lambda (loc)
+     (sxml-match loc
+       ((loc-inst (qual-ident ,parts ...) (at (string ,path)))
+        (cons (string-join parts ".") (substring path 3)))
+       ((loc-comp (qual-ident ,parts ...) (at (string ,path)))
+        (cons (string-join parts ".") (substring path 3)))
+       ((loc-const (qual-ident ,parts ...) (at (string ,path)))
+        (cons (string-join parts ".") (substring path 3)))
+       ((loc-port (qual-ident ,parts ...) (at (string ,path)))
+        (cons (string-join parts ".") (substring path 3)))
+       ((loc-state (qual-ident ,parts ...) (at (string ,path)))
+        (cons (string-join parts ".") (substring path 3)))
+       ((loc-topo (qual-ident ,parts ...) (at (string ,path)))
+        (cons (string-join parts ".") (substring path 3)))
+       ((loc-type (qual-ident ,parts ...) (at (string ,path)))
+        (cons (string-join parts ".") (substring path 3)))))
+   (cdr ltree)))
 
 (define (coll-inst tree)
-  (letrec ((probe-form
-            (lambda (form scope seed)
-              (sxml-match form
-                ((trans-unit . ,members)
-                 (probe-members members scope seed))
-                ((module-mem-seq . ,members)
-                 (probe-members members scope seed))
-                ((module-defn (ident ,name) (module-mem-seq . ,members))
-                (probe-members members (cons name scope) seed))
-                ((module-mem-seq . ,members)
-                 (probe-members members scope seed))
-                ((instance (ident ,name) (qual-ident ,parts ...) . ,_)
-                 (acons name (string-join parts ".") seed))
-                (,__ seed))))
-           (probe-members
-            (lambda (members scope seed)
-              (fold (lambda (member seed) (probe-form member scope seed))
-                    seed members))))
+  (letrec
+      ((probe-form
+        (lambda (form scope seed)
+          (sxml-match form
+            ((trans-unit . ,members)
+             (probe-members members scope seed))
+            ((module-mem-seq . ,members)
+             (probe-members members scope seed))
+            ((module-defn (ident ,name) (module-mem-seq . ,members))
+             (probe-members members (cons name scope) seed))
+            ((module-mem-seq . ,members)
+             (probe-members members scope seed))
+            ((instance (ident ,name) (qual-ident ,parts ...) . ,_)
+             (acons name (string-join parts ".") seed))
+            (,__ seed))))
+       (probe-members
+        (lambda (members scope seed)
+          (fold (lambda (member seed) (probe-form member scope seed))
+                seed members))))
     (reverse (probe-form tree '() '()))))
 
 (define (get-dname tree)
@@ -68,30 +71,26 @@ exec guile $0 "$@"
     ((trans-unit . ,forms) (fold (lambda (f v) (or v (get-dname f))) #f forms))
     (,_ #f)))
 
-(define* (find-tlm tree #:optional (scope '()) (seed '()))
-  (letrec ((probe-form
-            (lambda (form scope seed)
-              (sxml-match form
-                ((trans-unit . ,members)
-                 (probe-members members scope seed))
-                ((module-mem-seq . ,members)
-                 (probe-members members scope seed))
-                ((module-defn (ident ,name) (module-mem-seq . ,members))
-                 (probe-members members (cons name scope) seed))
-                ((module-mem-seq . ,members)
-                 (probe-members members scope seed))
-                ((comp-defn (ident ,name) (kind ,kind) . ,members)
-                 (probe-members members (cons name scope) seed))
-                ((comp-mem-seq . ,members)
-                 (probe-members members scope seed))
-                ((telemetry (ident ,name) . ,_)
-                 (cons `(tlm ,(rsl->qid (cons name scope))) seed))
-                (,_ seed))))
-           (probe-members
-            (lambda (members scope seed)
-              (fold (lambda (member seed) (probe-form member scope seed))
-                    seed members))))
-    (reverse (probe-form tree scope seed))))
+(define (find-chans tree pfix seed)
+  (letrec
+      ((probe-form
+        (lambda (form seed)
+          (sxml-match form
+            ((trans-unit . ,members) (probe-members members seed))
+            ((module-mem-seq . ,members) (probe-members members seed))
+            ((module-defn (ident ,name) (module-mem-seq . ,members))
+             (probe-members members seed))
+            ((module-mem-seq . ,members) (probe-members members seed))
+            ((comp-defn (ident ,n) (kind ,k) . ,members)
+             (probe-members members seed))
+            ((comp-mem-seq . ,members) (probe-members members seed))
+            ((telemetry (ident ,name) . ,_)
+             (cons (string-append pfix "." name) seed))
+            (,_ seed))))
+       (probe-members
+        (lambda (members seed)
+          (fold (lambda (member seed) (probe-form member seed)) seed members))))
+    (reverse (probe-form tree seed))))
 
 (define (inst-chanl dname ilist ldict)
   (fold
@@ -99,9 +98,10 @@ exec guile $0 "$@"
      (let* ((inst (car item))
             (type (cdr item))
             (locn (assoc-ref ldict type))
-            (scope (list inst dname))
+            (pfix (string-append dname "." inst))
+            (scope '())
             (tree (read-fpp-file locn)))
-       (find-tlm tree scope seed)))
+       (find-chans tree pfix seed)))
    '() ilist))
 
 (define (pkts-chanl ptree)
@@ -118,8 +118,17 @@ exec guile $0 "$@"
                ((ignore (channel (@ (name ,name)))) (cons name seed))))
            '() forms))))
 
+(define (add-rem inst-cl pkts-cl)
+  (let ((rem (fold (lambda (chan seed)
+                     (if (member chan inst-cl) seed (cons chan seed)))
+                   '() pkts-cl))
+        (add (fold (lambda (chan seed)
+                     (if (member chan pkts-cl) seed (cons chan seed)))
+                   '() inst-cl)))
+    `((rem . ,(reverse rem)) (add . ,(reverse add)))))
 
-;; assume executed from dpl-dir
+
+;; --------------------------------------
 
 (use-modules (srfi srfi-37))
 
@@ -134,13 +143,12 @@ exec guile $0 "$@"
    ))
 
 (define (main args)
-  (let* ((opts (args-fold (cdr args) options
-                          (lambda (opt name arg opts)
-                            (fail "uknown opton: ~s" name))
-                          (lambda (dir opts)
-                            (acons 'dpldir dir opts))
-                          '((platform . "automatic-native"))))
-         (dpldir (assq-ref opts 'dpldir))
+  (let* ((opts (args-fold
+                (cdr args) options
+                (lambda (opt name arg opts) (fail "bad opton: ~s" name))
+                (lambda (dir opts) (acons 'dpldir dir opts))
+                '((platform . "automatic-native"))))
+         (dpldir (or (assq-ref opts 'dpldir) (fail "no deployment specified")))
          (blddir (string-append "build-fprime-" (assq-ref opts 'platform)))
          ;;
          (lfile (string-append blddir "/locs.fpp"))
@@ -154,16 +162,16 @@ exec guile $0 "$@"
          (ptree (cadr (xml->sxml (open-input-file pfile) #:trim-whitespace? #t)))
          (inst-cl (inst-chanl dname ilist ldict))
          (pkts-cl (pkts-chanl ptree))
-         #|
-         |#
-         )
-    ;;(pp ldict)
-    ;;(pp ilist)
-    ;;(pp dname)
-    ;;(pp chans)
+         (addrem (add-rem inst-cl pkts-cl)))
     (pp inst-cl)
-    ;;(pp pkts-cl)
-    ))
+    ;; need to process includes
+    #|
+    (sf "remove from packets.xlm:\n")
+    (for-each (lambda (chan) (sf "  ~a\n" chan)) (assq-ref addrem 'rem))
+    (sf "add to packets.xlm:\n")
+    (for-each (lambda (chan) (sf "  ~a\n" chan)) (assq-ref addrem 'add))
+    |#
+    #f))
 
 (main (program-arguments))
 
