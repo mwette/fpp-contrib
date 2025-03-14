@@ -56,10 +56,10 @@
 
     (module-mem-seq
      ($empty ($$ (make-tl 'module-mem-seq)))
-     (mod-mem mem-sep module-mem-seq ($$ (tl-insert $3 $1))))
+     (mod-mem mem-sep module-mem-seq ($$ (tl-insert $3 $1)))
+     (include-spec mem-sep module-mem-seq ($$ $3)))
     (mod-mem
      (lone-anno)
-     (include-spec)
      (component-defn)
      (comp-inst-defn)
      (topology-defn)
@@ -136,10 +136,10 @@
     (comp-kind ("active") ("passive") ("queued"))
     (comp-mem-seq
      ($empty ($$ (make-tl 'comp-mem-seq)))
-     (comp-mem mem-sep comp-mem-seq ($$ (tl-insert $3 $1))))
+     (comp-mem mem-sep comp-mem-seq ($$ (tl-insert $3 $1)))
+     (include-spec mem-sep comp-mem-seq ($$ $3)))
     (comp-mem
      (lone-anno)
-     (include-spec)
      (enum-defn)
      (struct-defn)
      (int-port-spec)
@@ -324,14 +324,14 @@
       ($$ `(topology-defn ,$2 ,(tl->list $4)))))
     (topo-mem-seq
      ($empty ($$ (make-tl 'topo-mem-seq)))
-     (topo-mem mem-sep topo-mem-seq ($$ (tl-insert $3 $1))))
+     (topo-mem mem-sep topo-mem-seq ($$ (tl-insert $3 $1)))
+     (include-spec mem-sep topo-mem-seq ($$ $3)))
     (topo-mem
      (lone-anno)
      (comp-inst-spec)
      (conn-graph-spec)
      (tlm-pktset-spec)
-     ("import" qual-ident ($$ `(import ,$2)))
-     (include-spec))
+     ("import" qual-ident ($$ `(import ,$2))))
     
     (comp-inst-spec
      ("instance" ident ($$ `(comp-inst ,$2)))
@@ -370,10 +370,8 @@
 
     (tlm-pktgrp-mem-seq
      ($empty ($$ (make-tl 'tlm-pktgrp-mem-seq)))
-     (tlm-pktgrp-mem elt-sep tlm-pktgrp-mem-seq ($$ (tl-insert $3 $1))))
-    (tlm-pktgrp-mem
-     (include-spec)
-     (tlm-pkt-spec))
+     (tlm-pkt-spec elt-sep tlm-pktgrp-mem-seq ($$ (tl-insert $3 $1)))
+     (include-spec elt-sep tlm-pktgrp-mem-seq ($$ $3)))
     
     (tlm-pkt-spec
      ("packet" ident "group" expr "{" tlm-pkt-mem-seq "}"
@@ -383,10 +381,8 @@
 
     (tlm-pkt-mem-seq
      ($empty ($$ (make-tl 'tlm-pkt-mem-seq)))
-     (tlm-pkt-mem elt-sep tlm-pkt-mem-seq ($$ (tl-insert $3 $1))))
-    (tlm-pkt-mem
-     (include-spec)
-     (qual-ident))
+     (qual-ident elt-sep tlm-pkt-mem-seq ($$ (tl-insert $3 $1)))
+     (include-spec elt-sep tlm-pkt-mem-seq ($$ $3)))
 
     (tlm-chan-id-seq
      ($empty ($$ (make-tl 'tlm-chanid-seq)))

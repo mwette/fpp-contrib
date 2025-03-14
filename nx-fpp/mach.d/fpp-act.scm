@@ -31,9 +31,9 @@
    (lambda $rest (make-tl 'module-mem-seq))
    ;; module-mem-seq => mod-mem mem-sep module-mem-seq
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   ;; module-mem-seq => include-spec mem-sep module-mem-seq
+   (lambda ($3 $2 $1 . $rest) $3)
    ;; mod-mem => lone-anno
-   (lambda ($1 . $rest) $1)
-   ;; mod-mem => include-spec
    (lambda ($1 . $rest) $1)
    ;; mod-mem => component-defn
    (lambda ($1 . $rest) $1)
@@ -143,9 +143,9 @@
    (lambda $rest (make-tl 'comp-mem-seq))
    ;; comp-mem-seq => comp-mem mem-sep comp-mem-seq
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   ;; comp-mem-seq => include-spec mem-sep comp-mem-seq
+   (lambda ($3 $2 $1 . $rest) $3)
    ;; comp-mem => lone-anno
-   (lambda ($1 . $rest) $1)
-   ;; comp-mem => include-spec
    (lambda ($1 . $rest) $1)
    ;; comp-mem => enum-defn
    (lambda ($1 . $rest) $1)
@@ -433,6 +433,8 @@
    (lambda $rest (make-tl 'topo-mem-seq))
    ;; topo-mem-seq => topo-mem mem-sep topo-mem-seq
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   ;; topo-mem-seq => include-spec mem-sep topo-mem-seq
+   (lambda ($3 $2 $1 . $rest) $3)
    ;; topo-mem => lone-anno
    (lambda ($1 . $rest) $1)
    ;; topo-mem => comp-inst-spec
@@ -443,8 +445,6 @@
    (lambda ($1 . $rest) $1)
    ;; topo-mem => "import" qual-ident
    (lambda ($2 $1 . $rest) `(import ,$2))
-   ;; topo-mem => include-spec
-   (lambda ($1 . $rest) $1)
    ;; comp-inst-spec => "instance" ident
    (lambda ($2 $1 . $rest) `(comp-inst ,$2))
    ;; comp-inst-spec => "private" "instance" ident
@@ -493,12 +493,10 @@
      `(tlm-packets ,$3 ,(tl->list $5) (omit ,@(sx-tail (tl->list $9)))))
    ;; tlm-pktgrp-mem-seq => 
    (lambda $rest (make-tl 'tlm-pktgrp-mem-seq))
-   ;; tlm-pktgrp-mem-seq => tlm-pktgrp-mem elt-sep tlm-pktgrp-mem-seq
+   ;; tlm-pktgrp-mem-seq => tlm-pkt-spec elt-sep tlm-pktgrp-mem-seq
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
-   ;; tlm-pktgrp-mem => include-spec
-   (lambda ($1 . $rest) $1)
-   ;; tlm-pktgrp-mem => tlm-pkt-spec
-   (lambda ($1 . $rest) $1)
+   ;; tlm-pktgrp-mem-seq => include-spec elt-sep tlm-pktgrp-mem-seq
+   (lambda ($3 $2 $1 . $rest) $3)
    ;; tlm-pkt-spec => "packet" ident "group" expr "{" tlm-pkt-mem-seq "}"
    (lambda ($7 $6 $5 $4 $3 $2 $1 . $rest)
      `(packet ,$2 (group ,$4) (tl->list $6)))
@@ -507,12 +505,10 @@
      `(packet ,$2 (group ,$4) (id ,$6) (tl->list $8)))
    ;; tlm-pkt-mem-seq => 
    (lambda $rest (make-tl 'tlm-pkt-mem-seq))
-   ;; tlm-pkt-mem-seq => tlm-pkt-mem elt-sep tlm-pkt-mem-seq
+   ;; tlm-pkt-mem-seq => qual-ident elt-sep tlm-pkt-mem-seq
    (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
-   ;; tlm-pkt-mem => include-spec
-   (lambda ($1 . $rest) $1)
-   ;; tlm-pkt-mem => qual-ident
-   (lambda ($1 . $rest) $1)
+   ;; tlm-pkt-mem-seq => include-spec elt-sep tlm-pkt-mem-seq
+   (lambda ($3 $2 $1 . $rest) $3)
    ;; tlm-chan-id-seq => 
    (lambda $rest (make-tl 'tlm-chanid-seq))
    ;; tlm-chan-id-seq => tlm-chan-id-seq elt-sep qual-ident
