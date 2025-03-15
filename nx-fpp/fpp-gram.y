@@ -441,7 +441,6 @@ string: _string ;
 lone_anno: _lone_anno ;
 code_anno: code_anno_list ;
 code_anno_list: _code_anno ;
-code_anno_list: code_anno_list '\n' _code_anno ;
 qual_ident: qual_ident_1 ;
 qual_ident_1: ident ;
 qual_ident_1: qual_ident_1 '.' ident ;

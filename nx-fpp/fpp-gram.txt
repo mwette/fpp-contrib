@@ -304,73 +304,72 @@
 303 lone-anno => '$lone-anno
 304 code-anno => code-anno-list
 305 code-anno-list => '$code-anno
-306 code-anno-list => code-anno-list "\n" '$code-anno
-307 qual-ident => qual-ident-1
-308 qual-ident-1 => ident
-309 qual-ident-1 => qual-ident-1 "." ident
-310 qual-ident-seq =>
-311 qual-ident-seq => qual-ident elt-sep qual-ident-seq
-312 index => "[" expr "]"
-313 type-name => qual-ident
-314 type-name => "I8"
-315 type-name => "U8"
-316 type-name => "I16"
-317 type-name => "U16"
-318 type-name => "I32"
-319 type-name => "U32"
-320 type-name => "I64"
-321 type-name => "U64"
-322 type-name => "F32"
-323 type-name => "F64"
-324 type-name => "bool"
-325 type-name => "string"
-326 type-name => "string" "size" expr
-327 stmach-inst => stmach-inst-2
-328 stmach-inst => stmach-inst-2 code-anno
-329 stmach-inst-0 => "state" "machine" "instance" ident ":" qual-ident
-330 stmach-inst-1 => stmach-inst-0
-331 stmach-inst-1 => stmach-inst-0 "priority" expr
-332 stmach-inst-2 => stmach-inst-1
-333 stmach-inst-2 => stmach-inst-1 queue-full-beh
-334 stmach-defn => "state" "machine" ident
-335 stmach-defn => "state" "machine" ident "{" stmach-mem-seq "}"
-336 stmach-mem-seq =>
-337 stmach-mem-seq => stmach-mem mem-sep stmach-mem-seq
-338 stmach-mem => lone-anno
-339 stmach-mem => "choice" ident "{" "if" ident trans-expr "else" trans-expr "}"
-340 stmach-mem => "action" ident
-341 stmach-mem => "action" ident ":" type-name
-342 stmach-mem => "guard" ident
-343 stmach-mem => "guard" ident ":" type-name
-344 stmach-mem => "signal" ident
-345 stmach-mem => "signal" ident ":" type-name
-346 stmach-mem => "initial" trans-expr
-347 stmach-mem => state-defn
-348 state-defn => "state" ident
-349 state-defn => "state" ident "{" state-defn-mem-seq "}"
-350 state-defn-mem-seq =>
-351 state-defn-mem-seq => state-defn-mem mem-sep state-defn-mem-seq
-352 state-defn-mem => lone-anno
-353 state-defn-mem => "initial" trans-expr
-354 state-defn-mem => "choice" ident "{" "if" ident trans-expr "else" trans-expr "}"
-355 state-defn-mem => state-defn
-356 state-defn-mem => state-trans-spec
-357 state-defn-mem => "entry" do-expr
-358 state-defn-mem => "exit" do-expr
-359 state-trans-spec => st-tran-spec-2
-360 st-tran-spec-0 => "on" ident
-361 st-tran-spec-1 => st-tran-spec-0
-362 st-tran-spec-1 => st-tran-spec-0 "if" ident
-363 st-tran-spec-2 => st-tran-spec-1 trans-or-do
-364 trans-expr => trans-expr-1
-365 trans-expr-0 => "enter" qual-ident
-366 trans-expr-1 => trans-expr-0
-367 trans-expr-1 => do-expr trans-expr-0
-368 do-expr => "do" "{" action-seq "}"
-369 action-seq =>
-370 action-seq => ident elt-sep action-seq
-371 trans-or-do => trans-expr
-372 trans-or-do => do-expr
+306 qual-ident => qual-ident-1
+307 qual-ident-1 => ident
+308 qual-ident-1 => qual-ident-1 "." ident
+309 qual-ident-seq =>
+310 qual-ident-seq => qual-ident elt-sep qual-ident-seq
+311 index => "[" expr "]"
+312 type-name => qual-ident
+313 type-name => "I8"
+314 type-name => "U8"
+315 type-name => "I16"
+316 type-name => "U16"
+317 type-name => "I32"
+318 type-name => "U32"
+319 type-name => "I64"
+320 type-name => "U64"
+321 type-name => "F32"
+322 type-name => "F64"
+323 type-name => "bool"
+324 type-name => "string"
+325 type-name => "string" "size" expr
+326 stmach-inst => stmach-inst-2
+327 stmach-inst => stmach-inst-2 code-anno
+328 stmach-inst-0 => "state" "machine" "instance" ident ":" qual-ident
+329 stmach-inst-1 => stmach-inst-0
+330 stmach-inst-1 => stmach-inst-0 "priority" expr
+331 stmach-inst-2 => stmach-inst-1
+332 stmach-inst-2 => stmach-inst-1 queue-full-beh
+333 stmach-defn => "state" "machine" ident
+334 stmach-defn => "state" "machine" ident "{" stmach-mem-seq "}"
+335 stmach-mem-seq =>
+336 stmach-mem-seq => stmach-mem mem-sep stmach-mem-seq
+337 stmach-mem => lone-anno
+338 stmach-mem => "choice" ident "{" "if" ident trans-expr "else" trans-expr "}"
+339 stmach-mem => "action" ident
+340 stmach-mem => "action" ident ":" type-name
+341 stmach-mem => "guard" ident
+342 stmach-mem => "guard" ident ":" type-name
+343 stmach-mem => "signal" ident
+344 stmach-mem => "signal" ident ":" type-name
+345 stmach-mem => "initial" trans-expr
+346 stmach-mem => state-defn
+347 state-defn => "state" ident
+348 state-defn => "state" ident "{" state-defn-mem-seq "}"
+349 state-defn-mem-seq =>
+350 state-defn-mem-seq => state-defn-mem mem-sep state-defn-mem-seq
+351 state-defn-mem => lone-anno
+352 state-defn-mem => "initial" trans-expr
+353 state-defn-mem => "choice" ident "{" "if" ident trans-expr "else" trans-expr "}"
+354 state-defn-mem => state-defn
+355 state-defn-mem => state-trans-spec
+356 state-defn-mem => "entry" do-expr
+357 state-defn-mem => "exit" do-expr
+358 state-trans-spec => st-tran-spec-2
+359 st-tran-spec-0 => "on" ident
+360 st-tran-spec-1 => st-tran-spec-0
+361 st-tran-spec-1 => st-tran-spec-0 "if" ident
+362 st-tran-spec-2 => st-tran-spec-1 trans-or-do
+363 trans-expr => trans-expr-1
+364 trans-expr-0 => "enter" qual-ident
+365 trans-expr-1 => trans-expr-0
+366 trans-expr-1 => do-expr trans-expr-0
+367 do-expr => "do" "{" action-seq "}"
+368 action-seq =>
+369 action-seq => ident elt-sep action-seq
+370 trans-or-do => trans-expr
+371 trans-or-do => do-expr
 
 0:	$start => . translation-unit
 	translation-unit => . module-mem-seq
@@ -618,7 +617,6 @@
 21:	port-defn-3 => port-defn-2 . code-anno
 	code-anno => . code-anno-list
 	code-anno-list => . '$code-anno
-	code-anno-list => . code-anno-list "\n" '$code-anno
 	port-defn-3 => port-defn-2 .
 		'$code-anno => shift 75
 		code-anno-list => shift 76
@@ -629,7 +627,6 @@
 22:	struct-defn-2 => struct-defn-1 . code-anno
 	code-anno => . code-anno-list
 	code-anno-list => . '$code-anno
-	code-anno-list => . code-anno-list "\n" '$code-anno
 	struct-defn-2 => struct-defn-1 .
 		'$code-anno => shift 75
 		code-anno-list => shift 76
@@ -640,7 +637,6 @@
 23:	enum-defn-4 => enum-defn-3 . code-anno
 	code-anno => . code-anno-list
 	code-anno-list => . '$code-anno
-	code-anno-list => . code-anno-list "\n" '$code-anno
 	enum-defn-4 => enum-defn-3 .
 		'$code-anno => shift 75
 		code-anno-list => shift 76
@@ -940,8 +936,8 @@
 		"include" => shift 50
 		include-spec => shift 51
 		mod-mem => shift 52
-		module-mem-seq => shift 165
-		"\n" => shift 164
+		module-mem-seq => shift 164
+		"\n" => shift 163
 		$default => reduce 9
 
 58:	mem-sep => mem-sep . "\n"
@@ -1076,8 +1072,8 @@
 		"include" => shift 50
 		include-spec => shift 51
 		mod-mem => shift 52
-		module-mem-seq => shift 163
-		"\n" => shift 164
+		module-mem-seq => shift 162
+		"\n" => shift 163
 		$default => reduce 9
 
 59:	include-spec => "include" '$string .
@@ -1090,34 +1086,33 @@
 		$default => reduce 301
 
 61:	module-defn => "module" ident . "{" module-mem-seq "}"
-		"{" => shift 162
+		"{" => shift 161
 
 62:	const-defn => "constant" ident . "=" expr
 	const-defn => "constant" ident . "=" expr code-anno
-		"=" => shift 161
+		"=" => shift 160
 
 63:	abs-type-defn => "type" ident .
 	abs-type-defn => "type" ident . code-anno
 	code-anno => . code-anno-list
 	code-anno-list => . '$code-anno
-	code-anno-list => . code-anno-list "\n" '$code-anno
 		'$code-anno => shift 75
 		code-anno-list => shift 76
-		code-anno => shift 160
+		code-anno => shift 159
 		"\n" => reduce 28
 		$default => reduce 28
 
 64:	array-defn => "array" ident . "=" index ident
 	array-defn => "array" ident . "=" index ident code-anno
-		"=" => shift 159
+		"=" => shift 158
 
 65:	component-defn => comp-kind "component" . ident "{" comp-mem-seq "}"
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 158
+		ident => shift 157
 
 66:	topology-defn => "topology" ident . "{" topo-mem-seq "}"
-		"{" => shift 157
+		"{" => shift 156
 
 67:	loc-spec => "locate" "instance" . qual-ident "at" string
 	qual-ident => . qual-ident-1
@@ -1127,7 +1122,7 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 156
+		qual-ident => shift 155
 
 68:	loc-spec => "locate" "component" . qual-ident "at" string
 	qual-ident => . qual-ident-1
@@ -1137,7 +1132,7 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 155
+		qual-ident => shift 154
 
 69:	loc-spec => "locate" "constant" . qual-ident "at" string
 	qual-ident => . qual-ident-1
@@ -1147,7 +1142,7 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 154
+		qual-ident => shift 153
 
 70:	loc-spec => "locate" "port" . qual-ident "at" string
 	qual-ident => . qual-ident-1
@@ -1157,10 +1152,10 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 153
+		qual-ident => shift 152
 
 71:	loc-spec => "locate" "state" . "machine" qual-ident "at" string
-		"machine" => shift 152
+		"machine" => shift 151
 
 72:	loc-spec => "locate" "topology" . qual-ident "at" string
 	qual-ident => . qual-ident-1
@@ -1170,7 +1165,7 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 151
+		qual-ident => shift 150
 
 73:	loc-spec => "locate" "type" . qual-ident "at" string
 	qual-ident => . qual-ident-1
@@ -1180,24 +1175,22 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 150
+		qual-ident => shift 149
 
 74:	stmach-defn => "state" "machine" . ident
 	ident => . '$ident
 	stmach-defn => "state" "machine" . ident "{" stmach-mem-seq "}"
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 149
+		ident => shift 148
 
 75:	code-anno-list => '$code-anno .
 		"\n" => reduce 305
 		$default => reduce 305
 
-76:	code-anno-list => code-anno-list . "\n" '$code-anno
-	code-anno => code-anno-list .
-		"\n" => shift 148
+76:	code-anno => code-anno-list .
+		"\n" => reduce 304
 		$default => reduce 304
-		["\n" => reduce 304] REMOVED by default shift
 
 77:	enum-defn-4 => enum-defn-3 code-anno .
 		"\n" => reduce 40
@@ -1528,7 +1521,7 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 232
+		qual-ident => shift 230
 
 98:	string => '$string .
 		"\n" => reduce 302
@@ -1583,7 +1576,7 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 231
+		expr => shift 229
 
 102:	comp-inst-4 => comp-inst-3 "stack" "size" . expr
 	expr => . add-expr
@@ -1625,86 +1618,86 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 230
+		expr => shift 228
 
 103:	qual-ident-1 => ident .
-		"\n" => reduce 308
-		'$code-anno => reduce 308
-		$default => reduce 308
-
-104:	qual-ident-1 => qual-ident-1 . "." ident
-	qual-ident => qual-ident-1 .
-		"." => shift 229
 		"\n" => reduce 307
 		'$code-anno => reduce 307
 		$default => reduce 307
 
+104:	qual-ident-1 => qual-ident-1 . "." ident
+	qual-ident => qual-ident-1 .
+		"." => shift 227
+		"\n" => reduce 306
+		'$code-anno => reduce 306
+		$default => reduce 306
+
 105:	type-name => "string" . "size" expr
 	type-name => "string" .
-		"size" => shift 228
-		'$code-anno => reduce 325
-		"\n" => reduce 325
-		$default => reduce 325
-
-106:	type-name => "bool" .
+		"size" => shift 226
 		'$code-anno => reduce 324
 		"\n" => reduce 324
 		$default => reduce 324
 
-107:	type-name => "F64" .
+106:	type-name => "bool" .
 		'$code-anno => reduce 323
 		"\n" => reduce 323
 		$default => reduce 323
 
-108:	type-name => "F32" .
+107:	type-name => "F64" .
 		'$code-anno => reduce 322
 		"\n" => reduce 322
 		$default => reduce 322
 
-109:	type-name => "U64" .
+108:	type-name => "F32" .
 		'$code-anno => reduce 321
 		"\n" => reduce 321
 		$default => reduce 321
 
-110:	type-name => "I64" .
+109:	type-name => "U64" .
 		'$code-anno => reduce 320
 		"\n" => reduce 320
 		$default => reduce 320
 
-111:	type-name => "U32" .
+110:	type-name => "I64" .
 		'$code-anno => reduce 319
 		"\n" => reduce 319
 		$default => reduce 319
 
-112:	type-name => "I32" .
+111:	type-name => "U32" .
 		'$code-anno => reduce 318
 		"\n" => reduce 318
 		$default => reduce 318
 
-113:	type-name => "U16" .
+112:	type-name => "I32" .
 		'$code-anno => reduce 317
 		"\n" => reduce 317
 		$default => reduce 317
 
-114:	type-name => "I16" .
+113:	type-name => "U16" .
 		'$code-anno => reduce 316
 		"\n" => reduce 316
 		$default => reduce 316
 
-115:	type-name => "U8" .
+114:	type-name => "I16" .
 		'$code-anno => reduce 315
 		"\n" => reduce 315
 		$default => reduce 315
 
-116:	type-name => "I8" .
+115:	type-name => "U8" .
 		'$code-anno => reduce 314
 		"\n" => reduce 314
 		$default => reduce 314
 
-117:	type-name => qual-ident .
+116:	type-name => "I8" .
 		'$code-anno => reduce 313
 		"\n" => reduce 313
 		$default => reduce 313
+
+117:	type-name => qual-ident .
+		'$code-anno => reduce 312
+		"\n" => reduce 312
+		$default => reduce 312
 
 118:	enum-defn-1 => enum-defn-0 ":" type-name .
 		$default => reduce 35
@@ -1759,15 +1752,15 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 227
+		expr => shift 225
 
 122:	prim-expr => "{" . struct-elt-seq "}"
 	struct-elt-seq => .
 	struct-elt-seq => . ident "=" expr elt-sep struct-elt-seq
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 225
-		struct-elt-seq => shift 226
+		ident => shift 223
+		struct-elt-seq => shift 224
 		$default => reduce 297
 
 123:	prim-expr => "[" . expr-seq "]"
@@ -1812,8 +1805,8 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 223
-		expr-seq => shift 224
+		expr => shift 221
+		expr-seq => shift 222
 
 124:	prim-expr => string .
 		"\n" => reduce 291
@@ -1860,7 +1853,7 @@
 		qual-ident => shift 126
 		"-" => shift 127
 		prim-expr => shift 128
-		unary-expr => shift 222
+		unary-expr => shift 220
 
 128:	unary-expr => prim-expr .
 		"\n" => reduce 287
@@ -1875,8 +1868,8 @@
 130:	mul-expr => mul-expr . "/" unary-expr
 	mul-expr => mul-expr . "*" unary-expr
 	add-expr => mul-expr .
-		"*" => shift 220
-		"/" => shift 221
+		"*" => shift 218
+		"/" => shift 219
 		"\n" => reduce 281
 		'$code-anno => reduce 281
 		$default => reduce 281
@@ -1884,8 +1877,8 @@
 131:	add-expr => add-expr . "-" mul-expr
 	add-expr => add-expr . "+" mul-expr
 	expr => add-expr .
-		"+" => shift 218
-		"-" => shift 219
+		"+" => shift 216
+		"-" => shift 217
 		"\n" => reduce 280
 		'$code-anno => reduce 280
 		$default => reduce 280
@@ -1897,19 +1890,18 @@
 133:	formal-param-1 => "ref" . ident ":" type-name
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 217
+		ident => shift 215
 
 134:	formal-param-1 => ident . ":" type-name
-		":" => shift 216
+		":" => shift 214
 
 135:	formal-param => formal-param-1 . code-anno
 	code-anno => . code-anno-list
 	code-anno-list => . '$code-anno
-	code-anno-list => . code-anno-list "\n" '$code-anno
 	formal-param => formal-param-1 .
 		'$code-anno => shift 75
 		code-anno-list => shift 76
-		code-anno => shift 215
+		code-anno => shift 213
 		"\n" => reduce 263
 		$default => reduce 263
 
@@ -1917,15 +1909,15 @@
 	elt-sep => . ","
 	elt-sep => . "\n"
 	elt-sep => . elt-sep "\n"
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 214
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 212
 
 137:	param-list => param-list-1 .
 		$default => reduce 260
 
 138:	port-defn-1 => port-defn-0 "(" param-list . ")"
-		")" => shift 213
+		")" => shift 211
 
 139:	struct-defn-0 => "struct" ident "{" . struct-mem-seq "}"
 	struct-mem-seq => .
@@ -1940,13 +1932,13 @@
 	struct-mem-0 => . ident ":"
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 206
-		struct-mem-0 => shift 207
-		struct-mem-1 => shift 208
-		struct-mem-2 => shift 209
-		struct-mem-3 => shift 210
-		struct-mem => shift 211
-		struct-mem-seq => shift 212
+		ident => shift 204
+		struct-mem-0 => shift 205
+		struct-mem-1 => shift 206
+		struct-mem-2 => shift 207
+		struct-mem-3 => shift 208
+		struct-mem => shift 209
+		struct-mem-seq => shift 210
 		$default => reduce 53
 
 140:	enum-mem => ident . "=" expr code-anno
@@ -1954,12 +1946,11 @@
 	enum-mem => ident . code-anno
 	code-anno => . code-anno-list
 	code-anno-list => . '$code-anno
-	code-anno-list => . code-anno-list "\n" '$code-anno
 	enum-mem => ident .
 		'$code-anno => shift 75
 		code-anno-list => shift 76
-		code-anno => shift 204
-		"=" => shift 205
+		code-anno => shift 202
+		"=" => shift 203
 		"\n" => reduce 43
 		$default => reduce 43
 
@@ -1967,12 +1958,12 @@
 	elt-sep => . ","
 	elt-sep => . "\n"
 	elt-sep => . elt-sep "\n"
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 203
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 201
 
 142:	enum-defn-2 => enum-defn-1 "{" enum-mem-seq . "}"
-		"}" => shift 200
+		"}" => shift 198
 
 143:	comp-inst-6 => comp-inst-5 "cpu" expr .
 		"\n" => reduce 216
@@ -1994,24 +1985,21 @@
 		$default => reduce 38
 
 147:	comp-inst-7 => comp-inst-6 "{" string . "}"
-		"}" => shift 199
+		"}" => shift 197
 
-148:	code-anno-list => code-anno-list "\n" . '$code-anno
-		'$code-anno => shift 198
-
-149:	stmach-defn => "state" "machine" ident . "{" stmach-mem-seq "}"
+148:	stmach-defn => "state" "machine" ident . "{" stmach-mem-seq "}"
 	stmach-defn => "state" "machine" ident .
-		"{" => shift 197
-		"\n" => reduce 334
-		$default => reduce 334
+		"{" => shift 196
+		"\n" => reduce 333
+		$default => reduce 333
 
-150:	loc-spec => "locate" "type" qual-ident . "at" string
-		"at" => shift 196
-
-151:	loc-spec => "locate" "topology" qual-ident . "at" string
+149:	loc-spec => "locate" "type" qual-ident . "at" string
 		"at" => shift 195
 
-152:	loc-spec => "locate" "state" "machine" . qual-ident "at" string
+150:	loc-spec => "locate" "topology" qual-ident . "at" string
+		"at" => shift 194
+
+151:	loc-spec => "locate" "state" "machine" . qual-ident "at" string
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
@@ -2019,21 +2007,21 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 194
+		qual-ident => shift 193
 
-153:	loc-spec => "locate" "port" qual-ident . "at" string
-		"at" => shift 193
-
-154:	loc-spec => "locate" "constant" qual-ident . "at" string
+152:	loc-spec => "locate" "port" qual-ident . "at" string
 		"at" => shift 192
 
-155:	loc-spec => "locate" "component" qual-ident . "at" string
+153:	loc-spec => "locate" "constant" qual-ident . "at" string
 		"at" => shift 191
 
-156:	loc-spec => "locate" "instance" qual-ident . "at" string
+154:	loc-spec => "locate" "component" qual-ident . "at" string
 		"at" => shift 190
 
-157:	topology-defn => "topology" ident "{" . topo-mem-seq "}"
+155:	loc-spec => "locate" "instance" qual-ident . "at" string
+		"at" => shift 189
+
+156:	topology-defn => "topology" ident "{" . topo-mem-seq "}"
 	topo-mem-seq => .
 	topo-mem-seq => . topo-mem mem-sep topo-mem-seq
 	topo-mem-seq => . include-spec mem-sep topo-mem-seq
@@ -2058,44 +2046,44 @@
 	pattern-kind => . "telemetry"
 	pattern-kind => . "time"
 	pattern-kind => . "text" "event"
-		"text" => shift 171
-		"time" => shift 172
-		"param" => shift 173
-		"health" => shift 174
-		"event" => shift 175
-		"command" => shift 176
+		"text" => shift 170
+		"time" => shift 171
+		"param" => shift 172
+		"health" => shift 173
+		"event" => shift 174
+		"command" => shift 175
 		'$lone-anno => shift 25
-		"telemetry" => shift 177
-		pattern-kind => shift 178
-		"connections" => shift 179
-		"private" => shift 180
-		"instance" => shift 181
-		"import" => shift 182
-		tlm-pktset-spec => shift 183
-		conn-graph-spec => shift 184
-		comp-inst-spec => shift 185
-		lone-anno => shift 186
+		"telemetry" => shift 176
+		pattern-kind => shift 177
+		"connections" => shift 178
+		"private" => shift 179
+		"instance" => shift 180
+		"import" => shift 181
+		tlm-pktset-spec => shift 182
+		conn-graph-spec => shift 183
+		comp-inst-spec => shift 184
+		lone-anno => shift 185
 		"include" => shift 50
-		include-spec => shift 187
-		topo-mem => shift 188
-		topo-mem-seq => shift 189
+		include-spec => shift 186
+		topo-mem => shift 187
+		topo-mem-seq => shift 188
 		$default => reduce 220
 
-158:	component-defn => comp-kind "component" ident . "{" comp-mem-seq "}"
-		"{" => shift 170
+157:	component-defn => comp-kind "component" ident . "{" comp-mem-seq "}"
+		"{" => shift 169
 
-159:	array-defn => "array" ident "=" . index ident code-anno
+158:	array-defn => "array" ident "=" . index ident code-anno
 	index => . "[" expr "]"
 	array-defn => "array" ident "=" . index ident
 	index => . "[" expr "]"
-		"[" => shift 168
-		index => shift 169
+		"[" => shift 167
+		index => shift 168
 
-160:	abs-type-defn => "type" ident code-anno .
+159:	abs-type-defn => "type" ident code-anno .
 		"\n" => reduce 29
 		$default => reduce 29
 
-161:	const-defn => "constant" ident "=" . expr code-anno
+160:	const-defn => "constant" ident "=" . expr code-anno
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -2158,9 +2146,9 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 167
+		expr => shift 166
 
-162:	module-defn => "module" ident "{" . module-mem-seq "}"
+161:	module-defn => "module" ident "{" . module-mem-seq "}"
 	module-mem-seq => .
 	module-mem-seq => . mod-mem mem-sep module-mem-seq
 	module-mem-seq => . include-spec mem-sep module-mem-seq
@@ -2291,35 +2279,34 @@
 		"include" => shift 50
 		include-spec => shift 51
 		mod-mem => shift 52
-		module-mem-seq => shift 166
+		module-mem-seq => shift 165
 		$default => reduce 9
 
-163:	module-mem-seq => include-spec mem-sep module-mem-seq .
+162:	module-mem-seq => include-spec mem-sep module-mem-seq .
 		$default => reduce 11
 
-164:	mem-sep => mem-sep "\n" .
+163:	mem-sep => mem-sep "\n" .
 		'$lone-anno => reduce 6
 		"\n" => reduce 6
 		$default => reduce 6
 
-165:	module-mem-seq => mod-mem mem-sep module-mem-seq .
+164:	module-mem-seq => mod-mem mem-sep module-mem-seq .
 		$default => reduce 10
 
-166:	module-defn => "module" ident "{" module-mem-seq . "}"
-		"}" => shift 365
+165:	module-defn => "module" ident "{" module-mem-seq . "}"
+		"}" => shift 363
 
-167:	const-defn => "constant" ident "=" expr .
+166:	const-defn => "constant" ident "=" expr .
 	const-defn => "constant" ident "=" expr . code-anno
 	code-anno => . code-anno-list
 	code-anno-list => . '$code-anno
-	code-anno-list => . code-anno-list "\n" '$code-anno
 		'$code-anno => shift 75
 		code-anno-list => shift 76
-		code-anno => shift 364
+		code-anno => shift 362
 		"\n" => reduce 26
 		$default => reduce 26
 
-168:	index => "[" . expr "]"
+167:	index => "[" . expr "]"
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -2359,16 +2346,16 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 363
+		expr => shift 361
 
-169:	array-defn => "array" ident "=" index . ident
+168:	array-defn => "array" ident "=" index . ident
 	ident => . '$ident
 	array-defn => "array" ident "=" index . ident code-anno
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 362
+		ident => shift 360
 
-170:	component-defn => comp-kind "component" ident "{" . comp-mem-seq "}"
+169:	component-defn => comp-kind "component" ident "{" . comp-mem-seq "}"
 	comp-mem-seq => .
 	comp-mem-seq => . comp-mem mem-sep comp-mem-seq
 	comp-mem-seq => . include-spec mem-sep comp-mem-seq
@@ -2510,139 +2497,139 @@
 	tlm-chan-1 => . tlm-chan-0 "id" expr
 	event-spec-0 => . "event" ident
 	tlm-chan-0 => . "telemetry" ident ":" type-name
-		tlm-chan-0 => shift 285
-		event-spec-0 => shift 286
-		"time" => shift 287
-		"text" => shift 288
-		"telemetry" => shift 289
-		"param" => shift 290
-		"event" => shift 291
-		"command" => shift 292
-		"output" => shift 293
+		tlm-chan-0 => shift 283
+		event-spec-0 => shift 284
+		"time" => shift 285
+		"text" => shift 286
+		"telemetry" => shift 287
+		"param" => shift 288
+		"event" => shift 289
+		"command" => shift 290
+		"output" => shift 291
 		"enum" => shift 5
-		tlm-chan-1 => shift 294
-		param-spec-0 => shift 295
-		event-spec-1 => shift 296
-		"sync" => shift 297
-		"guarded" => shift 298
-		"async" => shift 299
-		cmd-spec-0 => shift 300
-		"internal" => shift 301
-		spc-port-kind => shift 302
-		gen-port-inst-0 => shift 303
+		tlm-chan-1 => shift 292
+		param-spec-0 => shift 293
+		event-spec-1 => shift 294
+		"sync" => shift 295
+		"guarded" => shift 296
+		"async" => shift 297
+		cmd-spec-0 => shift 298
+		"internal" => shift 299
+		spc-port-kind => shift 300
+		gen-port-inst-0 => shift 301
 		enum-defn-0 => shift 8
-		"product" => shift 304
-		tlm-chan-2 => shift 305
-		param-spec-1 => shift 306
-		event-spec-2 => shift 307
-		cmd-spec-1 => shift 308
-		int-port-defn-0 => shift 309
-		input-port-kind => shift 310
-		spc-port-inst-0 => shift 311
-		gen-port-inst-1 => shift 312
+		"product" => shift 302
+		tlm-chan-2 => shift 303
+		param-spec-1 => shift 304
+		event-spec-2 => shift 305
+		cmd-spec-1 => shift 306
+		int-port-defn-0 => shift 307
+		input-port-kind => shift 308
+		spc-port-inst-0 => shift 309
+		gen-port-inst-1 => shift 310
 		"struct" => shift 11
 		enum-defn-1 => shift 12
-		stmach-inst-0 => shift 313
-		cont-spec-0 => shift 314
-		record-spec-0 => shift 315
-		tlm-chan-3 => shift 316
-		param-spec-2 => shift 317
-		event-spec-3 => shift 318
-		cmd-spec-2 => shift 319
-		int-port-defn-1 => shift 320
-		spc-port-inst-1 => shift 321
-		gen-port-inst-2 => shift 322
+		stmach-inst-0 => shift 311
+		cont-spec-0 => shift 312
+		record-spec-0 => shift 313
+		tlm-chan-3 => shift 314
+		param-spec-2 => shift 315
+		event-spec-3 => shift 316
+		cmd-spec-2 => shift 317
+		int-port-defn-1 => shift 318
+		spc-port-inst-1 => shift 319
+		gen-port-inst-2 => shift 320
 		struct-defn-0 => shift 15
 		enum-defn-2 => shift 16
-		stmach-inst-1 => shift 323
-		cont-spec-1 => shift 324
-		record-spec-1 => shift 325
-		tlm-chan-4 => shift 326
-		param-spec-3 => shift 327
-		event-spec-4 => shift 328
-		cmd-spec-3 => shift 329
-		int-port-defn-2 => shift 330
-		spc-port-inst-2 => shift 331
-		gen-port-inst-3 => shift 332
+		stmach-inst-1 => shift 321
+		cont-spec-1 => shift 322
+		record-spec-1 => shift 323
+		tlm-chan-4 => shift 324
+		param-spec-3 => shift 325
+		event-spec-4 => shift 326
+		cmd-spec-3 => shift 327
+		int-port-defn-2 => shift 328
+		spc-port-inst-2 => shift 329
+		gen-port-inst-3 => shift 330
 		struct-defn-1 => shift 22
 		enum-defn-3 => shift 23
-		"state" => shift 333
-		stmach-inst-2 => shift 334
+		"state" => shift 331
+		stmach-inst-2 => shift 332
 		'$lone-anno => shift 25
-		"match" => shift 335
-		cont-spec-2 => shift 336
-		record-spec-2 => shift 337
-		tlm-chan-5 => shift 338
-		param-spec-4 => shift 339
-		event-spec-5 => shift 340
-		cmd-spec-4 => shift 341
-		int-port-defn-3 => shift 342
-		spc-port-inst-3 => shift 343
-		gen-port-inst-4 => shift 344
+		"match" => shift 333
+		cont-spec-2 => shift 334
+		record-spec-2 => shift 335
+		tlm-chan-5 => shift 336
+		param-spec-4 => shift 337
+		event-spec-5 => shift 338
+		cmd-spec-4 => shift 339
+		int-port-defn-3 => shift 340
+		spc-port-inst-3 => shift 341
+		gen-port-inst-4 => shift 342
 		struct-defn-2 => shift 31
 		enum-defn-4 => shift 32
-		stmach-inst => shift 345
-		stmach-defn => shift 346
-		tlm-chan-spec => shift 347
-		prod-cont-spec => shift 348
-		record-spec => shift 349
-		param-spec => shift 350
-		event-spec => shift 351
-		command-spec => shift 352
-		port-match-spec => shift 353
-		port-inst => shift 354
-		int-port-spec => shift 355
-		struct-defn => shift 356
-		enum-defn => shift 357
-		lone-anno => shift 358
+		stmach-inst => shift 343
+		stmach-defn => shift 344
+		tlm-chan-spec => shift 345
+		prod-cont-spec => shift 346
+		record-spec => shift 347
+		param-spec => shift 348
+		event-spec => shift 349
+		command-spec => shift 350
+		port-match-spec => shift 351
+		port-inst => shift 352
+		int-port-spec => shift 353
+		struct-defn => shift 354
+		enum-defn => shift 355
+		lone-anno => shift 356
 		"include" => shift 50
-		include-spec => shift 359
-		comp-mem => shift 360
-		comp-mem-seq => shift 361
+		include-spec => shift 357
+		comp-mem => shift 358
+		comp-mem-seq => shift 359
 		$default => reduce 75
 
-171:	pattern-kind => "text" . "event"
-		"event" => shift 284
+170:	pattern-kind => "text" . "event"
+		"event" => shift 282
 
-172:	pattern-kind => "time" .
+171:	pattern-kind => "time" .
 		$default => reduce 238
 
-173:	pattern-kind => "param" .
+172:	pattern-kind => "param" .
 		$default => reduce 236
 
-174:	pattern-kind => "health" .
+173:	pattern-kind => "health" .
 		$default => reduce 235
 
-175:	pattern-kind => "event" .
+174:	pattern-kind => "event" .
 		$default => reduce 234
 
-176:	pattern-kind => "command" .
+175:	pattern-kind => "command" .
 		$default => reduce 233
 
-177:	pattern-kind => "telemetry" .
+176:	pattern-kind => "telemetry" .
 	tlm-pktset-spec => "telemetry" . "packets" ident "{" tlm-pktgrp-mem-seq "}" "omit" "{" tlm-chan-id-seq "}"
 	tlm-pktset-spec => "telemetry" . "packets" ident "{" tlm-pktgrp-mem-seq "}"
-		"packets" => shift 283
+		"packets" => shift 281
 		$default => reduce 237
 
-178:	conn-graph-spec => pattern-kind . "connections" "instance" qual-ident "{" qual-ident-seq "}"
+177:	conn-graph-spec => pattern-kind . "connections" "instance" qual-ident "{" qual-ident-seq "}"
 	conn-graph-spec => pattern-kind . "connections" "instance" qual-ident
-		"connections" => shift 282
+		"connections" => shift 280
 
-179:	conn-graph-spec => "connections" . ident "{" conn-seq "}"
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 281
-
-180:	comp-inst-spec => "private" . "instance" ident
-		"instance" => shift 280
-
-181:	comp-inst-spec => "instance" . ident
+178:	conn-graph-spec => "connections" . ident "{" conn-seq "}"
 	ident => . '$ident
 		'$ident => shift 60
 		ident => shift 279
 
-182:	topo-mem => "import" . qual-ident
+179:	comp-inst-spec => "private" . "instance" ident
+		"instance" => shift 278
+
+180:	comp-inst-spec => "instance" . ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 277
+
+181:	topo-mem => "import" . qual-ident
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
@@ -2650,77 +2637,77 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 278
+		qual-ident => shift 276
 
-183:	topo-mem => tlm-pktset-spec .
+182:	topo-mem => tlm-pktset-spec .
 		"\n" => reduce 226
 		$default => reduce 226
 
-184:	topo-mem => conn-graph-spec .
+183:	topo-mem => conn-graph-spec .
 		"\n" => reduce 225
 		$default => reduce 225
 
-185:	topo-mem => comp-inst-spec .
+184:	topo-mem => comp-inst-spec .
 		"\n" => reduce 224
 		$default => reduce 224
 
-186:	topo-mem => lone-anno .
+185:	topo-mem => lone-anno .
 		"\n" => reduce 223
 		$default => reduce 223
 
-187:	topo-mem-seq => include-spec . mem-sep topo-mem-seq
+186:	topo-mem-seq => include-spec . mem-sep topo-mem-seq
 	mem-sep => . ";"
 	mem-sep => . "\n"
 	mem-sep => . mem-sep "\n"
 		"\n" => shift 55
 		";" => shift 56
-		mem-sep => shift 277
+		mem-sep => shift 275
 
-188:	topo-mem-seq => topo-mem . mem-sep topo-mem-seq
+187:	topo-mem-seq => topo-mem . mem-sep topo-mem-seq
 	mem-sep => . ";"
 	mem-sep => . "\n"
 	mem-sep => . mem-sep "\n"
 		"\n" => shift 55
 		";" => shift 56
-		mem-sep => shift 276
+		mem-sep => shift 274
 
-189:	topology-defn => "topology" ident "{" topo-mem-seq . "}"
-		"}" => shift 275
+188:	topology-defn => "topology" ident "{" topo-mem-seq . "}"
+		"}" => shift 273
 
-190:	loc-spec => "locate" "instance" qual-ident "at" . string
-	string => . '$string
-		'$string => shift 98
-		string => shift 274
-
-191:	loc-spec => "locate" "component" qual-ident "at" . string
-	string => . '$string
-		'$string => shift 98
-		string => shift 273
-
-192:	loc-spec => "locate" "constant" qual-ident "at" . string
+189:	loc-spec => "locate" "instance" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 98
 		string => shift 272
 
-193:	loc-spec => "locate" "port" qual-ident "at" . string
+190:	loc-spec => "locate" "component" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 98
 		string => shift 271
 
-194:	loc-spec => "locate" "state" "machine" qual-ident . "at" string
-		"at" => shift 270
+191:	loc-spec => "locate" "constant" qual-ident "at" . string
+	string => . '$string
+		'$string => shift 98
+		string => shift 270
 
-195:	loc-spec => "locate" "topology" qual-ident "at" . string
+192:	loc-spec => "locate" "port" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 98
 		string => shift 269
 
-196:	loc-spec => "locate" "type" qual-ident "at" . string
+193:	loc-spec => "locate" "state" "machine" qual-ident . "at" string
+		"at" => shift 268
+
+194:	loc-spec => "locate" "topology" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 98
-		string => shift 268
+		string => shift 267
 
-197:	stmach-defn => "state" "machine" ident "{" . stmach-mem-seq "}"
+195:	loc-spec => "locate" "type" qual-ident "at" . string
+	string => . '$string
+		'$string => shift 98
+		string => shift 266
+
+196:	stmach-defn => "state" "machine" ident "{" . stmach-mem-seq "}"
 	stmach-mem-seq => .
 	stmach-mem-seq => . stmach-mem mem-sep stmach-mem-seq
 	stmach-mem => . lone-anno
@@ -2736,41 +2723,37 @@
 	lone-anno => . '$lone-anno
 	state-defn => . "state" ident
 	state-defn => . "state" ident "{" state-defn-mem-seq "}"
-		"state" => shift 258
+		"state" => shift 256
 		'$lone-anno => shift 25
-		state-defn => shift 259
-		"initial" => shift 260
-		"signal" => shift 261
-		"guard" => shift 262
-		"action" => shift 263
-		"choice" => shift 264
-		lone-anno => shift 265
-		stmach-mem => shift 266
-		stmach-mem-seq => shift 267
-		$default => reduce 336
+		state-defn => shift 257
+		"initial" => shift 258
+		"signal" => shift 259
+		"guard" => shift 260
+		"action" => shift 261
+		"choice" => shift 262
+		lone-anno => shift 263
+		stmach-mem => shift 264
+		stmach-mem-seq => shift 265
+		$default => reduce 335
 
-198:	code-anno-list => code-anno-list "\n" '$code-anno .
-		"\n" => reduce 306
-		$default => reduce 306
-
-199:	comp-inst-7 => comp-inst-6 "{" string "}" .
+197:	comp-inst-7 => comp-inst-6 "{" string "}" .
 		"\n" => reduce 218
 		$default => reduce 218
 
-200:	enum-defn-2 => enum-defn-1 "{" enum-mem-seq "}" .
+198:	enum-defn-2 => enum-defn-1 "{" enum-mem-seq "}" .
 		"\n" => reduce 36
 		'$code-anno => reduce 36
 		$default => reduce 36
 
-201:	elt-sep => "\n" .
+199:	elt-sep => "\n" .
 		"\n" => reduce 2
 		$default => reduce 2
 
-202:	elt-sep => "," .
+200:	elt-sep => "," .
 		"\n" => reduce 1
 		$default => reduce 1
 
-203:	elt-sep => elt-sep . "\n"
+201:	elt-sep => elt-sep . "\n"
 	enum-mem-seq => enum-mem elt-sep . enum-mem-seq
 	enum-mem-seq => .
 	enum-mem-seq => . enum-mem elt-sep enum-mem-seq
@@ -2782,15 +2765,15 @@
 		'$ident => shift 60
 		ident => shift 140
 		enum-mem => shift 141
-		enum-mem-seq => shift 257
-		"\n" => shift 248
+		enum-mem-seq => shift 255
+		"\n" => shift 246
 		$default => reduce 41
 
-204:	enum-mem => ident code-anno .
+202:	enum-mem => ident code-anno .
 		"\n" => reduce 44
 		$default => reduce 44
 
-205:	enum-mem => ident "=" . expr
+203:	enum-mem => ident "=" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -2853,17 +2836,17 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 256
+		expr => shift 254
 
-206:	struct-mem-0 => ident . ":"
-		":" => shift 255
+204:	struct-mem-0 => ident . ":"
+		":" => shift 253
 
-207:	struct-mem-1 => struct-mem-0 . "[" expr "]"
+205:	struct-mem-1 => struct-mem-0 . "[" expr "]"
 	struct-mem-1 => struct-mem-0 .
-		"[" => shift 254
+		"[" => shift 252
 		$default => reduce 58
 
-208:	struct-mem-2 => struct-mem-1 . type-name
+206:	struct-mem-2 => struct-mem-1 . type-name
 	type-name => . qual-ident
 	type-name => . "I8"
 	type-name => . "U8"
@@ -2898,43 +2881,42 @@
 		"U8" => shift 115
 		"I8" => shift 116
 		qual-ident => shift 117
-		type-name => shift 253
+		type-name => shift 251
 
-209:	struct-mem-3 => struct-mem-2 . "format" string
+207:	struct-mem-3 => struct-mem-2 . "format" string
 	struct-mem-3 => struct-mem-2 .
-		"format" => shift 252
+		"format" => shift 250
 		'$code-anno => reduce 61
 		"\n" => reduce 61
 		$default => reduce 61
 
-210:	struct-mem => struct-mem-3 . code-anno
+208:	struct-mem => struct-mem-3 . code-anno
 	code-anno => . code-anno-list
 	code-anno-list => . '$code-anno
-	code-anno-list => . code-anno-list "\n" '$code-anno
 	struct-mem => struct-mem-3 .
 		'$code-anno => shift 75
 		code-anno-list => shift 76
-		code-anno => shift 251
+		code-anno => shift 249
 		"\n" => reduce 55
 		$default => reduce 55
 
-211:	struct-mem-seq => struct-mem . mem-sep struct-mem-seq
+209:	struct-mem-seq => struct-mem . mem-sep struct-mem-seq
 	mem-sep => . ";"
 	mem-sep => . "\n"
 	mem-sep => . mem-sep "\n"
 		"\n" => shift 55
 		";" => shift 56
-		mem-sep => shift 250
+		mem-sep => shift 248
 
-212:	struct-defn-0 => "struct" ident "{" struct-mem-seq . "}"
-		"}" => shift 249
+210:	struct-defn-0 => "struct" ident "{" struct-mem-seq . "}"
+		"}" => shift 247
 
-213:	port-defn-1 => port-defn-0 "(" param-list ")" .
+211:	port-defn-1 => port-defn-0 "(" param-list ")" .
 		"\n" => reduce 66
 		'$code-anno => reduce 66
 		$default => reduce 66
 
-214:	elt-sep => elt-sep . "\n"
+212:	elt-sep => elt-sep . "\n"
 	param-list-1 => formal-param elt-sep . param-list-1
 	param-list-1 => .
 	param-list-1 => . formal-param elt-sep param-list-1
@@ -2948,15 +2930,15 @@
 		ident => shift 134
 		formal-param-1 => shift 135
 		formal-param => shift 136
-		param-list-1 => shift 247
-		"\n" => shift 248
+		param-list-1 => shift 245
+		"\n" => shift 246
 		$default => reduce 261
 
-215:	formal-param => formal-param-1 code-anno .
+213:	formal-param => formal-param-1 code-anno .
 		"\n" => reduce 264
 		$default => reduce 264
 
-216:	formal-param-1 => ident ":" . type-name
+214:	formal-param-1 => ident ":" . type-name
 	type-name => . qual-ident
 	type-name => . "I8"
 	type-name => . "U8"
@@ -2991,12 +2973,12 @@
 		"U8" => shift 115
 		"I8" => shift 116
 		qual-ident => shift 117
-		type-name => shift 246
+		type-name => shift 244
 
-217:	formal-param-1 => "ref" ident . ":" type-name
-		":" => shift 245
+215:	formal-param-1 => "ref" ident . ":" type-name
+		":" => shift 243
 
-218:	add-expr => add-expr "+" . mul-expr
+216:	add-expr => add-expr "+" . mul-expr
 	mul-expr => . unary-expr
 	mul-expr => . mul-expr "*" unary-expr
 	mul-expr => . mul-expr "/" unary-expr
@@ -3030,9 +3012,9 @@
 		"-" => shift 127
 		prim-expr => shift 128
 		unary-expr => shift 129
-		mul-expr => shift 244
+		mul-expr => shift 242
 
-219:	add-expr => add-expr "-" . mul-expr
+217:	add-expr => add-expr "-" . mul-expr
 	mul-expr => . unary-expr
 	mul-expr => . mul-expr "*" unary-expr
 	mul-expr => . mul-expr "/" unary-expr
@@ -3066,9 +3048,9 @@
 		"-" => shift 127
 		prim-expr => shift 128
 		unary-expr => shift 129
-		mul-expr => shift 243
+		mul-expr => shift 241
 
-220:	mul-expr => mul-expr "*" . unary-expr
+218:	mul-expr => mul-expr "*" . unary-expr
 	unary-expr => . prim-expr
 	unary-expr => . "-" unary-expr
 	prim-expr => . qual-ident
@@ -3098,9 +3080,9 @@
 		qual-ident => shift 126
 		"-" => shift 127
 		prim-expr => shift 128
-		unary-expr => shift 242
+		unary-expr => shift 240
 
-221:	mul-expr => mul-expr "/" . unary-expr
+219:	mul-expr => mul-expr "/" . unary-expr
 	unary-expr => . prim-expr
 	unary-expr => . "-" unary-expr
 	prim-expr => . qual-ident
@@ -3130,36 +3112,36 @@
 		qual-ident => shift 126
 		"-" => shift 127
 		prim-expr => shift 128
-		unary-expr => shift 241
+		unary-expr => shift 239
 
-222:	unary-expr => "-" unary-expr .
+220:	unary-expr => "-" unary-expr .
 		"\n" => reduce 288
 		'$code-anno => reduce 288
 		$default => reduce 288
 
-223:	expr-seq => expr . elt-sep expr-seq
+221:	expr-seq => expr . elt-sep expr-seq
 	elt-sep => . ","
 	elt-sep => . "\n"
 	elt-sep => . elt-sep "\n"
 	expr-seq => expr .
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 240
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 238
 		$default => reduce 295
 
-224:	prim-expr => "[" expr-seq . "]"
-		"]" => shift 239
+222:	prim-expr => "[" expr-seq . "]"
+		"]" => shift 237
 
-225:	struct-elt-seq => ident . "=" expr elt-sep struct-elt-seq
-		"=" => shift 238
+223:	struct-elt-seq => ident . "=" expr elt-sep struct-elt-seq
+		"=" => shift 236
 
-226:	prim-expr => "{" struct-elt-seq . "}"
-		"}" => shift 237
+224:	prim-expr => "{" struct-elt-seq . "}"
+		"}" => shift 235
 
-227:	prim-expr => "(" expr . ")"
-		")" => shift 236
+225:	prim-expr => "(" expr . ")"
+		")" => shift 234
 
-228:	type-name => "string" "size" . expr
+226:	type-name => "string" "size" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3199,48 +3181,48 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 235
+		expr => shift 233
 
-229:	qual-ident-1 => qual-ident-1 "." . ident
+227:	qual-ident-1 => qual-ident-1 "." . ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 234
+		ident => shift 232
 
-230:	comp-inst-4 => comp-inst-3 "stack" "size" expr .
+228:	comp-inst-4 => comp-inst-3 "stack" "size" expr .
 		"\n" => reduce 212
 		$default => reduce 212
 
-231:	comp-inst-3 => comp-inst-2 "queue" "size" expr .
+229:	comp-inst-3 => comp-inst-2 "queue" "size" expr .
 		"\n" => reduce 210
 		$default => reduce 210
 
-232:	comp-inst-0 => "instance" ident ":" qual-ident . "base" "id" expr
-		"base" => shift 233
+230:	comp-inst-0 => "instance" ident ":" qual-ident . "base" "id" expr
+		"base" => shift 231
 
-233:	comp-inst-0 => "instance" ident ":" qual-ident "base" . "id" expr
-		"id" => shift 466
+231:	comp-inst-0 => "instance" ident ":" qual-ident "base" . "id" expr
+		"id" => shift 464
 
-234:	qual-ident-1 => qual-ident-1 "." ident .
-		"\n" => reduce 309
-		'$code-anno => reduce 309
-		$default => reduce 309
+232:	qual-ident-1 => qual-ident-1 "." ident .
+		"\n" => reduce 308
+		'$code-anno => reduce 308
+		$default => reduce 308
 
-235:	type-name => "string" "size" expr .
-		'$code-anno => reduce 326
-		"\n" => reduce 326
-		$default => reduce 326
+233:	type-name => "string" "size" expr .
+		'$code-anno => reduce 325
+		"\n" => reduce 325
+		$default => reduce 325
 
-236:	prim-expr => "(" expr ")" .
+234:	prim-expr => "(" expr ")" .
 		"\n" => reduce 294
 		'$code-anno => reduce 294
 		$default => reduce 294
 
-237:	prim-expr => "{" struct-elt-seq "}" .
+235:	prim-expr => "{" struct-elt-seq "}" .
 		"\n" => reduce 293
 		'$code-anno => reduce 293
 		$default => reduce 293
 
-238:	struct-elt-seq => ident "=" . expr elt-sep struct-elt-seq
+236:	struct-elt-seq => ident "=" . expr elt-sep struct-elt-seq
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3280,14 +3262,14 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 465
+		expr => shift 463
 
-239:	prim-expr => "[" expr-seq "]" .
+237:	prim-expr => "[" expr-seq "]" .
 		"\n" => reduce 292
 		'$code-anno => reduce 292
 		$default => reduce 292
 
-240:	elt-sep => elt-sep . "\n"
+238:	elt-sep => elt-sep . "\n"
 	expr-seq => expr elt-sep . expr-seq
 	expr-seq => . expr
 	expr-seq => . expr elt-sep expr-seq
@@ -3330,39 +3312,39 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 223
-		expr-seq => shift 464
-		"\n" => shift 248
+		expr => shift 221
+		expr-seq => shift 462
+		"\n" => shift 246
 
-241:	mul-expr => mul-expr "/" unary-expr .
+239:	mul-expr => mul-expr "/" unary-expr .
 		"\n" => reduce 286
 		'$code-anno => reduce 286
 		$default => reduce 286
 
-242:	mul-expr => mul-expr "*" unary-expr .
+240:	mul-expr => mul-expr "*" unary-expr .
 		"\n" => reduce 285
 		'$code-anno => reduce 285
 		$default => reduce 285
 
-243:	mul-expr => mul-expr . "/" unary-expr
+241:	mul-expr => mul-expr . "/" unary-expr
 	mul-expr => mul-expr . "*" unary-expr
 	add-expr => add-expr "-" mul-expr .
-		"*" => shift 220
-		"/" => shift 221
+		"*" => shift 218
+		"/" => shift 219
 		"\n" => reduce 283
 		'$code-anno => reduce 283
 		$default => reduce 283
 
-244:	mul-expr => mul-expr . "/" unary-expr
+242:	mul-expr => mul-expr . "/" unary-expr
 	mul-expr => mul-expr . "*" unary-expr
 	add-expr => add-expr "+" mul-expr .
-		"*" => shift 220
-		"/" => shift 221
+		"*" => shift 218
+		"/" => shift 219
 		"\n" => reduce 282
 		'$code-anno => reduce 282
 		$default => reduce 282
 
-245:	formal-param-1 => "ref" ident ":" . type-name
+243:	formal-param-1 => "ref" ident ":" . type-name
 	type-name => . qual-ident
 	type-name => . "I8"
 	type-name => . "U8"
@@ -3397,26 +3379,26 @@
 		"U8" => shift 115
 		"I8" => shift 116
 		qual-ident => shift 117
-		type-name => shift 463
+		type-name => shift 461
 
-246:	formal-param-1 => ident ":" type-name .
+244:	formal-param-1 => ident ":" type-name .
 		'$code-anno => reduce 265
 		"\n" => reduce 265
 		$default => reduce 265
 
-247:	param-list-1 => formal-param elt-sep param-list-1 .
+245:	param-list-1 => formal-param elt-sep param-list-1 .
 		$default => reduce 262
 
-248:	elt-sep => elt-sep "\n" .
+246:	elt-sep => elt-sep "\n" .
 		"\n" => reduce 3
 		$default => reduce 3
 
-249:	struct-defn-0 => "struct" ident "{" struct-mem-seq "}" .
+247:	struct-defn-0 => "struct" ident "{" struct-mem-seq "}" .
 		"\n" => reduce 48
 		'$code-anno => reduce 48
 		$default => reduce 48
 
-250:	mem-sep => mem-sep . "\n"
+248:	mem-sep => mem-sep . "\n"
 	struct-mem-seq => struct-mem mem-sep . struct-mem-seq
 	struct-mem-seq => .
 	struct-mem-seq => . struct-mem mem-sep struct-mem-seq
@@ -3430,31 +3412,31 @@
 	struct-mem-0 => . ident ":"
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 206
-		struct-mem-0 => shift 207
-		struct-mem-1 => shift 208
-		struct-mem-2 => shift 209
-		struct-mem-3 => shift 210
-		struct-mem => shift 211
-		struct-mem-seq => shift 462
-		"\n" => shift 164
+		ident => shift 204
+		struct-mem-0 => shift 205
+		struct-mem-1 => shift 206
+		struct-mem-2 => shift 207
+		struct-mem-3 => shift 208
+		struct-mem => shift 209
+		struct-mem-seq => shift 460
+		"\n" => shift 163
 		$default => reduce 53
 
-251:	struct-mem => struct-mem-3 code-anno .
+249:	struct-mem => struct-mem-3 code-anno .
 		"\n" => reduce 56
 		$default => reduce 56
 
-252:	struct-mem-3 => struct-mem-2 "format" . string
+250:	struct-mem-3 => struct-mem-2 "format" . string
 	string => . '$string
 		'$string => shift 98
-		string => shift 461
+		string => shift 459
 
-253:	struct-mem-2 => struct-mem-1 type-name .
+251:	struct-mem-2 => struct-mem-1 type-name .
 		"\n" => reduce 60
 		'$code-anno => reduce 60
 		$default => reduce 60
 
-254:	struct-mem-1 => struct-mem-0 "[" . expr "]"
+252:	struct-mem-1 => struct-mem-0 "[" . expr "]"
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -3494,124 +3476,123 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 460
+		expr => shift 458
 
-255:	struct-mem-0 => ident ":" .
+253:	struct-mem-0 => ident ":" .
 		$default => reduce 57
 
-256:	enum-mem => ident "=" expr . code-anno
+254:	enum-mem => ident "=" expr . code-anno
 	code-anno => . code-anno-list
 	code-anno-list => . '$code-anno
-	code-anno-list => . code-anno-list "\n" '$code-anno
 	enum-mem => ident "=" expr .
 		'$code-anno => shift 75
 		code-anno-list => shift 76
-		code-anno => shift 459
+		code-anno => shift 457
 		"\n" => reduce 45
 		$default => reduce 45
 
-257:	enum-mem-seq => enum-mem elt-sep enum-mem-seq .
+255:	enum-mem-seq => enum-mem elt-sep enum-mem-seq .
 		$default => reduce 42
 
-258:	state-defn => "state" . ident "{" state-defn-mem-seq "}"
+256:	state-defn => "state" . ident "{" state-defn-mem-seq "}"
 	ident => . '$ident
 	state-defn => "state" . ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 458
+		ident => shift 456
 
-259:	stmach-mem => state-defn .
-		"\n" => reduce 347
-		$default => reduce 347
+257:	stmach-mem => state-defn .
+		"\n" => reduce 346
+		$default => reduce 346
 
-260:	stmach-mem => "initial" . trans-expr
+258:	stmach-mem => "initial" . trans-expr
 	trans-expr => . trans-expr-1
 	trans-expr-1 => . trans-expr-0
 	trans-expr-1 => . do-expr trans-expr-0
 	trans-expr-0 => . "enter" qual-ident
 	do-expr => . "do" "{" action-seq "}"
-		"do" => shift 452
-		"enter" => shift 453
-		do-expr => shift 454
-		trans-expr-0 => shift 455
-		trans-expr-1 => shift 456
-		trans-expr => shift 457
+		"do" => shift 450
+		"enter" => shift 451
+		do-expr => shift 452
+		trans-expr-0 => shift 453
+		trans-expr-1 => shift 454
+		trans-expr => shift 455
 
-261:	stmach-mem => "signal" . ident ":" type-name
+259:	stmach-mem => "signal" . ident ":" type-name
 	ident => . '$ident
 	stmach-mem => "signal" . ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 451
+		ident => shift 449
 
-262:	stmach-mem => "guard" . ident ":" type-name
+260:	stmach-mem => "guard" . ident ":" type-name
 	ident => . '$ident
 	stmach-mem => "guard" . ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 450
+		ident => shift 448
 
-263:	stmach-mem => "action" . ident ":" type-name
+261:	stmach-mem => "action" . ident ":" type-name
 	ident => . '$ident
 	stmach-mem => "action" . ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 449
+		ident => shift 447
 
-264:	stmach-mem => "choice" . ident "{" "if" ident trans-expr "else" trans-expr "}"
+262:	stmach-mem => "choice" . ident "{" "if" ident trans-expr "else" trans-expr "}"
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 448
+		ident => shift 446
 
-265:	stmach-mem => lone-anno .
-		"\n" => reduce 338
-		$default => reduce 338
+263:	stmach-mem => lone-anno .
+		"\n" => reduce 337
+		$default => reduce 337
 
-266:	stmach-mem-seq => stmach-mem . mem-sep stmach-mem-seq
+264:	stmach-mem-seq => stmach-mem . mem-sep stmach-mem-seq
 	mem-sep => . ";"
 	mem-sep => . "\n"
 	mem-sep => . mem-sep "\n"
 		"\n" => shift 55
 		";" => shift 56
-		mem-sep => shift 447
+		mem-sep => shift 445
 
-267:	stmach-defn => "state" "machine" ident "{" stmach-mem-seq . "}"
-		"}" => shift 446
+265:	stmach-defn => "state" "machine" ident "{" stmach-mem-seq . "}"
+		"}" => shift 444
 
-268:	loc-spec => "locate" "type" qual-ident "at" string .
+266:	loc-spec => "locate" "type" qual-ident "at" string .
 		"\n" => reduce 278
 		$default => reduce 278
 
-269:	loc-spec => "locate" "topology" qual-ident "at" string .
+267:	loc-spec => "locate" "topology" qual-ident "at" string .
 		"\n" => reduce 277
 		$default => reduce 277
 
-270:	loc-spec => "locate" "state" "machine" qual-ident "at" . string
+268:	loc-spec => "locate" "state" "machine" qual-ident "at" . string
 	string => . '$string
 		'$string => shift 98
-		string => shift 445
+		string => shift 443
 
-271:	loc-spec => "locate" "port" qual-ident "at" string .
+269:	loc-spec => "locate" "port" qual-ident "at" string .
 		"\n" => reduce 275
 		$default => reduce 275
 
-272:	loc-spec => "locate" "constant" qual-ident "at" string .
+270:	loc-spec => "locate" "constant" qual-ident "at" string .
 		"\n" => reduce 274
 		$default => reduce 274
 
-273:	loc-spec => "locate" "component" qual-ident "at" string .
+271:	loc-spec => "locate" "component" qual-ident "at" string .
 		"\n" => reduce 273
 		$default => reduce 273
 
-274:	loc-spec => "locate" "instance" qual-ident "at" string .
+272:	loc-spec => "locate" "instance" qual-ident "at" string .
 		"\n" => reduce 272
 		$default => reduce 272
 
-275:	topology-defn => "topology" ident "{" topo-mem-seq "}" .
+273:	topology-defn => "topology" ident "{" topo-mem-seq "}" .
 		"\n" => reduce 219
 		$default => reduce 219
 
-276:	mem-sep => mem-sep . "\n"
+274:	mem-sep => mem-sep . "\n"
 	topo-mem-seq => topo-mem mem-sep . topo-mem-seq
 	topo-mem-seq => .
 	topo-mem-seq => . topo-mem mem-sep topo-mem-seq
@@ -3637,31 +3618,31 @@
 	pattern-kind => . "telemetry"
 	pattern-kind => . "time"
 	pattern-kind => . "text" "event"
-		"text" => shift 171
-		"time" => shift 172
-		"param" => shift 173
-		"health" => shift 174
-		"event" => shift 175
-		"command" => shift 176
+		"text" => shift 170
+		"time" => shift 171
+		"param" => shift 172
+		"health" => shift 173
+		"event" => shift 174
+		"command" => shift 175
 		'$lone-anno => shift 25
-		"telemetry" => shift 177
-		pattern-kind => shift 178
-		"connections" => shift 179
-		"private" => shift 180
-		"instance" => shift 181
-		"import" => shift 182
-		tlm-pktset-spec => shift 183
-		conn-graph-spec => shift 184
-		comp-inst-spec => shift 185
-		lone-anno => shift 186
+		"telemetry" => shift 176
+		pattern-kind => shift 177
+		"connections" => shift 178
+		"private" => shift 179
+		"instance" => shift 180
+		"import" => shift 181
+		tlm-pktset-spec => shift 182
+		conn-graph-spec => shift 183
+		comp-inst-spec => shift 184
+		lone-anno => shift 185
 		"include" => shift 50
-		include-spec => shift 187
-		topo-mem => shift 188
-		topo-mem-seq => shift 444
-		"\n" => shift 164
+		include-spec => shift 186
+		topo-mem => shift 187
+		topo-mem-seq => shift 442
+		"\n" => shift 163
 		$default => reduce 220
 
-277:	mem-sep => mem-sep . "\n"
+275:	mem-sep => mem-sep . "\n"
 	topo-mem-seq => include-spec mem-sep . topo-mem-seq
 	topo-mem-seq => .
 	topo-mem-seq => . topo-mem mem-sep topo-mem-seq
@@ -3687,194 +3668,194 @@
 	pattern-kind => . "telemetry"
 	pattern-kind => . "time"
 	pattern-kind => . "text" "event"
-		"text" => shift 171
-		"time" => shift 172
-		"param" => shift 173
-		"health" => shift 174
-		"event" => shift 175
-		"command" => shift 176
+		"text" => shift 170
+		"time" => shift 171
+		"param" => shift 172
+		"health" => shift 173
+		"event" => shift 174
+		"command" => shift 175
 		'$lone-anno => shift 25
-		"telemetry" => shift 177
-		pattern-kind => shift 178
-		"connections" => shift 179
-		"private" => shift 180
-		"instance" => shift 181
-		"import" => shift 182
-		tlm-pktset-spec => shift 183
-		conn-graph-spec => shift 184
-		comp-inst-spec => shift 185
-		lone-anno => shift 186
+		"telemetry" => shift 176
+		pattern-kind => shift 177
+		"connections" => shift 178
+		"private" => shift 179
+		"instance" => shift 180
+		"import" => shift 181
+		tlm-pktset-spec => shift 182
+		conn-graph-spec => shift 183
+		comp-inst-spec => shift 184
+		lone-anno => shift 185
 		"include" => shift 50
-		include-spec => shift 187
-		topo-mem => shift 188
-		topo-mem-seq => shift 443
-		"\n" => shift 164
+		include-spec => shift 186
+		topo-mem => shift 187
+		topo-mem-seq => shift 441
+		"\n" => shift 163
 		$default => reduce 220
 
-278:	topo-mem => "import" qual-ident .
+276:	topo-mem => "import" qual-ident .
 		"\n" => reduce 227
 		$default => reduce 227
 
-279:	comp-inst-spec => "instance" ident .
+277:	comp-inst-spec => "instance" ident .
 		"\n" => reduce 228
 		$default => reduce 228
 
-280:	comp-inst-spec => "private" "instance" . ident
+278:	comp-inst-spec => "private" "instance" . ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 442
+		ident => shift 440
 
-281:	conn-graph-spec => "connections" ident . "{" conn-seq "}"
-		"{" => shift 441
+279:	conn-graph-spec => "connections" ident . "{" conn-seq "}"
+		"{" => shift 439
 
-282:	conn-graph-spec => pattern-kind "connections" . "instance" qual-ident
+280:	conn-graph-spec => pattern-kind "connections" . "instance" qual-ident
 	conn-graph-spec => pattern-kind "connections" . "instance" qual-ident "{" qual-ident-seq "}"
-		"instance" => shift 440
+		"instance" => shift 438
 
-283:	tlm-pktset-spec => "telemetry" "packets" . ident "{" tlm-pktgrp-mem-seq "}"
+281:	tlm-pktset-spec => "telemetry" "packets" . ident "{" tlm-pktgrp-mem-seq "}"
 	ident => . '$ident
 	tlm-pktset-spec => "telemetry" "packets" . ident "{" tlm-pktgrp-mem-seq "}" "omit" "{" tlm-chan-id-seq "}"
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 439
+		ident => shift 437
 
-284:	pattern-kind => "text" "event" .
+282:	pattern-kind => "text" "event" .
 		$default => reduce 239
 
-285:	tlm-chan-1 => tlm-chan-0 . "id" expr
+283:	tlm-chan-1 => tlm-chan-0 . "id" expr
 	tlm-chan-1 => tlm-chan-0 .
-		"id" => shift 438
+		"id" => shift 436
 		"\n" => reduce 174
 		$default => reduce 174
 
-286:	event-spec-1 => event-spec-0 . "(" param-list ")"
+284:	event-spec-1 => event-spec-0 . "(" param-list ")"
 	event-spec-1 => event-spec-0 .
-		"(" => shift 437
+		"(" => shift 435
 		$default => reduce 147
 
-287:	spc-port-kind => "time" . "get"
-		"get" => shift 436
+285:	spc-port-kind => "time" . "get"
+		"get" => shift 434
 
-288:	spc-port-kind => "text" . "event"
-		"event" => shift 435
+286:	spc-port-kind => "text" . "event"
+		"event" => shift 433
 
-289:	tlm-chan-0 => "telemetry" . ident ":" type-name
+287:	tlm-chan-0 => "telemetry" . ident ":" type-name
 	ident => . '$ident
 	spc-port-kind => "telemetry" .
 		'$ident => shift 60
-		ident => shift 434
+		ident => shift 432
 		$default => reduce 139
 
-290:	param-spec-0 => "param" . ident ":" type-name
+288:	param-spec-0 => "param" . ident ":" type-name
 	ident => . '$ident
 	spc-port-kind => "param" . "set"
 	spc-port-kind => "param" . "get"
-		"get" => shift 431
-		"set" => shift 432
+		"get" => shift 429
+		"set" => shift 430
 		'$ident => shift 60
-		ident => shift 433
+		ident => shift 431
 
-291:	event-spec-0 => "event" . ident
+289:	event-spec-0 => "event" . ident
 	ident => . '$ident
 	spc-port-kind => "event" .
 		'$ident => shift 60
-		ident => shift 430
+		ident => shift 428
 		$default => reduce 132
 
-292:	spc-port-kind => "command" . "resp"
+290:	spc-port-kind => "command" . "resp"
 	spc-port-kind => "command" . "reg"
 	spc-port-kind => "command" . "recv"
-		"recv" => shift 427
-		"reg" => shift 428
-		"resp" => shift 429
+		"recv" => shift 425
+		"reg" => shift 426
+		"resp" => shift 427
 
-293:	gen-port-inst-0 => "output" . "port" ident ":"
-		"port" => shift 426
+291:	gen-port-inst-0 => "output" . "port" ident ":"
+		"port" => shift 424
 
-294:	tlm-chan-2 => tlm-chan-1 . "update" tlm-update
+292:	tlm-chan-2 => tlm-chan-1 . "update" tlm-update
 	tlm-chan-2 => tlm-chan-1 .
-		"update" => shift 425
+		"update" => shift 423
 		"\n" => reduce 176
 		$default => reduce 176
 
-295:	param-spec-1 => param-spec-0 . "default" expr
+293:	param-spec-1 => param-spec-0 . "default" expr
 	param-spec-1 => param-spec-0 .
-		"default" => shift 424
+		"default" => shift 422
 		"\n" => reduce 164
 		$default => reduce 164
 
-296:	event-spec-2 => event-spec-1 . "severity" severity
-		"severity" => shift 423
+294:	event-spec-2 => event-spec-1 . "severity" severity
+		"severity" => shift 421
 
-297:	input-port-kind => "sync" .
+295:	input-port-kind => "sync" .
 		$default => reduce 144
 
-298:	input-port-kind => "guarded" .
+296:	input-port-kind => "guarded" .
 		$default => reduce 143
 
-299:	input-port-kind => "async" .
+297:	input-port-kind => "async" .
 		$default => reduce 142
 
-300:	cmd-spec-1 => cmd-spec-0 . "(" param-list ")"
+298:	cmd-spec-1 => cmd-spec-0 . "(" param-list ")"
 	cmd-spec-1 => cmd-spec-0 .
-		"(" => shift 422
+		"(" => shift 420
 		"\n" => reduce 121
 		$default => reduce 121
 
-301:	int-port-defn-0 => "internal" . "port" ident
-		"port" => shift 421
+299:	int-port-defn-0 => "internal" . "port" ident
+		"port" => shift 419
 
-302:	spc-port-inst-0 => spc-port-kind . "port" ident
-		"port" => shift 420
+300:	spc-port-inst-0 => spc-port-kind . "port" ident
+		"port" => shift 418
 
-303:	gen-port-inst-1 => gen-port-inst-0 . "[" expr "]"
+301:	gen-port-inst-1 => gen-port-inst-0 . "[" expr "]"
 	gen-port-inst-1 => gen-port-inst-0 .
-		"[" => shift 419
+		"[" => shift 417
 		$default => reduce 96
 
-304:	spc-port-kind => "product" . "send"
+302:	spc-port-kind => "product" . "send"
 	spc-port-kind => "product" . "request"
 	spc-port-kind => "product" . "recv"
 	spc-port-kind => "product" . "get"
 	cont-spec-0 => "product" . "container" ident
 	record-spec-0 => "product" . "record" ident ":" type-name
-		"record" => shift 413
-		"container" => shift 414
-		"get" => shift 415
-		"recv" => shift 416
-		"request" => shift 417
-		"send" => shift 418
+		"record" => shift 411
+		"container" => shift 412
+		"get" => shift 413
+		"recv" => shift 414
+		"request" => shift 415
+		"send" => shift 416
 
-305:	tlm-chan-3 => tlm-chan-2 . "format" string
+303:	tlm-chan-3 => tlm-chan-2 . "format" string
 	tlm-chan-3 => tlm-chan-2 .
-		"format" => shift 412
+		"format" => shift 410
 		"\n" => reduce 178
 		$default => reduce 178
 
-306:	param-spec-2 => param-spec-1 . "id" expr
+304:	param-spec-2 => param-spec-1 . "id" expr
 	param-spec-2 => param-spec-1 .
-		"id" => shift 411
+		"id" => shift 409
 		"\n" => reduce 166
 		$default => reduce 166
 
-307:	event-spec-3 => event-spec-2 . "id" expr
+305:	event-spec-3 => event-spec-2 . "id" expr
 	event-spec-3 => event-spec-2 .
-		"id" => shift 410
+		"id" => shift 408
 		$default => reduce 150
 
-308:	cmd-spec-2 => cmd-spec-1 . "opcode" expr
+306:	cmd-spec-2 => cmd-spec-1 . "opcode" expr
 	cmd-spec-2 => cmd-spec-1 .
-		"opcode" => shift 409
+		"opcode" => shift 407
 		"\n" => reduce 123
 		$default => reduce 123
 
-309:	int-port-defn-1 => int-port-defn-0 . "(" param-list ")"
+307:	int-port-defn-1 => int-port-defn-0 . "(" param-list ")"
 	int-port-defn-1 => int-port-defn-0 .
-		"(" => shift 408
+		"(" => shift 406
 		"\n" => reduce 113
 		$default => reduce 113
 
-310:	cmd-spec-0 => input-port-kind . "command" ident
+308:	cmd-spec-0 => input-port-kind . "command" ident
 	gen-port-inst-0 => input-port-kind . "input" "port" ident ":"
 	spc-port-inst-1 => input-port-kind . spc-port-inst-0
 	spc-port-inst-0 => . spc-port-kind "port" ident
@@ -3891,22 +3872,22 @@
 	spc-port-kind => . "telemetry"
 	spc-port-kind => . "text" "event"
 	spc-port-kind => . "time" "get"
-		"time" => shift 287
-		"text" => shift 288
-		"telemetry" => shift 401
-		"product" => shift 402
-		"param" => shift 403
-		"event" => shift 404
-		spc-port-kind => shift 302
-		spc-port-inst-0 => shift 405
-		"input" => shift 406
-		"command" => shift 407
+		"time" => shift 285
+		"text" => shift 286
+		"telemetry" => shift 399
+		"product" => shift 400
+		"param" => shift 401
+		"event" => shift 402
+		spc-port-kind => shift 300
+		spc-port-inst-0 => shift 403
+		"input" => shift 404
+		"command" => shift 405
 
-311:	spc-port-inst-1 => spc-port-inst-0 .
+309:	spc-port-inst-1 => spc-port-inst-0 .
 		"\n" => reduce 105
 		$default => reduce 105
 
-312:	gen-port-inst-2 => gen-port-inst-1 . "serial"
+310:	gen-port-inst-2 => gen-port-inst-1 . "serial"
 	gen-port-inst-2 => gen-port-inst-1 . qual-ident
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
@@ -3915,344 +3896,342 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 399
-		"serial" => shift 400
+		qual-ident => shift 397
+		"serial" => shift 398
 
-313:	stmach-inst-1 => stmach-inst-0 . "priority" expr
+311:	stmach-inst-1 => stmach-inst-0 . "priority" expr
 	stmach-inst-1 => stmach-inst-0 .
-		"priority" => shift 398
-		"\n" => reduce 330
-		'$code-anno => reduce 330
-		$default => reduce 330
+		"priority" => shift 396
+		"\n" => reduce 329
+		'$code-anno => reduce 329
+		$default => reduce 329
 
-314:	cont-spec-1 => cont-spec-0 . "id" expr
+312:	cont-spec-1 => cont-spec-0 . "id" expr
 	cont-spec-1 => cont-spec-0 .
-		"id" => shift 397
+		"id" => shift 395
 		"\n" => reduce 199
 		$default => reduce 199
 
-315:	record-spec-1 => record-spec-0 . "array"
+313:	record-spec-1 => record-spec-0 . "array"
 	record-spec-1 => record-spec-0 .
-		"array" => shift 396
+		"array" => shift 394
 		"\n" => reduce 193
 		$default => reduce 193
 
-316:	tlm-chan-4 => tlm-chan-3 . "low" "{" tlm-lim-seq "}"
+314:	tlm-chan-4 => tlm-chan-3 . "low" "{" tlm-lim-seq "}"
 	tlm-chan-4 => tlm-chan-3 .
-		"low" => shift 395
+		"low" => shift 393
 		"\n" => reduce 180
 		$default => reduce 180
 
-317:	param-spec-3 => param-spec-2 . "set" "opcode" expr
+315:	param-spec-3 => param-spec-2 . "set" "opcode" expr
 	param-spec-3 => param-spec-2 .
-		"set" => shift 394
+		"set" => shift 392
 		"\n" => reduce 168
 		$default => reduce 168
 
-318:	event-spec-4 => event-spec-3 . "format" string
-		"format" => shift 393
+316:	event-spec-4 => event-spec-3 . "format" string
+		"format" => shift 391
 
-319:	cmd-spec-3 => cmd-spec-2 . "priority" expr
+317:	cmd-spec-3 => cmd-spec-2 . "priority" expr
 	cmd-spec-3 => cmd-spec-2 .
-		"priority" => shift 392
+		"priority" => shift 390
 		"\n" => reduce 125
 		$default => reduce 125
 
-320:	int-port-defn-2 => int-port-defn-1 . "priority" expr
+318:	int-port-defn-2 => int-port-defn-1 . "priority" expr
 	int-port-defn-2 => int-port-defn-1 .
-		"priority" => shift 391
+		"priority" => shift 389
 		"\n" => reduce 115
 		$default => reduce 115
 
-321:	spc-port-inst-2 => spc-port-inst-1 . "priority" expr
+319:	spc-port-inst-2 => spc-port-inst-1 . "priority" expr
 	spc-port-inst-2 => spc-port-inst-1 .
-		"priority" => shift 390
+		"priority" => shift 388
 		"\n" => reduce 107
 		$default => reduce 107
 
-322:	gen-port-inst-3 => gen-port-inst-2 . "priority" expr
+320:	gen-port-inst-3 => gen-port-inst-2 . "priority" expr
 	gen-port-inst-3 => gen-port-inst-2 .
-		"priority" => shift 389
+		"priority" => shift 387
 		"\n" => reduce 100
 		$default => reduce 100
 
-323:	stmach-inst-2 => stmach-inst-1 . queue-full-beh
+321:	stmach-inst-2 => stmach-inst-1 . queue-full-beh
 	queue-full-beh => . queue-full-beh-1
 	queue-full-beh-1 => . "assert"
 	queue-full-beh-1 => . "block"
 	queue-full-beh-1 => . "drop"
 	queue-full-beh-1 => . "hook"
 	stmach-inst-2 => stmach-inst-1 .
-		"hook" => shift 374
-		"drop" => shift 375
-		"block" => shift 376
-		"assert" => shift 377
-		queue-full-beh-1 => shift 378
-		queue-full-beh => shift 388
-		'$code-anno => reduce 332
-		"\n" => reduce 332
-		$default => reduce 332
+		"hook" => shift 372
+		"drop" => shift 373
+		"block" => shift 374
+		"assert" => shift 375
+		queue-full-beh-1 => shift 376
+		queue-full-beh => shift 386
+		'$code-anno => reduce 331
+		"\n" => reduce 331
+		$default => reduce 331
 
-324:	cont-spec-2 => cont-spec-1 . "default" "priority" expr
+322:	cont-spec-2 => cont-spec-1 . "default" "priority" expr
 	cont-spec-2 => cont-spec-1 .
-		"default" => shift 387
+		"default" => shift 385
 		"\n" => reduce 201
 		$default => reduce 201
 
-325:	record-spec-2 => record-spec-1 . "id" expr
+323:	record-spec-2 => record-spec-1 . "id" expr
 	record-spec-2 => record-spec-1 .
-		"id" => shift 386
+		"id" => shift 384
 		"\n" => reduce 195
 		$default => reduce 195
 
-326:	tlm-chan-5 => tlm-chan-4 . "high" "{" tlm-lim-seq "}"
+324:	tlm-chan-5 => tlm-chan-4 . "high" "{" tlm-lim-seq "}"
 	tlm-chan-5 => tlm-chan-4 .
-		"high" => shift 385
+		"high" => shift 383
 		"\n" => reduce 182
 		$default => reduce 182
 
-327:	param-spec-4 => param-spec-3 . "save" "opcode" expr
+325:	param-spec-4 => param-spec-3 . "save" "opcode" expr
 	param-spec-4 => param-spec-3 .
-		"save" => shift 384
+		"save" => shift 382
 		"\n" => reduce 170
 		$default => reduce 170
 
-328:	event-spec-5 => event-spec-4 . "throttle" expr
+326:	event-spec-5 => event-spec-4 . "throttle" expr
 	event-spec-5 => event-spec-4 .
-		"throttle" => shift 383
+		"throttle" => shift 381
 		"\n" => reduce 153
 		$default => reduce 153
 
-329:	cmd-spec-4 => cmd-spec-3 . queue-full-beh
+327:	cmd-spec-4 => cmd-spec-3 . queue-full-beh
 	queue-full-beh => . queue-full-beh-1
 	queue-full-beh-1 => . "assert"
 	queue-full-beh-1 => . "block"
 	queue-full-beh-1 => . "drop"
 	queue-full-beh-1 => . "hook"
 	cmd-spec-4 => cmd-spec-3 .
-		"hook" => shift 374
-		"drop" => shift 375
-		"block" => shift 376
-		"assert" => shift 377
-		queue-full-beh-1 => shift 378
-		queue-full-beh => shift 382
+		"hook" => shift 372
+		"drop" => shift 373
+		"block" => shift 374
+		"assert" => shift 375
+		queue-full-beh-1 => shift 376
+		queue-full-beh => shift 380
 		"\n" => reduce 127
 		$default => reduce 127
 
-330:	int-port-defn-3 => int-port-defn-2 . queue-full-beh
+328:	int-port-defn-3 => int-port-defn-2 . queue-full-beh
 	queue-full-beh => . queue-full-beh-1
 	queue-full-beh-1 => . "assert"
 	queue-full-beh-1 => . "block"
 	queue-full-beh-1 => . "drop"
 	queue-full-beh-1 => . "hook"
 	int-port-defn-3 => int-port-defn-2 .
-		"hook" => shift 374
-		"drop" => shift 375
-		"block" => shift 376
-		"assert" => shift 377
-		queue-full-beh-1 => shift 378
-		queue-full-beh => shift 381
+		"hook" => shift 372
+		"drop" => shift 373
+		"block" => shift 374
+		"assert" => shift 375
+		queue-full-beh-1 => shift 376
+		queue-full-beh => shift 379
 		"\n" => reduce 117
 		$default => reduce 117
 
-331:	spc-port-inst-3 => spc-port-inst-2 . queue-full-beh
+329:	spc-port-inst-3 => spc-port-inst-2 . queue-full-beh
 	queue-full-beh => . queue-full-beh-1
 	queue-full-beh-1 => . "assert"
 	queue-full-beh-1 => . "block"
 	queue-full-beh-1 => . "drop"
 	queue-full-beh-1 => . "hook"
 	spc-port-inst-3 => spc-port-inst-2 .
-		"hook" => shift 374
-		"drop" => shift 375
-		"block" => shift 376
-		"assert" => shift 377
-		queue-full-beh-1 => shift 378
-		queue-full-beh => shift 380
+		"hook" => shift 372
+		"drop" => shift 373
+		"block" => shift 374
+		"assert" => shift 375
+		queue-full-beh-1 => shift 376
+		queue-full-beh => shift 378
 		"\n" => reduce 109
 		$default => reduce 109
 
-332:	gen-port-inst-4 => gen-port-inst-3 . queue-full-beh
+330:	gen-port-inst-4 => gen-port-inst-3 . queue-full-beh
 	queue-full-beh => . queue-full-beh-1
 	queue-full-beh-1 => . "assert"
 	queue-full-beh-1 => . "block"
 	queue-full-beh-1 => . "drop"
 	queue-full-beh-1 => . "hook"
 	gen-port-inst-4 => gen-port-inst-3 .
-		"hook" => shift 374
-		"drop" => shift 375
-		"block" => shift 376
-		"assert" => shift 377
-		queue-full-beh-1 => shift 378
-		queue-full-beh => shift 379
+		"hook" => shift 372
+		"drop" => shift 373
+		"block" => shift 374
+		"assert" => shift 375
+		queue-full-beh-1 => shift 376
+		queue-full-beh => shift 377
 		"\n" => reduce 102
 		$default => reduce 102
 
-333:	stmach-inst-0 => "state" . "machine" "instance" ident ":" qual-ident
+331:	stmach-inst-0 => "state" . "machine" "instance" ident ":" qual-ident
 	stmach-defn => "state" . "machine" ident "{" stmach-mem-seq "}"
 	stmach-defn => "state" . "machine" ident
-		"machine" => shift 373
+		"machine" => shift 371
 
-334:	stmach-inst => stmach-inst-2 . code-anno
+332:	stmach-inst => stmach-inst-2 . code-anno
 	code-anno => . code-anno-list
 	code-anno-list => . '$code-anno
-	code-anno-list => . code-anno-list "\n" '$code-anno
 	stmach-inst => stmach-inst-2 .
 		'$code-anno => shift 75
 		code-anno-list => shift 76
-		code-anno => shift 372
-		"\n" => reduce 327
-		$default => reduce 327
+		code-anno => shift 370
+		"\n" => reduce 326
+		$default => reduce 326
 
-335:	port-match-spec => "match" . ident "with" ident
+333:	port-match-spec => "match" . ident "with" ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 371
+		ident => shift 369
 
-336:	prod-cont-spec => cont-spec-2 .
+334:	prod-cont-spec => cont-spec-2 .
 		"\n" => reduce 197
 		$default => reduce 197
 
-337:	record-spec => record-spec-2 .
+335:	record-spec => record-spec-2 .
 		"\n" => reduce 191
 		$default => reduce 191
 
-338:	tlm-chan-spec => tlm-chan-5 .
+336:	tlm-chan-spec => tlm-chan-5 .
 		"\n" => reduce 172
 		$default => reduce 172
 
-339:	param-spec => param-spec-4 .
+337:	param-spec => param-spec-4 .
 		"\n" => reduce 162
 		$default => reduce 162
 
-340:	event-spec => event-spec-5 .
+338:	event-spec => event-spec-5 .
 		"\n" => reduce 145
 		$default => reduce 145
 
-341:	command-spec => cmd-spec-4 .
+339:	command-spec => cmd-spec-4 .
 		"\n" => reduce 119
 		$default => reduce 119
 
-342:	int-port-spec => int-port-defn-3 .
+340:	int-port-spec => int-port-defn-3 .
 		"\n" => reduce 111
 		$default => reduce 111
 
-343:	port-inst => spc-port-inst-3 .
+341:	port-inst => spc-port-inst-3 .
 		"\n" => reduce 93
 		$default => reduce 93
 
-344:	port-inst => gen-port-inst-4 .
+342:	port-inst => gen-port-inst-4 .
 		"\n" => reduce 92
 		$default => reduce 92
 
-345:	comp-mem => stmach-inst .
+343:	comp-mem => stmach-inst .
 		"\n" => reduce 91
 		$default => reduce 91
 
-346:	comp-mem => stmach-defn .
+344:	comp-mem => stmach-defn .
 		"\n" => reduce 90
 		$default => reduce 90
 
-347:	comp-mem => tlm-chan-spec .
+345:	comp-mem => tlm-chan-spec .
 		"\n" => reduce 89
 		$default => reduce 89
 
-348:	comp-mem => prod-cont-spec .
+346:	comp-mem => prod-cont-spec .
 		"\n" => reduce 88
 		$default => reduce 88
 
-349:	comp-mem => record-spec .
+347:	comp-mem => record-spec .
 		"\n" => reduce 87
 		$default => reduce 87
 
-350:	comp-mem => param-spec .
+348:	comp-mem => param-spec .
 		"\n" => reduce 86
 		$default => reduce 86
 
-351:	comp-mem => event-spec .
+349:	comp-mem => event-spec .
 		"\n" => reduce 85
 		$default => reduce 85
 
-352:	comp-mem => command-spec .
+350:	comp-mem => command-spec .
 		"\n" => reduce 84
 		$default => reduce 84
 
-353:	comp-mem => port-match-spec .
+351:	comp-mem => port-match-spec .
 		"\n" => reduce 83
 		$default => reduce 83
 
-354:	comp-mem => port-inst .
+352:	comp-mem => port-inst .
 		"\n" => reduce 82
 		$default => reduce 82
 
-355:	comp-mem => int-port-spec .
+353:	comp-mem => int-port-spec .
 		"\n" => reduce 81
 		$default => reduce 81
 
-356:	comp-mem => struct-defn .
+354:	comp-mem => struct-defn .
 		"\n" => reduce 80
 		$default => reduce 80
 
-357:	comp-mem => enum-defn .
+355:	comp-mem => enum-defn .
 		"\n" => reduce 79
 		$default => reduce 79
 
-358:	comp-mem => lone-anno .
+356:	comp-mem => lone-anno .
 		"\n" => reduce 78
 		$default => reduce 78
 
-359:	comp-mem-seq => include-spec . mem-sep comp-mem-seq
+357:	comp-mem-seq => include-spec . mem-sep comp-mem-seq
 	mem-sep => . ";"
 	mem-sep => . "\n"
 	mem-sep => . mem-sep "\n"
 		"\n" => shift 55
 		";" => shift 56
-		mem-sep => shift 370
+		mem-sep => shift 368
 
-360:	comp-mem-seq => comp-mem . mem-sep comp-mem-seq
+358:	comp-mem-seq => comp-mem . mem-sep comp-mem-seq
 	mem-sep => . ";"
 	mem-sep => . "\n"
 	mem-sep => . mem-sep "\n"
 		"\n" => shift 55
 		";" => shift 56
-		mem-sep => shift 369
+		mem-sep => shift 367
 
-361:	component-defn => comp-kind "component" ident "{" comp-mem-seq . "}"
-		"}" => shift 368
+359:	component-defn => comp-kind "component" ident "{" comp-mem-seq . "}"
+		"}" => shift 366
 
-362:	array-defn => "array" ident "=" index ident . code-anno
+360:	array-defn => "array" ident "=" index ident . code-anno
 	code-anno => . code-anno-list
 	code-anno-list => . '$code-anno
-	code-anno-list => . code-anno-list "\n" '$code-anno
 	array-defn => "array" ident "=" index ident .
 		'$code-anno => shift 75
 		code-anno-list => shift 76
-		code-anno => shift 367
+		code-anno => shift 365
 		"\n" => reduce 30
 		$default => reduce 30
 
-363:	index => "[" expr . "]"
-		"]" => shift 366
+361:	index => "[" expr . "]"
+		"]" => shift 364
 
-364:	const-defn => "constant" ident "=" expr code-anno .
+362:	const-defn => "constant" ident "=" expr code-anno .
 		"\n" => reduce 27
 		$default => reduce 27
 
-365:	module-defn => "module" ident "{" module-mem-seq "}" .
+363:	module-defn => "module" ident "{" module-mem-seq "}" .
 		"\n" => reduce 25
 		$default => reduce 25
 
-366:	index => "[" expr "]" .
-		$default => reduce 312
+364:	index => "[" expr "]" .
+		$default => reduce 311
 
-367:	array-defn => "array" ident "=" index ident code-anno .
+365:	array-defn => "array" ident "=" index ident code-anno .
 		"\n" => reduce 31
 		$default => reduce 31
 
-368:	component-defn => comp-kind "component" ident "{" comp-mem-seq "}" .
+366:	component-defn => comp-kind "component" ident "{" comp-mem-seq "}" .
 		"\n" => reduce 71
 		$default => reduce 71
 
-369:	mem-sep => mem-sep . "\n"
+367:	mem-sep => mem-sep . "\n"
 	comp-mem-seq => comp-mem mem-sep . comp-mem-seq
 	comp-mem-seq => .
 	comp-mem-seq => . comp-mem mem-sep comp-mem-seq
@@ -4395,99 +4374,99 @@
 	tlm-chan-1 => . tlm-chan-0 "id" expr
 	event-spec-0 => . "event" ident
 	tlm-chan-0 => . "telemetry" ident ":" type-name
-		tlm-chan-0 => shift 285
-		event-spec-0 => shift 286
-		"time" => shift 287
-		"text" => shift 288
-		"telemetry" => shift 289
-		"param" => shift 290
-		"event" => shift 291
-		"command" => shift 292
-		"output" => shift 293
+		tlm-chan-0 => shift 283
+		event-spec-0 => shift 284
+		"time" => shift 285
+		"text" => shift 286
+		"telemetry" => shift 287
+		"param" => shift 288
+		"event" => shift 289
+		"command" => shift 290
+		"output" => shift 291
 		"enum" => shift 5
-		tlm-chan-1 => shift 294
-		param-spec-0 => shift 295
-		event-spec-1 => shift 296
-		"sync" => shift 297
-		"guarded" => shift 298
-		"async" => shift 299
-		cmd-spec-0 => shift 300
-		"internal" => shift 301
-		spc-port-kind => shift 302
-		gen-port-inst-0 => shift 303
+		tlm-chan-1 => shift 292
+		param-spec-0 => shift 293
+		event-spec-1 => shift 294
+		"sync" => shift 295
+		"guarded" => shift 296
+		"async" => shift 297
+		cmd-spec-0 => shift 298
+		"internal" => shift 299
+		spc-port-kind => shift 300
+		gen-port-inst-0 => shift 301
 		enum-defn-0 => shift 8
-		"product" => shift 304
-		tlm-chan-2 => shift 305
-		param-spec-1 => shift 306
-		event-spec-2 => shift 307
-		cmd-spec-1 => shift 308
-		int-port-defn-0 => shift 309
-		input-port-kind => shift 310
-		spc-port-inst-0 => shift 311
-		gen-port-inst-1 => shift 312
+		"product" => shift 302
+		tlm-chan-2 => shift 303
+		param-spec-1 => shift 304
+		event-spec-2 => shift 305
+		cmd-spec-1 => shift 306
+		int-port-defn-0 => shift 307
+		input-port-kind => shift 308
+		spc-port-inst-0 => shift 309
+		gen-port-inst-1 => shift 310
 		"struct" => shift 11
 		enum-defn-1 => shift 12
-		stmach-inst-0 => shift 313
-		cont-spec-0 => shift 314
-		record-spec-0 => shift 315
-		tlm-chan-3 => shift 316
-		param-spec-2 => shift 317
-		event-spec-3 => shift 318
-		cmd-spec-2 => shift 319
-		int-port-defn-1 => shift 320
-		spc-port-inst-1 => shift 321
-		gen-port-inst-2 => shift 322
+		stmach-inst-0 => shift 311
+		cont-spec-0 => shift 312
+		record-spec-0 => shift 313
+		tlm-chan-3 => shift 314
+		param-spec-2 => shift 315
+		event-spec-3 => shift 316
+		cmd-spec-2 => shift 317
+		int-port-defn-1 => shift 318
+		spc-port-inst-1 => shift 319
+		gen-port-inst-2 => shift 320
 		struct-defn-0 => shift 15
 		enum-defn-2 => shift 16
-		stmach-inst-1 => shift 323
-		cont-spec-1 => shift 324
-		record-spec-1 => shift 325
-		tlm-chan-4 => shift 326
-		param-spec-3 => shift 327
-		event-spec-4 => shift 328
-		cmd-spec-3 => shift 329
-		int-port-defn-2 => shift 330
-		spc-port-inst-2 => shift 331
-		gen-port-inst-3 => shift 332
+		stmach-inst-1 => shift 321
+		cont-spec-1 => shift 322
+		record-spec-1 => shift 323
+		tlm-chan-4 => shift 324
+		param-spec-3 => shift 325
+		event-spec-4 => shift 326
+		cmd-spec-3 => shift 327
+		int-port-defn-2 => shift 328
+		spc-port-inst-2 => shift 329
+		gen-port-inst-3 => shift 330
 		struct-defn-1 => shift 22
 		enum-defn-3 => shift 23
-		"state" => shift 333
-		stmach-inst-2 => shift 334
+		"state" => shift 331
+		stmach-inst-2 => shift 332
 		'$lone-anno => shift 25
-		"match" => shift 335
-		cont-spec-2 => shift 336
-		record-spec-2 => shift 337
-		tlm-chan-5 => shift 338
-		param-spec-4 => shift 339
-		event-spec-5 => shift 340
-		cmd-spec-4 => shift 341
-		int-port-defn-3 => shift 342
-		spc-port-inst-3 => shift 343
-		gen-port-inst-4 => shift 344
+		"match" => shift 333
+		cont-spec-2 => shift 334
+		record-spec-2 => shift 335
+		tlm-chan-5 => shift 336
+		param-spec-4 => shift 337
+		event-spec-5 => shift 338
+		cmd-spec-4 => shift 339
+		int-port-defn-3 => shift 340
+		spc-port-inst-3 => shift 341
+		gen-port-inst-4 => shift 342
 		struct-defn-2 => shift 31
 		enum-defn-4 => shift 32
-		stmach-inst => shift 345
-		stmach-defn => shift 346
-		tlm-chan-spec => shift 347
-		prod-cont-spec => shift 348
-		record-spec => shift 349
-		param-spec => shift 350
-		event-spec => shift 351
-		command-spec => shift 352
-		port-match-spec => shift 353
-		port-inst => shift 354
-		int-port-spec => shift 355
-		struct-defn => shift 356
-		enum-defn => shift 357
-		lone-anno => shift 358
+		stmach-inst => shift 343
+		stmach-defn => shift 344
+		tlm-chan-spec => shift 345
+		prod-cont-spec => shift 346
+		record-spec => shift 347
+		param-spec => shift 348
+		event-spec => shift 349
+		command-spec => shift 350
+		port-match-spec => shift 351
+		port-inst => shift 352
+		int-port-spec => shift 353
+		struct-defn => shift 354
+		enum-defn => shift 355
+		lone-anno => shift 356
 		"include" => shift 50
-		include-spec => shift 359
-		comp-mem => shift 360
-		comp-mem-seq => shift 531
-		"\n" => shift 164
+		include-spec => shift 357
+		comp-mem => shift 358
+		comp-mem-seq => shift 529
+		"\n" => shift 163
 		$default => reduce 75
 
-370:	mem-sep => mem-sep . "\n"
+368:	mem-sep => mem-sep . "\n"
 	comp-mem-seq => include-spec mem-sep . comp-mem-seq
 	comp-mem-seq => .
 	comp-mem-seq => . comp-mem mem-sep comp-mem-seq
@@ -4630,156 +4609,156 @@
 	tlm-chan-1 => . tlm-chan-0 "id" expr
 	event-spec-0 => . "event" ident
 	tlm-chan-0 => . "telemetry" ident ":" type-name
-		tlm-chan-0 => shift 285
-		event-spec-0 => shift 286
-		"time" => shift 287
-		"text" => shift 288
-		"telemetry" => shift 289
-		"param" => shift 290
-		"event" => shift 291
-		"command" => shift 292
-		"output" => shift 293
+		tlm-chan-0 => shift 283
+		event-spec-0 => shift 284
+		"time" => shift 285
+		"text" => shift 286
+		"telemetry" => shift 287
+		"param" => shift 288
+		"event" => shift 289
+		"command" => shift 290
+		"output" => shift 291
 		"enum" => shift 5
-		tlm-chan-1 => shift 294
-		param-spec-0 => shift 295
-		event-spec-1 => shift 296
-		"sync" => shift 297
-		"guarded" => shift 298
-		"async" => shift 299
-		cmd-spec-0 => shift 300
-		"internal" => shift 301
-		spc-port-kind => shift 302
-		gen-port-inst-0 => shift 303
+		tlm-chan-1 => shift 292
+		param-spec-0 => shift 293
+		event-spec-1 => shift 294
+		"sync" => shift 295
+		"guarded" => shift 296
+		"async" => shift 297
+		cmd-spec-0 => shift 298
+		"internal" => shift 299
+		spc-port-kind => shift 300
+		gen-port-inst-0 => shift 301
 		enum-defn-0 => shift 8
-		"product" => shift 304
-		tlm-chan-2 => shift 305
-		param-spec-1 => shift 306
-		event-spec-2 => shift 307
-		cmd-spec-1 => shift 308
-		int-port-defn-0 => shift 309
-		input-port-kind => shift 310
-		spc-port-inst-0 => shift 311
-		gen-port-inst-1 => shift 312
+		"product" => shift 302
+		tlm-chan-2 => shift 303
+		param-spec-1 => shift 304
+		event-spec-2 => shift 305
+		cmd-spec-1 => shift 306
+		int-port-defn-0 => shift 307
+		input-port-kind => shift 308
+		spc-port-inst-0 => shift 309
+		gen-port-inst-1 => shift 310
 		"struct" => shift 11
 		enum-defn-1 => shift 12
-		stmach-inst-0 => shift 313
-		cont-spec-0 => shift 314
-		record-spec-0 => shift 315
-		tlm-chan-3 => shift 316
-		param-spec-2 => shift 317
-		event-spec-3 => shift 318
-		cmd-spec-2 => shift 319
-		int-port-defn-1 => shift 320
-		spc-port-inst-1 => shift 321
-		gen-port-inst-2 => shift 322
+		stmach-inst-0 => shift 311
+		cont-spec-0 => shift 312
+		record-spec-0 => shift 313
+		tlm-chan-3 => shift 314
+		param-spec-2 => shift 315
+		event-spec-3 => shift 316
+		cmd-spec-2 => shift 317
+		int-port-defn-1 => shift 318
+		spc-port-inst-1 => shift 319
+		gen-port-inst-2 => shift 320
 		struct-defn-0 => shift 15
 		enum-defn-2 => shift 16
-		stmach-inst-1 => shift 323
-		cont-spec-1 => shift 324
-		record-spec-1 => shift 325
-		tlm-chan-4 => shift 326
-		param-spec-3 => shift 327
-		event-spec-4 => shift 328
-		cmd-spec-3 => shift 329
-		int-port-defn-2 => shift 330
-		spc-port-inst-2 => shift 331
-		gen-port-inst-3 => shift 332
+		stmach-inst-1 => shift 321
+		cont-spec-1 => shift 322
+		record-spec-1 => shift 323
+		tlm-chan-4 => shift 324
+		param-spec-3 => shift 325
+		event-spec-4 => shift 326
+		cmd-spec-3 => shift 327
+		int-port-defn-2 => shift 328
+		spc-port-inst-2 => shift 329
+		gen-port-inst-3 => shift 330
 		struct-defn-1 => shift 22
 		enum-defn-3 => shift 23
-		"state" => shift 333
-		stmach-inst-2 => shift 334
+		"state" => shift 331
+		stmach-inst-2 => shift 332
 		'$lone-anno => shift 25
-		"match" => shift 335
-		cont-spec-2 => shift 336
-		record-spec-2 => shift 337
-		tlm-chan-5 => shift 338
-		param-spec-4 => shift 339
-		event-spec-5 => shift 340
-		cmd-spec-4 => shift 341
-		int-port-defn-3 => shift 342
-		spc-port-inst-3 => shift 343
-		gen-port-inst-4 => shift 344
+		"match" => shift 333
+		cont-spec-2 => shift 334
+		record-spec-2 => shift 335
+		tlm-chan-5 => shift 336
+		param-spec-4 => shift 337
+		event-spec-5 => shift 338
+		cmd-spec-4 => shift 339
+		int-port-defn-3 => shift 340
+		spc-port-inst-3 => shift 341
+		gen-port-inst-4 => shift 342
 		struct-defn-2 => shift 31
 		enum-defn-4 => shift 32
-		stmach-inst => shift 345
-		stmach-defn => shift 346
-		tlm-chan-spec => shift 347
-		prod-cont-spec => shift 348
-		record-spec => shift 349
-		param-spec => shift 350
-		event-spec => shift 351
-		command-spec => shift 352
-		port-match-spec => shift 353
-		port-inst => shift 354
-		int-port-spec => shift 355
-		struct-defn => shift 356
-		enum-defn => shift 357
-		lone-anno => shift 358
+		stmach-inst => shift 343
+		stmach-defn => shift 344
+		tlm-chan-spec => shift 345
+		prod-cont-spec => shift 346
+		record-spec => shift 347
+		param-spec => shift 348
+		event-spec => shift 349
+		command-spec => shift 350
+		port-match-spec => shift 351
+		port-inst => shift 352
+		int-port-spec => shift 353
+		struct-defn => shift 354
+		enum-defn => shift 355
+		lone-anno => shift 356
 		"include" => shift 50
-		include-spec => shift 359
-		comp-mem => shift 360
-		comp-mem-seq => shift 530
-		"\n" => shift 164
+		include-spec => shift 357
+		comp-mem => shift 358
+		comp-mem-seq => shift 528
+		"\n" => shift 163
 		$default => reduce 75
 
-371:	port-match-spec => "match" ident . "with" ident
-		"with" => shift 529
+369:	port-match-spec => "match" ident . "with" ident
+		"with" => shift 527
 
-372:	stmach-inst => stmach-inst-2 code-anno .
-		"\n" => reduce 328
-		$default => reduce 328
+370:	stmach-inst => stmach-inst-2 code-anno .
+		"\n" => reduce 327
+		$default => reduce 327
 
-373:	stmach-defn => "state" "machine" . ident
+371:	stmach-defn => "state" "machine" . ident
 	ident => . '$ident
 	stmach-defn => "state" "machine" . ident "{" stmach-mem-seq "}"
 	ident => . '$ident
 	stmach-inst-0 => "state" "machine" . "instance" ident ":" qual-ident
-		"instance" => shift 528
+		"instance" => shift 526
 		'$ident => shift 60
-		ident => shift 149
+		ident => shift 148
 
-374:	queue-full-beh-1 => "hook" .
+372:	queue-full-beh-1 => "hook" .
 		'$code-anno => reduce 271
 		"\n" => reduce 271
 		$default => reduce 271
 
-375:	queue-full-beh-1 => "drop" .
+373:	queue-full-beh-1 => "drop" .
 		'$code-anno => reduce 270
 		"\n" => reduce 270
 		$default => reduce 270
 
-376:	queue-full-beh-1 => "block" .
+374:	queue-full-beh-1 => "block" .
 		'$code-anno => reduce 269
 		"\n" => reduce 269
 		$default => reduce 269
 
-377:	queue-full-beh-1 => "assert" .
+375:	queue-full-beh-1 => "assert" .
 		'$code-anno => reduce 268
 		"\n" => reduce 268
 		$default => reduce 268
 
-378:	queue-full-beh => queue-full-beh-1 .
+376:	queue-full-beh => queue-full-beh-1 .
 		'$code-anno => reduce 267
 		"\n" => reduce 267
 		$default => reduce 267
 
-379:	gen-port-inst-4 => gen-port-inst-3 queue-full-beh .
+377:	gen-port-inst-4 => gen-port-inst-3 queue-full-beh .
 		"\n" => reduce 103
 		$default => reduce 103
 
-380:	spc-port-inst-3 => spc-port-inst-2 queue-full-beh .
+378:	spc-port-inst-3 => spc-port-inst-2 queue-full-beh .
 		"\n" => reduce 110
 		$default => reduce 110
 
-381:	int-port-defn-3 => int-port-defn-2 queue-full-beh .
+379:	int-port-defn-3 => int-port-defn-2 queue-full-beh .
 		"\n" => reduce 118
 		$default => reduce 118
 
-382:	cmd-spec-4 => cmd-spec-3 queue-full-beh .
+380:	cmd-spec-4 => cmd-spec-3 queue-full-beh .
 		"\n" => reduce 128
 		$default => reduce 128
 
-383:	event-spec-5 => event-spec-4 "throttle" . expr
+381:	event-spec-5 => event-spec-4 "throttle" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -4819,65 +4798,15 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 527
+		expr => shift 525
 
-384:	param-spec-4 => param-spec-3 "save" . "opcode" expr
-		"opcode" => shift 526
+382:	param-spec-4 => param-spec-3 "save" . "opcode" expr
+		"opcode" => shift 524
 
-385:	tlm-chan-5 => tlm-chan-4 "high" . "{" tlm-lim-seq "}"
-		"{" => shift 525
+383:	tlm-chan-5 => tlm-chan-4 "high" . "{" tlm-lim-seq "}"
+		"{" => shift 523
 
-386:	record-spec-2 => record-spec-1 "id" . expr
-	expr => . add-expr
-	add-expr => . mul-expr
-	add-expr => . add-expr "+" mul-expr
-	add-expr => . add-expr "-" mul-expr
-	mul-expr => . unary-expr
-	mul-expr => . mul-expr "*" unary-expr
-	mul-expr => . mul-expr "/" unary-expr
-	unary-expr => . prim-expr
-	unary-expr => . "-" unary-expr
-	prim-expr => . qual-ident
-	prim-expr => . number
-	prim-expr => . string
-	prim-expr => . "[" expr-seq "]"
-	prim-expr => . "{" struct-elt-seq "}"
-	prim-expr => . "(" expr ")"
-	number => . '$float
-	number => . '$fixed
-	string => . '$string
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 103
-		qual-ident-1 => shift 104
-		'$string => shift 98
-		'$fixed => shift 119
-		'$float => shift 120
-		"(" => shift 121
-		"{" => shift 122
-		"[" => shift 123
-		string => shift 124
-		number => shift 125
-		qual-ident => shift 126
-		"-" => shift 127
-		prim-expr => shift 128
-		unary-expr => shift 129
-		mul-expr => shift 130
-		add-expr => shift 131
-		expr => shift 524
-
-387:	cont-spec-2 => cont-spec-1 "default" . "priority" expr
-		"priority" => shift 523
-
-388:	stmach-inst-2 => stmach-inst-1 queue-full-beh .
-		'$code-anno => reduce 333
-		"\n" => reduce 333
-		$default => reduce 333
-
-389:	gen-port-inst-3 => gen-port-inst-2 "priority" . expr
+384:	record-spec-2 => record-spec-1 "id" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -4919,49 +4848,15 @@
 		add-expr => shift 131
 		expr => shift 522
 
-390:	spc-port-inst-2 => spc-port-inst-1 "priority" . expr
-	expr => . add-expr
-	add-expr => . mul-expr
-	add-expr => . add-expr "+" mul-expr
-	add-expr => . add-expr "-" mul-expr
-	mul-expr => . unary-expr
-	mul-expr => . mul-expr "*" unary-expr
-	mul-expr => . mul-expr "/" unary-expr
-	unary-expr => . prim-expr
-	unary-expr => . "-" unary-expr
-	prim-expr => . qual-ident
-	prim-expr => . number
-	prim-expr => . string
-	prim-expr => . "[" expr-seq "]"
-	prim-expr => . "{" struct-elt-seq "}"
-	prim-expr => . "(" expr ")"
-	number => . '$float
-	number => . '$fixed
-	string => . '$string
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 103
-		qual-ident-1 => shift 104
-		'$string => shift 98
-		'$fixed => shift 119
-		'$float => shift 120
-		"(" => shift 121
-		"{" => shift 122
-		"[" => shift 123
-		string => shift 124
-		number => shift 125
-		qual-ident => shift 126
-		"-" => shift 127
-		prim-expr => shift 128
-		unary-expr => shift 129
-		mul-expr => shift 130
-		add-expr => shift 131
-		expr => shift 521
+385:	cont-spec-2 => cont-spec-1 "default" . "priority" expr
+		"priority" => shift 521
 
-391:	int-port-defn-2 => int-port-defn-1 "priority" . expr
+386:	stmach-inst-2 => stmach-inst-1 queue-full-beh .
+		'$code-anno => reduce 332
+		"\n" => reduce 332
+		$default => reduce 332
+
+387:	gen-port-inst-3 => gen-port-inst-2 "priority" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -5003,7 +4898,7 @@
 		add-expr => shift 131
 		expr => shift 520
 
-392:	cmd-spec-3 => cmd-spec-2 "priority" . expr
+388:	spc-port-inst-2 => spc-port-inst-1 "priority" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -5045,22 +4940,106 @@
 		add-expr => shift 131
 		expr => shift 519
 
-393:	event-spec-4 => event-spec-3 "format" . string
+389:	int-port-defn-2 => int-port-defn-1 "priority" . expr
+	expr => . add-expr
+	add-expr => . mul-expr
+	add-expr => . add-expr "+" mul-expr
+	add-expr => . add-expr "-" mul-expr
+	mul-expr => . unary-expr
+	mul-expr => . mul-expr "*" unary-expr
+	mul-expr => . mul-expr "/" unary-expr
+	unary-expr => . prim-expr
+	unary-expr => . "-" unary-expr
+	prim-expr => . qual-ident
+	prim-expr => . number
+	prim-expr => . string
+	prim-expr => . "[" expr-seq "]"
+	prim-expr => . "{" struct-elt-seq "}"
+	prim-expr => . "(" expr ")"
+	number => . '$float
+	number => . '$fixed
+	string => . '$string
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 103
+		qual-ident-1 => shift 104
+		'$string => shift 98
+		'$fixed => shift 119
+		'$float => shift 120
+		"(" => shift 121
+		"{" => shift 122
+		"[" => shift 123
+		string => shift 124
+		number => shift 125
+		qual-ident => shift 126
+		"-" => shift 127
+		prim-expr => shift 128
+		unary-expr => shift 129
+		mul-expr => shift 130
+		add-expr => shift 131
+		expr => shift 518
+
+390:	cmd-spec-3 => cmd-spec-2 "priority" . expr
+	expr => . add-expr
+	add-expr => . mul-expr
+	add-expr => . add-expr "+" mul-expr
+	add-expr => . add-expr "-" mul-expr
+	mul-expr => . unary-expr
+	mul-expr => . mul-expr "*" unary-expr
+	mul-expr => . mul-expr "/" unary-expr
+	unary-expr => . prim-expr
+	unary-expr => . "-" unary-expr
+	prim-expr => . qual-ident
+	prim-expr => . number
+	prim-expr => . string
+	prim-expr => . "[" expr-seq "]"
+	prim-expr => . "{" struct-elt-seq "}"
+	prim-expr => . "(" expr ")"
+	number => . '$float
+	number => . '$fixed
+	string => . '$string
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 103
+		qual-ident-1 => shift 104
+		'$string => shift 98
+		'$fixed => shift 119
+		'$float => shift 120
+		"(" => shift 121
+		"{" => shift 122
+		"[" => shift 123
+		string => shift 124
+		number => shift 125
+		qual-ident => shift 126
+		"-" => shift 127
+		prim-expr => shift 128
+		unary-expr => shift 129
+		mul-expr => shift 130
+		add-expr => shift 131
+		expr => shift 517
+
+391:	event-spec-4 => event-spec-3 "format" . string
 	string => . '$string
 		'$string => shift 98
-		string => shift 518
+		string => shift 516
 
-394:	param-spec-3 => param-spec-2 "set" . "opcode" expr
-		"opcode" => shift 517
+392:	param-spec-3 => param-spec-2 "set" . "opcode" expr
+		"opcode" => shift 515
 
-395:	tlm-chan-4 => tlm-chan-3 "low" . "{" tlm-lim-seq "}"
-		"{" => shift 516
+393:	tlm-chan-4 => tlm-chan-3 "low" . "{" tlm-lim-seq "}"
+		"{" => shift 514
 
-396:	record-spec-1 => record-spec-0 "array" .
+394:	record-spec-1 => record-spec-0 "array" .
 		"\n" => reduce 194
 		$default => reduce 194
 
-397:	cont-spec-1 => cont-spec-0 "id" . expr
+395:	cont-spec-1 => cont-spec-0 "id" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -5100,9 +5079,9 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 515
+		expr => shift 513
 
-398:	stmach-inst-1 => stmach-inst-0 "priority" . expr
+396:	stmach-inst-1 => stmach-inst-0 "priority" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -5142,55 +5121,55 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 514
+		expr => shift 512
 
-399:	gen-port-inst-2 => gen-port-inst-1 qual-ident .
+397:	gen-port-inst-2 => gen-port-inst-1 qual-ident .
 		"\n" => reduce 98
 		$default => reduce 98
 
-400:	gen-port-inst-2 => gen-port-inst-1 "serial" .
+398:	gen-port-inst-2 => gen-port-inst-1 "serial" .
 		"\n" => reduce 99
 		$default => reduce 99
 
-401:	spc-port-kind => "telemetry" .
+399:	spc-port-kind => "telemetry" .
 		$default => reduce 139
 
-402:	spc-port-kind => "product" . "send"
+400:	spc-port-kind => "product" . "send"
 	spc-port-kind => "product" . "request"
 	spc-port-kind => "product" . "recv"
 	spc-port-kind => "product" . "get"
-		"get" => shift 415
-		"recv" => shift 416
-		"request" => shift 417
-		"send" => shift 418
+		"get" => shift 413
+		"recv" => shift 414
+		"request" => shift 415
+		"send" => shift 416
 
-403:	spc-port-kind => "param" . "set"
+401:	spc-port-kind => "param" . "set"
 	spc-port-kind => "param" . "get"
-		"get" => shift 431
-		"set" => shift 432
+		"get" => shift 429
+		"set" => shift 430
 
-404:	spc-port-kind => "event" .
+402:	spc-port-kind => "event" .
 		$default => reduce 132
 
-405:	spc-port-inst-1 => input-port-kind spc-port-inst-0 .
+403:	spc-port-inst-1 => input-port-kind spc-port-inst-0 .
 		"\n" => reduce 106
 		$default => reduce 106
 
-406:	gen-port-inst-0 => input-port-kind "input" . "port" ident ":"
-		"port" => shift 513
+404:	gen-port-inst-0 => input-port-kind "input" . "port" ident ":"
+		"port" => shift 511
 
-407:	spc-port-kind => "command" . "resp"
+405:	spc-port-kind => "command" . "resp"
 	spc-port-kind => "command" . "reg"
 	spc-port-kind => "command" . "recv"
 	cmd-spec-0 => input-port-kind "command" . ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 512
-		"recv" => shift 427
-		"reg" => shift 428
-		"resp" => shift 429
+		ident => shift 510
+		"recv" => shift 425
+		"reg" => shift 426
+		"resp" => shift 427
 
-408:	int-port-defn-1 => int-port-defn-0 "(" . param-list ")"
+406:	int-port-defn-1 => int-port-defn-0 "(" . param-list ")"
 	param-list => . param-list-1
 	param-list-1 => .
 	param-list-1 => . formal-param elt-sep param-list-1
@@ -5205,94 +5184,10 @@
 		formal-param-1 => shift 135
 		formal-param => shift 136
 		param-list-1 => shift 137
-		param-list => shift 511
+		param-list => shift 509
 		$default => reduce 261
 
-409:	cmd-spec-2 => cmd-spec-1 "opcode" . expr
-	expr => . add-expr
-	add-expr => . mul-expr
-	add-expr => . add-expr "+" mul-expr
-	add-expr => . add-expr "-" mul-expr
-	mul-expr => . unary-expr
-	mul-expr => . mul-expr "*" unary-expr
-	mul-expr => . mul-expr "/" unary-expr
-	unary-expr => . prim-expr
-	unary-expr => . "-" unary-expr
-	prim-expr => . qual-ident
-	prim-expr => . number
-	prim-expr => . string
-	prim-expr => . "[" expr-seq "]"
-	prim-expr => . "{" struct-elt-seq "}"
-	prim-expr => . "(" expr ")"
-	number => . '$float
-	number => . '$fixed
-	string => . '$string
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 103
-		qual-ident-1 => shift 104
-		'$string => shift 98
-		'$fixed => shift 119
-		'$float => shift 120
-		"(" => shift 121
-		"{" => shift 122
-		"[" => shift 123
-		string => shift 124
-		number => shift 125
-		qual-ident => shift 126
-		"-" => shift 127
-		prim-expr => shift 128
-		unary-expr => shift 129
-		mul-expr => shift 130
-		add-expr => shift 131
-		expr => shift 510
-
-410:	event-spec-3 => event-spec-2 "id" . expr
-	expr => . add-expr
-	add-expr => . mul-expr
-	add-expr => . add-expr "+" mul-expr
-	add-expr => . add-expr "-" mul-expr
-	mul-expr => . unary-expr
-	mul-expr => . mul-expr "*" unary-expr
-	mul-expr => . mul-expr "/" unary-expr
-	unary-expr => . prim-expr
-	unary-expr => . "-" unary-expr
-	prim-expr => . qual-ident
-	prim-expr => . number
-	prim-expr => . string
-	prim-expr => . "[" expr-seq "]"
-	prim-expr => . "{" struct-elt-seq "}"
-	prim-expr => . "(" expr ")"
-	number => . '$float
-	number => . '$fixed
-	string => . '$string
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 103
-		qual-ident-1 => shift 104
-		'$string => shift 98
-		'$fixed => shift 119
-		'$float => shift 120
-		"(" => shift 121
-		"{" => shift 122
-		"[" => shift 123
-		string => shift 124
-		number => shift 125
-		qual-ident => shift 126
-		"-" => shift 127
-		prim-expr => shift 128
-		unary-expr => shift 129
-		mul-expr => shift 130
-		add-expr => shift 131
-		expr => shift 509
-
-411:	param-spec-2 => param-spec-1 "id" . expr
+407:	cmd-spec-2 => cmd-spec-1 "opcode" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -5334,34 +5229,7 @@
 		add-expr => shift 131
 		expr => shift 508
 
-412:	tlm-chan-3 => tlm-chan-2 "format" . string
-	string => . '$string
-		'$string => shift 98
-		string => shift 507
-
-413:	record-spec-0 => "product" "record" . ident ":" type-name
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 506
-
-414:	cont-spec-0 => "product" "container" . ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 505
-
-415:	spc-port-kind => "product" "get" .
-		$default => reduce 135
-
-416:	spc-port-kind => "product" "recv" .
-		$default => reduce 136
-
-417:	spc-port-kind => "product" "request" .
-		$default => reduce 137
-
-418:	spc-port-kind => "product" "send" .
-		$default => reduce 138
-
-419:	gen-port-inst-1 => gen-port-inst-0 "[" . expr "]"
+408:	event-spec-3 => event-spec-2 "id" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -5401,19 +5269,130 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 504
+		expr => shift 507
 
-420:	spc-port-inst-0 => spc-port-kind "port" . ident
+409:	param-spec-2 => param-spec-1 "id" . expr
+	expr => . add-expr
+	add-expr => . mul-expr
+	add-expr => . add-expr "+" mul-expr
+	add-expr => . add-expr "-" mul-expr
+	mul-expr => . unary-expr
+	mul-expr => . mul-expr "*" unary-expr
+	mul-expr => . mul-expr "/" unary-expr
+	unary-expr => . prim-expr
+	unary-expr => . "-" unary-expr
+	prim-expr => . qual-ident
+	prim-expr => . number
+	prim-expr => . string
+	prim-expr => . "[" expr-seq "]"
+	prim-expr => . "{" struct-elt-seq "}"
+	prim-expr => . "(" expr ")"
+	number => . '$float
+	number => . '$fixed
+	string => . '$string
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 103
+		qual-ident-1 => shift 104
+		'$string => shift 98
+		'$fixed => shift 119
+		'$float => shift 120
+		"(" => shift 121
+		"{" => shift 122
+		"[" => shift 123
+		string => shift 124
+		number => shift 125
+		qual-ident => shift 126
+		"-" => shift 127
+		prim-expr => shift 128
+		unary-expr => shift 129
+		mul-expr => shift 130
+		add-expr => shift 131
+		expr => shift 506
+
+410:	tlm-chan-3 => tlm-chan-2 "format" . string
+	string => . '$string
+		'$string => shift 98
+		string => shift 505
+
+411:	record-spec-0 => "product" "record" . ident ":" type-name
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 504
+
+412:	cont-spec-0 => "product" "container" . ident
 	ident => . '$ident
 		'$ident => shift 60
 		ident => shift 503
 
-421:	int-port-defn-0 => "internal" "port" . ident
+413:	spc-port-kind => "product" "get" .
+		$default => reduce 135
+
+414:	spc-port-kind => "product" "recv" .
+		$default => reduce 136
+
+415:	spc-port-kind => "product" "request" .
+		$default => reduce 137
+
+416:	spc-port-kind => "product" "send" .
+		$default => reduce 138
+
+417:	gen-port-inst-1 => gen-port-inst-0 "[" . expr "]"
+	expr => . add-expr
+	add-expr => . mul-expr
+	add-expr => . add-expr "+" mul-expr
+	add-expr => . add-expr "-" mul-expr
+	mul-expr => . unary-expr
+	mul-expr => . mul-expr "*" unary-expr
+	mul-expr => . mul-expr "/" unary-expr
+	unary-expr => . prim-expr
+	unary-expr => . "-" unary-expr
+	prim-expr => . qual-ident
+	prim-expr => . number
+	prim-expr => . string
+	prim-expr => . "[" expr-seq "]"
+	prim-expr => . "{" struct-elt-seq "}"
+	prim-expr => . "(" expr ")"
+	number => . '$float
+	number => . '$fixed
+	string => . '$string
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 502
+		ident => shift 103
+		qual-ident-1 => shift 104
+		'$string => shift 98
+		'$fixed => shift 119
+		'$float => shift 120
+		"(" => shift 121
+		"{" => shift 122
+		"[" => shift 123
+		string => shift 124
+		number => shift 125
+		qual-ident => shift 126
+		"-" => shift 127
+		prim-expr => shift 128
+		unary-expr => shift 129
+		mul-expr => shift 130
+		add-expr => shift 131
+		expr => shift 502
 
-422:	cmd-spec-1 => cmd-spec-0 "(" . param-list ")"
+418:	spc-port-inst-0 => spc-port-kind "port" . ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 501
+
+419:	int-port-defn-0 => "internal" "port" . ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 500
+
+420:	cmd-spec-1 => cmd-spec-0 "(" . param-list ")"
 	param-list => . param-list-1
 	param-list-1 => .
 	param-list-1 => . formal-param elt-sep param-list-1
@@ -5428,10 +5407,10 @@
 		formal-param-1 => shift 135
 		formal-param => shift 136
 		param-list-1 => shift 137
-		param-list => shift 501
+		param-list => shift 499
 		$default => reduce 261
 
-423:	event-spec-2 => event-spec-1 "severity" . severity
+421:	event-spec-2 => event-spec-1 "severity" . severity
 	severity => . "activity" "high"
 	severity => . "activity" "low"
 	severity => . "command"
@@ -5439,14 +5418,14 @@
 	severity => . "fatal"
 	severity => . "warning" "high"
 	severity => . "warning" "low"
-		"warning" => shift 495
-		"fatal" => shift 496
-		"diagnostic" => shift 497
-		"command" => shift 498
-		"activity" => shift 499
-		severity => shift 500
+		"warning" => shift 493
+		"fatal" => shift 494
+		"diagnostic" => shift 495
+		"command" => shift 496
+		"activity" => shift 497
+		severity => shift 498
 
-424:	param-spec-1 => param-spec-0 "default" . expr
+422:	param-spec-1 => param-spec-0 "default" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -5486,51 +5465,51 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 494
+		expr => shift 492
 
-425:	tlm-chan-2 => tlm-chan-1 "update" . tlm-update
+423:	tlm-chan-2 => tlm-chan-1 "update" . tlm-update
 	tlm-update => . "always"
 	tlm-update => . "on" "change"
-		"on" => shift 491
-		"always" => shift 492
-		tlm-update => shift 493
+		"on" => shift 489
+		"always" => shift 490
+		tlm-update => shift 491
 
-426:	gen-port-inst-0 => "output" "port" . ident ":"
+424:	gen-port-inst-0 => "output" "port" . ident ":"
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 490
+		ident => shift 488
 
-427:	spc-port-kind => "command" "recv" .
+425:	spc-port-kind => "command" "recv" .
 		$default => reduce 129
 
-428:	spc-port-kind => "command" "reg" .
+426:	spc-port-kind => "command" "reg" .
 		$default => reduce 130
 
-429:	spc-port-kind => "command" "resp" .
+427:	spc-port-kind => "command" "resp" .
 		$default => reduce 131
 
-430:	event-spec-0 => "event" ident .
+428:	event-spec-0 => "event" ident .
 		$default => reduce 146
 
-431:	spc-port-kind => "param" "get" .
+429:	spc-port-kind => "param" "get" .
 		$default => reduce 133
 
-432:	spc-port-kind => "param" "set" .
+430:	spc-port-kind => "param" "set" .
 		$default => reduce 134
 
-433:	param-spec-0 => "param" ident . ":" type-name
-		":" => shift 489
+431:	param-spec-0 => "param" ident . ":" type-name
+		":" => shift 487
 
-434:	tlm-chan-0 => "telemetry" ident . ":" type-name
-		":" => shift 488
+432:	tlm-chan-0 => "telemetry" ident . ":" type-name
+		":" => shift 486
 
-435:	spc-port-kind => "text" "event" .
+433:	spc-port-kind => "text" "event" .
 		$default => reduce 140
 
-436:	spc-port-kind => "time" "get" .
+434:	spc-port-kind => "time" "get" .
 		$default => reduce 141
 
-437:	event-spec-1 => event-spec-0 "(" . param-list ")"
+435:	event-spec-1 => event-spec-0 "(" . param-list ")"
 	param-list => . param-list-1
 	param-list-1 => .
 	param-list-1 => . formal-param elt-sep param-list-1
@@ -5545,10 +5524,10 @@
 		formal-param-1 => shift 135
 		formal-param => shift 136
 		param-list-1 => shift 137
-		param-list => shift 487
+		param-list => shift 485
 		$default => reduce 261
 
-438:	tlm-chan-1 => tlm-chan-0 "id" . expr
+436:	tlm-chan-1 => tlm-chan-0 "id" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -5588,13 +5567,13 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 486
+		expr => shift 484
 
-439:	tlm-pktset-spec => "telemetry" "packets" ident . "{" tlm-pktgrp-mem-seq "}" "omit" "{" tlm-chan-id-seq "}"
+437:	tlm-pktset-spec => "telemetry" "packets" ident . "{" tlm-pktgrp-mem-seq "}" "omit" "{" tlm-chan-id-seq "}"
 	tlm-pktset-spec => "telemetry" "packets" ident . "{" tlm-pktgrp-mem-seq "}"
-		"{" => shift 485
+		"{" => shift 483
 
-440:	conn-graph-spec => pattern-kind "connections" "instance" . qual-ident "{" qual-ident-seq "}"
+438:	conn-graph-spec => pattern-kind "connections" "instance" . qual-ident "{" qual-ident-seq "}"
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
@@ -5607,9 +5586,9 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 484
+		qual-ident => shift 482
 
-441:	conn-graph-spec => "connections" ident "{" . conn-seq "}"
+439:	conn-graph-spec => "connections" ident "{" . conn-seq "}"
 	conn-seq => .
 	conn-seq => . connection elt-sep conn-seq
 	connection => . conn-from "->" conn-to
@@ -5623,32 +5602,32 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 479
-		"unmatched" => shift 480
-		conn-from => shift 481
-		connection => shift 482
-		conn-seq => shift 483
+		qual-ident => shift 477
+		"unmatched" => shift 478
+		conn-from => shift 479
+		connection => shift 480
+		conn-seq => shift 481
 		$default => reduce 240
 
-442:	comp-inst-spec => "private" "instance" ident .
+440:	comp-inst-spec => "private" "instance" ident .
 		"\n" => reduce 229
 		$default => reduce 229
 
-443:	topo-mem-seq => include-spec mem-sep topo-mem-seq .
+441:	topo-mem-seq => include-spec mem-sep topo-mem-seq .
 		$default => reduce 222
 
-444:	topo-mem-seq => topo-mem mem-sep topo-mem-seq .
+442:	topo-mem-seq => topo-mem mem-sep topo-mem-seq .
 		$default => reduce 221
 
-445:	loc-spec => "locate" "state" "machine" qual-ident "at" string .
+443:	loc-spec => "locate" "state" "machine" qual-ident "at" string .
 		"\n" => reduce 276
 		$default => reduce 276
 
-446:	stmach-defn => "state" "machine" ident "{" stmach-mem-seq "}" .
-		"\n" => reduce 335
-		$default => reduce 335
+444:	stmach-defn => "state" "machine" ident "{" stmach-mem-seq "}" .
+		"\n" => reduce 334
+		$default => reduce 334
 
-447:	mem-sep => mem-sep . "\n"
+445:	mem-sep => mem-sep . "\n"
 	stmach-mem-seq => stmach-mem mem-sep . stmach-mem-seq
 	stmach-mem-seq => .
 	stmach-mem-seq => . stmach-mem mem-sep stmach-mem-seq
@@ -5665,45 +5644,45 @@
 	lone-anno => . '$lone-anno
 	state-defn => . "state" ident
 	state-defn => . "state" ident "{" state-defn-mem-seq "}"
-		"state" => shift 258
+		"state" => shift 256
 		'$lone-anno => shift 25
-		state-defn => shift 259
-		"initial" => shift 260
-		"signal" => shift 261
-		"guard" => shift 262
-		"action" => shift 263
-		"choice" => shift 264
-		lone-anno => shift 265
-		stmach-mem => shift 266
-		stmach-mem-seq => shift 478
-		"\n" => shift 164
-		$default => reduce 336
+		state-defn => shift 257
+		"initial" => shift 258
+		"signal" => shift 259
+		"guard" => shift 260
+		"action" => shift 261
+		"choice" => shift 262
+		lone-anno => shift 263
+		stmach-mem => shift 264
+		stmach-mem-seq => shift 476
+		"\n" => shift 163
+		$default => reduce 335
 
-448:	stmach-mem => "choice" ident . "{" "if" ident trans-expr "else" trans-expr "}"
-		"{" => shift 477
+446:	stmach-mem => "choice" ident . "{" "if" ident trans-expr "else" trans-expr "}"
+		"{" => shift 475
 
-449:	stmach-mem => "action" ident .
+447:	stmach-mem => "action" ident .
 	stmach-mem => "action" ident . ":" type-name
-		":" => shift 476
-		"\n" => reduce 340
-		$default => reduce 340
-
-450:	stmach-mem => "guard" ident .
-	stmach-mem => "guard" ident . ":" type-name
-		":" => shift 475
-		"\n" => reduce 342
-		$default => reduce 342
-
-451:	stmach-mem => "signal" ident .
-	stmach-mem => "signal" ident . ":" type-name
 		":" => shift 474
-		"\n" => reduce 344
-		$default => reduce 344
+		"\n" => reduce 339
+		$default => reduce 339
 
-452:	do-expr => "do" . "{" action-seq "}"
-		"{" => shift 473
+448:	stmach-mem => "guard" ident .
+	stmach-mem => "guard" ident . ":" type-name
+		":" => shift 473
+		"\n" => reduce 341
+		$default => reduce 341
 
-453:	trans-expr-0 => "enter" . qual-ident
+449:	stmach-mem => "signal" ident .
+	stmach-mem => "signal" ident . ":" type-name
+		":" => shift 472
+		"\n" => reduce 343
+		$default => reduce 343
+
+450:	do-expr => "do" . "{" action-seq "}"
+		"{" => shift 471
+
+451:	trans-expr-0 => "enter" . qual-ident
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
@@ -5711,63 +5690,63 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 472
+		qual-ident => shift 470
 
-454:	trans-expr-1 => do-expr . trans-expr-0
+452:	trans-expr-1 => do-expr . trans-expr-0
 	trans-expr-0 => . "enter" qual-ident
-		"enter" => shift 453
-		trans-expr-0 => shift 471
+		"enter" => shift 451
+		trans-expr-0 => shift 469
 
-455:	trans-expr-1 => trans-expr-0 .
-		"\n" => reduce 366
-		$default => reduce 366
+453:	trans-expr-1 => trans-expr-0 .
+		"\n" => reduce 365
+		$default => reduce 365
 
-456:	trans-expr => trans-expr-1 .
-		"\n" => reduce 364
-		$default => reduce 364
+454:	trans-expr => trans-expr-1 .
+		"\n" => reduce 363
+		$default => reduce 363
 
-457:	stmach-mem => "initial" trans-expr .
-		"\n" => reduce 346
-		$default => reduce 346
+455:	stmach-mem => "initial" trans-expr .
+		"\n" => reduce 345
+		$default => reduce 345
 
-458:	state-defn => "state" ident .
+456:	state-defn => "state" ident .
 	state-defn => "state" ident . "{" state-defn-mem-seq "}"
-		"{" => shift 470
-		"\n" => reduce 348
-		$default => reduce 348
+		"{" => shift 468
+		"\n" => reduce 347
+		$default => reduce 347
 
-459:	enum-mem => ident "=" expr code-anno .
+457:	enum-mem => ident "=" expr code-anno .
 		"\n" => reduce 46
 		$default => reduce 46
 
-460:	struct-mem-1 => struct-mem-0 "[" expr . "]"
-		"]" => shift 469
+458:	struct-mem-1 => struct-mem-0 "[" expr . "]"
+		"]" => shift 467
 
-461:	struct-mem-3 => struct-mem-2 "format" string .
+459:	struct-mem-3 => struct-mem-2 "format" string .
 		'$code-anno => reduce 62
 		"\n" => reduce 62
 		$default => reduce 62
 
-462:	struct-mem-seq => struct-mem mem-sep struct-mem-seq .
+460:	struct-mem-seq => struct-mem mem-sep struct-mem-seq .
 		$default => reduce 54
 
-463:	formal-param-1 => "ref" ident ":" type-name .
+461:	formal-param-1 => "ref" ident ":" type-name .
 		'$code-anno => reduce 266
 		"\n" => reduce 266
 		$default => reduce 266
 
-464:	expr-seq => expr elt-sep expr-seq .
+462:	expr-seq => expr elt-sep expr-seq .
 		$default => reduce 296
 
-465:	struct-elt-seq => ident "=" expr . elt-sep struct-elt-seq
+463:	struct-elt-seq => ident "=" expr . elt-sep struct-elt-seq
 	elt-sep => . ","
 	elt-sep => . "\n"
 	elt-sep => . elt-sep "\n"
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 468
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 466
 
-466:	comp-inst-0 => "instance" ident ":" qual-ident "base" "id" . expr
+464:	comp-inst-0 => "instance" ident ":" qual-ident "base" "id" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -5807,27 +5786,27 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 467
+		expr => shift 465
 
-467:	comp-inst-0 => "instance" ident ":" qual-ident "base" "id" expr .
+465:	comp-inst-0 => "instance" ident ":" qual-ident "base" "id" expr .
 		"\n" => reduce 204
 		$default => reduce 204
 
-468:	elt-sep => elt-sep . "\n"
+466:	elt-sep => elt-sep . "\n"
 	struct-elt-seq => ident "=" expr elt-sep . struct-elt-seq
 	struct-elt-seq => .
 	struct-elt-seq => . ident "=" expr elt-sep struct-elt-seq
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 225
-		struct-elt-seq => shift 586
-		"\n" => shift 248
+		ident => shift 223
+		struct-elt-seq => shift 584
+		"\n" => shift 246
 		$default => reduce 297
 
-469:	struct-mem-1 => struct-mem-0 "[" expr "]" .
+467:	struct-mem-1 => struct-mem-0 "[" expr "]" .
 		$default => reduce 59
 
-470:	state-defn => "state" ident "{" . state-defn-mem-seq "}"
+468:	state-defn => "state" ident "{" . state-defn-mem-seq "}"
 	state-defn-mem-seq => .
 	state-defn-mem-seq => . state-defn-mem mem-sep state-defn-mem-seq
 	state-defn-mem => . lone-anno
@@ -5845,115 +5824,41 @@
 	st-tran-spec-1 => . st-tran-spec-0
 	st-tran-spec-1 => . st-tran-spec-0 "if" ident
 	st-tran-spec-0 => . "on" ident
-		"on" => shift 573
-		st-tran-spec-0 => shift 574
-		st-tran-spec-1 => shift 575
-		st-tran-spec-2 => shift 576
-		"state" => shift 258
+		"on" => shift 571
+		st-tran-spec-0 => shift 572
+		st-tran-spec-1 => shift 573
+		st-tran-spec-2 => shift 574
+		"state" => shift 256
 		'$lone-anno => shift 25
-		"exit" => shift 577
-		"entry" => shift 578
-		state-trans-spec => shift 579
-		state-defn => shift 580
-		"choice" => shift 581
-		"initial" => shift 582
-		lone-anno => shift 583
-		state-defn-mem => shift 584
-		state-defn-mem-seq => shift 585
-		$default => reduce 350
+		"exit" => shift 575
+		"entry" => shift 576
+		state-trans-spec => shift 577
+		state-defn => shift 578
+		"choice" => shift 579
+		"initial" => shift 580
+		lone-anno => shift 581
+		state-defn-mem => shift 582
+		state-defn-mem-seq => shift 583
+		$default => reduce 349
 
-471:	trans-expr-1 => do-expr trans-expr-0 .
-		"\n" => reduce 367
-		$default => reduce 367
+469:	trans-expr-1 => do-expr trans-expr-0 .
+		"\n" => reduce 366
+		$default => reduce 366
 
-472:	trans-expr-0 => "enter" qual-ident .
-		"\n" => reduce 365
-		$default => reduce 365
+470:	trans-expr-0 => "enter" qual-ident .
+		"\n" => reduce 364
+		$default => reduce 364
 
-473:	do-expr => "do" "{" . action-seq "}"
+471:	do-expr => "do" "{" . action-seq "}"
 	action-seq => .
 	action-seq => . ident elt-sep action-seq
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 571
-		action-seq => shift 572
-		$default => reduce 369
+		ident => shift 569
+		action-seq => shift 570
+		$default => reduce 368
 
-474:	stmach-mem => "signal" ident ":" . type-name
-	type-name => . qual-ident
-	type-name => . "I8"
-	type-name => . "U8"
-	type-name => . "I16"
-	type-name => . "U16"
-	type-name => . "I32"
-	type-name => . "U32"
-	type-name => . "I64"
-	type-name => . "U64"
-	type-name => . "F32"
-	type-name => . "F64"
-	type-name => . "bool"
-	type-name => . "string"
-	type-name => . "string" "size" expr
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 103
-		qual-ident-1 => shift 104
-		"string" => shift 105
-		"bool" => shift 106
-		"F64" => shift 107
-		"F32" => shift 108
-		"U64" => shift 109
-		"I64" => shift 110
-		"U32" => shift 111
-		"I32" => shift 112
-		"U16" => shift 113
-		"I16" => shift 114
-		"U8" => shift 115
-		"I8" => shift 116
-		qual-ident => shift 117
-		type-name => shift 570
-
-475:	stmach-mem => "guard" ident ":" . type-name
-	type-name => . qual-ident
-	type-name => . "I8"
-	type-name => . "U8"
-	type-name => . "I16"
-	type-name => . "U16"
-	type-name => . "I32"
-	type-name => . "U32"
-	type-name => . "I64"
-	type-name => . "U64"
-	type-name => . "F32"
-	type-name => . "F64"
-	type-name => . "bool"
-	type-name => . "string"
-	type-name => . "string" "size" expr
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 103
-		qual-ident-1 => shift 104
-		"string" => shift 105
-		"bool" => shift 106
-		"F64" => shift 107
-		"F32" => shift 108
-		"U64" => shift 109
-		"I64" => shift 110
-		"U32" => shift 111
-		"I32" => shift 112
-		"U16" => shift 113
-		"I16" => shift 114
-		"U8" => shift 115
-		"I8" => shift 116
-		qual-ident => shift 117
-		type-name => shift 569
-
-476:	stmach-mem => "action" ident ":" . type-name
+472:	stmach-mem => "signal" ident ":" . type-name
 	type-name => . qual-ident
 	type-name => . "I8"
 	type-name => . "U8"
@@ -5990,18 +5895,92 @@
 		qual-ident => shift 117
 		type-name => shift 568
 
-477:	stmach-mem => "choice" ident "{" . "if" ident trans-expr "else" trans-expr "}"
-		"if" => shift 567
+473:	stmach-mem => "guard" ident ":" . type-name
+	type-name => . qual-ident
+	type-name => . "I8"
+	type-name => . "U8"
+	type-name => . "I16"
+	type-name => . "U16"
+	type-name => . "I32"
+	type-name => . "U32"
+	type-name => . "I64"
+	type-name => . "U64"
+	type-name => . "F32"
+	type-name => . "F64"
+	type-name => . "bool"
+	type-name => . "string"
+	type-name => . "string" "size" expr
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 103
+		qual-ident-1 => shift 104
+		"string" => shift 105
+		"bool" => shift 106
+		"F64" => shift 107
+		"F32" => shift 108
+		"U64" => shift 109
+		"I64" => shift 110
+		"U32" => shift 111
+		"I32" => shift 112
+		"U16" => shift 113
+		"I16" => shift 114
+		"U8" => shift 115
+		"I8" => shift 116
+		qual-ident => shift 117
+		type-name => shift 567
 
-478:	stmach-mem-seq => stmach-mem mem-sep stmach-mem-seq .
-		$default => reduce 337
+474:	stmach-mem => "action" ident ":" . type-name
+	type-name => . qual-ident
+	type-name => . "I8"
+	type-name => . "U8"
+	type-name => . "I16"
+	type-name => . "U16"
+	type-name => . "I32"
+	type-name => . "U32"
+	type-name => . "I64"
+	type-name => . "U64"
+	type-name => . "F32"
+	type-name => . "F64"
+	type-name => . "bool"
+	type-name => . "string"
+	type-name => . "string" "size" expr
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 103
+		qual-ident-1 => shift 104
+		"string" => shift 105
+		"bool" => shift 106
+		"F64" => shift 107
+		"F32" => shift 108
+		"U64" => shift 109
+		"I64" => shift 110
+		"U32" => shift 111
+		"I32" => shift 112
+		"U16" => shift 113
+		"I16" => shift 114
+		"U8" => shift 115
+		"I8" => shift 116
+		qual-ident => shift 117
+		type-name => shift 566
 
-479:	conn-from => qual-ident . "[" expr "]"
+475:	stmach-mem => "choice" ident "{" . "if" ident trans-expr "else" trans-expr "}"
+		"if" => shift 565
+
+476:	stmach-mem-seq => stmach-mem mem-sep stmach-mem-seq .
+		$default => reduce 336
+
+477:	conn-from => qual-ident . "[" expr "]"
 	conn-from => qual-ident .
-		"[" => shift 566
+		"[" => shift 564
 		$default => reduce 244
 
-480:	connection => "unmatched" . conn-from "->" conn-to
+478:	connection => "unmatched" . conn-from "->" conn-to
 	conn-from => . qual-ident
 	conn-from => . qual-ident "[" expr "]"
 	qual-ident => . qual-ident-1
@@ -6011,30 +5990,30 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 479
-		conn-from => shift 565
+		qual-ident => shift 477
+		conn-from => shift 563
 
-481:	connection => conn-from . "->" conn-to
-		"->" => shift 564
+479:	connection => conn-from . "->" conn-to
+		"->" => shift 562
 
-482:	conn-seq => connection . elt-sep conn-seq
+480:	conn-seq => connection . elt-sep conn-seq
 	elt-sep => . ","
 	elt-sep => . "\n"
 	elt-sep => . elt-sep "\n"
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 563
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 561
 
-483:	conn-graph-spec => "connections" ident "{" conn-seq . "}"
-		"}" => shift 562
+481:	conn-graph-spec => "connections" ident "{" conn-seq . "}"
+		"}" => shift 560
 
-484:	conn-graph-spec => pattern-kind "connections" "instance" qual-ident .
+482:	conn-graph-spec => pattern-kind "connections" "instance" qual-ident .
 	conn-graph-spec => pattern-kind "connections" "instance" qual-ident . "{" qual-ident-seq "}"
-		"{" => shift 561
+		"{" => shift 559
 		"\n" => reduce 231
 		$default => reduce 231
 
-485:	tlm-pktset-spec => "telemetry" "packets" ident "{" . tlm-pktgrp-mem-seq "}"
+483:	tlm-pktset-spec => "telemetry" "packets" ident "{" . tlm-pktgrp-mem-seq "}"
 	tlm-pktgrp-mem-seq => .
 	tlm-pktgrp-mem-seq => . tlm-pkt-spec elt-sep tlm-pktgrp-mem-seq
 	tlm-pktgrp-mem-seq => . include-spec elt-sep tlm-pktgrp-mem-seq
@@ -6048,21 +6027,21 @@
 	include-spec => . "include" '$string
 	tlm-pkt-spec => . "packet" ident "group" expr "{" tlm-pkt-mem-seq "}"
 	tlm-pkt-spec => . "packet" ident "group" expr "id" expr "{" tlm-pkt-mem-seq "}"
-		"packet" => shift 557
+		"packet" => shift 555
 		"include" => shift 50
-		include-spec => shift 558
-		tlm-pkt-spec => shift 559
-		tlm-pktgrp-mem-seq => shift 560
+		include-spec => shift 556
+		tlm-pkt-spec => shift 557
+		tlm-pktgrp-mem-seq => shift 558
 		$default => reduce 250
 
-486:	tlm-chan-1 => tlm-chan-0 "id" expr .
+484:	tlm-chan-1 => tlm-chan-0 "id" expr .
 		"\n" => reduce 175
 		$default => reduce 175
 
-487:	event-spec-1 => event-spec-0 "(" param-list . ")"
-		")" => shift 556
+485:	event-spec-1 => event-spec-0 "(" param-list . ")"
+		")" => shift 554
 
-488:	tlm-chan-0 => "telemetry" ident ":" . type-name
+486:	tlm-chan-0 => "telemetry" ident ":" . type-name
 	type-name => . qual-ident
 	type-name => . "I8"
 	type-name => . "U8"
@@ -6097,9 +6076,9 @@
 		"U8" => shift 115
 		"I8" => shift 116
 		qual-ident => shift 117
-		type-name => shift 555
+		type-name => shift 553
 
-489:	param-spec-0 => "param" ident ":" . type-name
+487:	param-spec-0 => "param" ident ":" . type-name
 	type-name => . qual-ident
 	type-name => . "I8"
 	type-name => . "U8"
@@ -6134,119 +6113,119 @@
 		"U8" => shift 115
 		"I8" => shift 116
 		qual-ident => shift 117
-		type-name => shift 554
+		type-name => shift 552
 
-490:	gen-port-inst-0 => "output" "port" ident . ":"
-		":" => shift 553
+488:	gen-port-inst-0 => "output" "port" ident . ":"
+		":" => shift 551
 
-491:	tlm-update => "on" . "change"
-		"change" => shift 552
+489:	tlm-update => "on" . "change"
+		"change" => shift 550
 
-492:	tlm-update => "always" .
+490:	tlm-update => "always" .
 		"\n" => reduce 184
 		$default => reduce 184
 
-493:	tlm-chan-2 => tlm-chan-1 "update" tlm-update .
+491:	tlm-chan-2 => tlm-chan-1 "update" tlm-update .
 		"\n" => reduce 177
 		$default => reduce 177
 
-494:	param-spec-1 => param-spec-0 "default" expr .
+492:	param-spec-1 => param-spec-0 "default" expr .
 		"\n" => reduce 165
 		$default => reduce 165
 
-495:	severity => "warning" . "low"
+493:	severity => "warning" . "low"
 	severity => "warning" . "high"
-		"high" => shift 550
-		"low" => shift 551
-
-496:	severity => "fatal" .
-		$default => reduce 159
-
-497:	severity => "diagnostic" .
-		$default => reduce 158
-
-498:	severity => "command" .
-		$default => reduce 157
-
-499:	severity => "activity" . "low"
-	severity => "activity" . "high"
 		"high" => shift 548
 		"low" => shift 549
 
-500:	event-spec-2 => event-spec-1 "severity" severity .
+494:	severity => "fatal" .
+		$default => reduce 159
+
+495:	severity => "diagnostic" .
+		$default => reduce 158
+
+496:	severity => "command" .
+		$default => reduce 157
+
+497:	severity => "activity" . "low"
+	severity => "activity" . "high"
+		"high" => shift 546
+		"low" => shift 547
+
+498:	event-spec-2 => event-spec-1 "severity" severity .
 		$default => reduce 149
 
-501:	cmd-spec-1 => cmd-spec-0 "(" param-list . ")"
-		")" => shift 547
+499:	cmd-spec-1 => cmd-spec-0 "(" param-list . ")"
+		")" => shift 545
 
-502:	int-port-defn-0 => "internal" "port" ident .
+500:	int-port-defn-0 => "internal" "port" ident .
 		"\n" => reduce 112
 		$default => reduce 112
 
-503:	spc-port-inst-0 => spc-port-kind "port" ident .
+501:	spc-port-inst-0 => spc-port-kind "port" ident .
 		"\n" => reduce 104
 		$default => reduce 104
 
-504:	gen-port-inst-1 => gen-port-inst-0 "[" expr . "]"
-		"]" => shift 546
+502:	gen-port-inst-1 => gen-port-inst-0 "[" expr . "]"
+		"]" => shift 544
 
-505:	cont-spec-0 => "product" "container" ident .
+503:	cont-spec-0 => "product" "container" ident .
 		"\n" => reduce 198
 		$default => reduce 198
 
-506:	record-spec-0 => "product" "record" ident . ":" type-name
-		":" => shift 545
+504:	record-spec-0 => "product" "record" ident . ":" type-name
+		":" => shift 543
 
-507:	tlm-chan-3 => tlm-chan-2 "format" string .
+505:	tlm-chan-3 => tlm-chan-2 "format" string .
 		"\n" => reduce 179
 		$default => reduce 179
 
-508:	param-spec-2 => param-spec-1 "id" expr .
+506:	param-spec-2 => param-spec-1 "id" expr .
 		"\n" => reduce 167
 		$default => reduce 167
 
-509:	event-spec-3 => event-spec-2 "id" expr .
+507:	event-spec-3 => event-spec-2 "id" expr .
 		$default => reduce 151
 
-510:	cmd-spec-2 => cmd-spec-1 "opcode" expr .
+508:	cmd-spec-2 => cmd-spec-1 "opcode" expr .
 		"\n" => reduce 124
 		$default => reduce 124
 
-511:	int-port-defn-1 => int-port-defn-0 "(" param-list . ")"
-		")" => shift 544
+509:	int-port-defn-1 => int-port-defn-0 "(" param-list . ")"
+		")" => shift 542
 
-512:	cmd-spec-0 => input-port-kind "command" ident .
+510:	cmd-spec-0 => input-port-kind "command" ident .
 		"\n" => reduce 120
 		$default => reduce 120
 
-513:	gen-port-inst-0 => input-port-kind "input" "port" . ident ":"
+511:	gen-port-inst-0 => input-port-kind "input" "port" . ident ":"
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 543
+		ident => shift 541
 
-514:	stmach-inst-1 => stmach-inst-0 "priority" expr .
-		"\n" => reduce 331
-		'$code-anno => reduce 331
-		$default => reduce 331
+512:	stmach-inst-1 => stmach-inst-0 "priority" expr .
+		"\n" => reduce 330
+		'$code-anno => reduce 330
+		$default => reduce 330
 
-515:	cont-spec-1 => cont-spec-0 "id" expr .
+513:	cont-spec-1 => cont-spec-0 "id" expr .
 		"\n" => reduce 200
 		$default => reduce 200
 
-516:	tlm-chan-4 => tlm-chan-3 "low" "{" . tlm-lim-seq "}"
+514:	tlm-chan-4 => tlm-chan-3 "low" "{" . tlm-lim-seq "}"
 	tlm-lim-seq => .
 	tlm-lim-seq => . tlm-lim elt-sep tlm-lim-seq
 	tlm-lim => . "red" expr
 	tlm-lim => . "orange" expr
 	tlm-lim => . "yellow" expr
-		"yellow" => shift 535
-		"orange" => shift 536
-		"red" => shift 537
-		tlm-lim => shift 538
-		tlm-lim-seq => shift 542
+		"yellow" => shift 533
+		"orange" => shift 534
+		"red" => shift 535
+		tlm-lim => shift 536
+		tlm-lim-seq => shift 540
 		$default => reduce 186
 
-517:	param-spec-3 => param-spec-2 "set" "opcode" . expr
+515:	param-spec-3 => param-spec-2 "set" "opcode" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -6286,29 +6265,29 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 541
+		expr => shift 539
 
-518:	event-spec-4 => event-spec-3 "format" string .
+516:	event-spec-4 => event-spec-3 "format" string .
 		"\n" => reduce 152
 		$default => reduce 152
 
-519:	cmd-spec-3 => cmd-spec-2 "priority" expr .
+517:	cmd-spec-3 => cmd-spec-2 "priority" expr .
 		"\n" => reduce 126
 		$default => reduce 126
 
-520:	int-port-defn-2 => int-port-defn-1 "priority" expr .
+518:	int-port-defn-2 => int-port-defn-1 "priority" expr .
 		"\n" => reduce 116
 		$default => reduce 116
 
-521:	spc-port-inst-2 => spc-port-inst-1 "priority" expr .
+519:	spc-port-inst-2 => spc-port-inst-1 "priority" expr .
 		"\n" => reduce 108
 		$default => reduce 108
 
-522:	gen-port-inst-3 => gen-port-inst-2 "priority" expr .
+520:	gen-port-inst-3 => gen-port-inst-2 "priority" expr .
 		"\n" => reduce 101
 		$default => reduce 101
 
-523:	cont-spec-2 => cont-spec-1 "default" "priority" . expr
+521:	cont-spec-2 => cont-spec-1 "default" "priority" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -6348,26 +6327,26 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 540
+		expr => shift 538
 
-524:	record-spec-2 => record-spec-1 "id" expr .
+522:	record-spec-2 => record-spec-1 "id" expr .
 		"\n" => reduce 196
 		$default => reduce 196
 
-525:	tlm-chan-5 => tlm-chan-4 "high" "{" . tlm-lim-seq "}"
+523:	tlm-chan-5 => tlm-chan-4 "high" "{" . tlm-lim-seq "}"
 	tlm-lim-seq => .
 	tlm-lim-seq => . tlm-lim elt-sep tlm-lim-seq
 	tlm-lim => . "red" expr
 	tlm-lim => . "orange" expr
 	tlm-lim => . "yellow" expr
-		"yellow" => shift 535
-		"orange" => shift 536
-		"red" => shift 537
-		tlm-lim => shift 538
-		tlm-lim-seq => shift 539
+		"yellow" => shift 533
+		"orange" => shift 534
+		"red" => shift 535
+		tlm-lim => shift 536
+		tlm-lim-seq => shift 537
 		$default => reduce 186
 
-526:	param-spec-4 => param-spec-3 "save" "opcode" . expr
+524:	param-spec-4 => param-spec-3 "save" "opcode" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -6407,124 +6386,40 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 534
+		expr => shift 532
 
-527:	event-spec-5 => event-spec-4 "throttle" expr .
+525:	event-spec-5 => event-spec-4 "throttle" expr .
 		"\n" => reduce 154
 		$default => reduce 154
 
-528:	stmach-inst-0 => "state" "machine" "instance" . ident ":" qual-ident
+526:	stmach-inst-0 => "state" "machine" "instance" . ident ":" qual-ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 533
+		ident => shift 531
 
-529:	port-match-spec => "match" ident "with" . ident
+527:	port-match-spec => "match" ident "with" . ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 532
+		ident => shift 530
 
-530:	comp-mem-seq => include-spec mem-sep comp-mem-seq .
+528:	comp-mem-seq => include-spec mem-sep comp-mem-seq .
 		$default => reduce 77
 
-531:	comp-mem-seq => comp-mem mem-sep comp-mem-seq .
+529:	comp-mem-seq => comp-mem mem-sep comp-mem-seq .
 		$default => reduce 76
 
-532:	port-match-spec => "match" ident "with" ident .
+530:	port-match-spec => "match" ident "with" ident .
 		"\n" => reduce 279
 		$default => reduce 279
 
-533:	stmach-inst-0 => "state" "machine" "instance" ident . ":" qual-ident
-		":" => shift 620
+531:	stmach-inst-0 => "state" "machine" "instance" ident . ":" qual-ident
+		":" => shift 618
 
-534:	param-spec-4 => param-spec-3 "save" "opcode" expr .
+532:	param-spec-4 => param-spec-3 "save" "opcode" expr .
 		"\n" => reduce 171
 		$default => reduce 171
 
-535:	tlm-lim => "yellow" . expr
-	expr => . add-expr
-	add-expr => . mul-expr
-	add-expr => . add-expr "+" mul-expr
-	add-expr => . add-expr "-" mul-expr
-	mul-expr => . unary-expr
-	mul-expr => . mul-expr "*" unary-expr
-	mul-expr => . mul-expr "/" unary-expr
-	unary-expr => . prim-expr
-	unary-expr => . "-" unary-expr
-	prim-expr => . qual-ident
-	prim-expr => . number
-	prim-expr => . string
-	prim-expr => . "[" expr-seq "]"
-	prim-expr => . "{" struct-elt-seq "}"
-	prim-expr => . "(" expr ")"
-	number => . '$float
-	number => . '$fixed
-	string => . '$string
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 103
-		qual-ident-1 => shift 104
-		'$string => shift 98
-		'$fixed => shift 119
-		'$float => shift 120
-		"(" => shift 121
-		"{" => shift 122
-		"[" => shift 123
-		string => shift 124
-		number => shift 125
-		qual-ident => shift 126
-		"-" => shift 127
-		prim-expr => shift 128
-		unary-expr => shift 129
-		mul-expr => shift 130
-		add-expr => shift 131
-		expr => shift 619
-
-536:	tlm-lim => "orange" . expr
-	expr => . add-expr
-	add-expr => . mul-expr
-	add-expr => . add-expr "+" mul-expr
-	add-expr => . add-expr "-" mul-expr
-	mul-expr => . unary-expr
-	mul-expr => . mul-expr "*" unary-expr
-	mul-expr => . mul-expr "/" unary-expr
-	unary-expr => . prim-expr
-	unary-expr => . "-" unary-expr
-	prim-expr => . qual-ident
-	prim-expr => . number
-	prim-expr => . string
-	prim-expr => . "[" expr-seq "]"
-	prim-expr => . "{" struct-elt-seq "}"
-	prim-expr => . "(" expr ")"
-	number => . '$float
-	number => . '$fixed
-	string => . '$string
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 103
-		qual-ident-1 => shift 104
-		'$string => shift 98
-		'$fixed => shift 119
-		'$float => shift 120
-		"(" => shift 121
-		"{" => shift 122
-		"[" => shift 123
-		string => shift 124
-		number => shift 125
-		qual-ident => shift 126
-		"-" => shift 127
-		prim-expr => shift 128
-		unary-expr => shift 129
-		mul-expr => shift 130
-		add-expr => shift 131
-		expr => shift 618
-
-537:	tlm-lim => "red" . expr
+533:	tlm-lim => "yellow" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -6566,194 +6461,7 @@
 		add-expr => shift 131
 		expr => shift 617
 
-538:	tlm-lim-seq => tlm-lim . elt-sep tlm-lim-seq
-	elt-sep => . ","
-	elt-sep => . "\n"
-	elt-sep => . elt-sep "\n"
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 616
-
-539:	tlm-chan-5 => tlm-chan-4 "high" "{" tlm-lim-seq . "}"
-		"}" => shift 615
-
-540:	cont-spec-2 => cont-spec-1 "default" "priority" expr .
-		"\n" => reduce 202
-		$default => reduce 202
-
-541:	param-spec-3 => param-spec-2 "set" "opcode" expr .
-		"\n" => reduce 169
-		$default => reduce 169
-
-542:	tlm-chan-4 => tlm-chan-3 "low" "{" tlm-lim-seq . "}"
-		"}" => shift 614
-
-543:	gen-port-inst-0 => input-port-kind "input" "port" ident . ":"
-		":" => shift 613
-
-544:	int-port-defn-1 => int-port-defn-0 "(" param-list ")" .
-		"\n" => reduce 114
-		$default => reduce 114
-
-545:	record-spec-0 => "product" "record" ident ":" . type-name
-	type-name => . qual-ident
-	type-name => . "I8"
-	type-name => . "U8"
-	type-name => . "I16"
-	type-name => . "U16"
-	type-name => . "I32"
-	type-name => . "U32"
-	type-name => . "I64"
-	type-name => . "U64"
-	type-name => . "F32"
-	type-name => . "F64"
-	type-name => . "bool"
-	type-name => . "string"
-	type-name => . "string" "size" expr
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 103
-		qual-ident-1 => shift 104
-		"string" => shift 105
-		"bool" => shift 106
-		"F64" => shift 107
-		"F32" => shift 108
-		"U64" => shift 109
-		"I64" => shift 110
-		"U32" => shift 111
-		"I32" => shift 112
-		"U16" => shift 113
-		"I16" => shift 114
-		"U8" => shift 115
-		"I8" => shift 116
-		qual-ident => shift 117
-		type-name => shift 612
-
-546:	gen-port-inst-1 => gen-port-inst-0 "[" expr "]" .
-		$default => reduce 97
-
-547:	cmd-spec-1 => cmd-spec-0 "(" param-list ")" .
-		"\n" => reduce 122
-		$default => reduce 122
-
-548:	severity => "activity" "high" .
-		$default => reduce 155
-
-549:	severity => "activity" "low" .
-		$default => reduce 156
-
-550:	severity => "warning" "high" .
-		$default => reduce 160
-
-551:	severity => "warning" "low" .
-		$default => reduce 161
-
-552:	tlm-update => "on" "change" .
-		"\n" => reduce 185
-		$default => reduce 185
-
-553:	gen-port-inst-0 => "output" "port" ident ":" .
-		$default => reduce 95
-
-554:	param-spec-0 => "param" ident ":" type-name .
-		"\n" => reduce 163
-		$default => reduce 163
-
-555:	tlm-chan-0 => "telemetry" ident ":" type-name .
-		"\n" => reduce 173
-		$default => reduce 173
-
-556:	event-spec-1 => event-spec-0 "(" param-list ")" .
-		$default => reduce 148
-
-557:	tlm-pkt-spec => "packet" . ident "group" expr "id" expr "{" tlm-pkt-mem-seq "}"
-	ident => . '$ident
-	tlm-pkt-spec => "packet" . ident "group" expr "{" tlm-pkt-mem-seq "}"
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 611
-
-558:	tlm-pktgrp-mem-seq => include-spec . elt-sep tlm-pktgrp-mem-seq
-	elt-sep => . ","
-	elt-sep => . "\n"
-	elt-sep => . elt-sep "\n"
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 610
-
-559:	tlm-pktgrp-mem-seq => tlm-pkt-spec . elt-sep tlm-pktgrp-mem-seq
-	elt-sep => . ","
-	elt-sep => . "\n"
-	elt-sep => . elt-sep "\n"
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 609
-
-560:	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq . "}" "omit" "{" tlm-chan-id-seq "}"
-	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq . "}"
-		"}" => shift 608
-
-561:	conn-graph-spec => pattern-kind "connections" "instance" qual-ident "{" . qual-ident-seq "}"
-	qual-ident-seq => .
-	qual-ident-seq => . qual-ident elt-sep qual-ident-seq
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 103
-		qual-ident-1 => shift 104
-		qual-ident => shift 606
-		qual-ident-seq => shift 607
-		$default => reduce 310
-
-562:	conn-graph-spec => "connections" ident "{" conn-seq "}" .
-		"\n" => reduce 230
-		$default => reduce 230
-
-563:	elt-sep => elt-sep . "\n"
-	conn-seq => connection elt-sep . conn-seq
-	conn-seq => .
-	conn-seq => . connection elt-sep conn-seq
-	connection => . conn-from "->" conn-to
-	connection => . "unmatched" conn-from "->" conn-to
-	conn-from => . qual-ident
-	conn-from => . qual-ident "[" expr "]"
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 103
-		qual-ident-1 => shift 104
-		qual-ident => shift 479
-		"unmatched" => shift 480
-		conn-from => shift 481
-		connection => shift 482
-		conn-seq => shift 605
-		"\n" => shift 248
-		$default => reduce 240
-
-564:	connection => conn-from "->" . conn-to
-	conn-to => . qual-ident
-	conn-to => . qual-ident "[" expr "]"
-	qual-ident => . qual-ident-1
-	qual-ident-1 => . ident
-	qual-ident-1 => . qual-ident-1 "." ident
-	ident => . '$ident
-		'$ident => shift 60
-		ident => shift 103
-		qual-ident-1 => shift 104
-		qual-ident => shift 603
-		conn-to => shift 604
-
-565:	connection => "unmatched" conn-from . "->" conn-to
-		"->" => shift 602
-
-566:	conn-from => qual-ident "[" . expr "]"
+534:	tlm-lim => "orange" . expr
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -6793,47 +6501,318 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 601
+		expr => shift 616
 
-567:	stmach-mem => "choice" ident "{" "if" . ident trans-expr "else" trans-expr "}"
+535:	tlm-lim => "red" . expr
+	expr => . add-expr
+	add-expr => . mul-expr
+	add-expr => . add-expr "+" mul-expr
+	add-expr => . add-expr "-" mul-expr
+	mul-expr => . unary-expr
+	mul-expr => . mul-expr "*" unary-expr
+	mul-expr => . mul-expr "/" unary-expr
+	unary-expr => . prim-expr
+	unary-expr => . "-" unary-expr
+	prim-expr => . qual-ident
+	prim-expr => . number
+	prim-expr => . string
+	prim-expr => . "[" expr-seq "]"
+	prim-expr => . "{" struct-elt-seq "}"
+	prim-expr => . "(" expr ")"
+	number => . '$float
+	number => . '$fixed
+	string => . '$string
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 600
+		ident => shift 103
+		qual-ident-1 => shift 104
+		'$string => shift 98
+		'$fixed => shift 119
+		'$float => shift 120
+		"(" => shift 121
+		"{" => shift 122
+		"[" => shift 123
+		string => shift 124
+		number => shift 125
+		qual-ident => shift 126
+		"-" => shift 127
+		prim-expr => shift 128
+		unary-expr => shift 129
+		mul-expr => shift 130
+		add-expr => shift 131
+		expr => shift 615
 
-568:	stmach-mem => "action" ident ":" type-name .
-		"\n" => reduce 341
-		$default => reduce 341
-
-569:	stmach-mem => "guard" ident ":" type-name .
-		"\n" => reduce 343
-		$default => reduce 343
-
-570:	stmach-mem => "signal" ident ":" type-name .
-		"\n" => reduce 345
-		$default => reduce 345
-
-571:	action-seq => ident . elt-sep action-seq
+536:	tlm-lim-seq => tlm-lim . elt-sep tlm-lim-seq
 	elt-sep => . ","
 	elt-sep => . "\n"
 	elt-sep => . elt-sep "\n"
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 599
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 614
 
-572:	do-expr => "do" "{" action-seq . "}"
-		"}" => shift 598
+537:	tlm-chan-5 => tlm-chan-4 "high" "{" tlm-lim-seq . "}"
+		"}" => shift 613
 
-573:	st-tran-spec-0 => "on" . ident
+538:	cont-spec-2 => cont-spec-1 "default" "priority" expr .
+		"\n" => reduce 202
+		$default => reduce 202
+
+539:	param-spec-3 => param-spec-2 "set" "opcode" expr .
+		"\n" => reduce 169
+		$default => reduce 169
+
+540:	tlm-chan-4 => tlm-chan-3 "low" "{" tlm-lim-seq . "}"
+		"}" => shift 612
+
+541:	gen-port-inst-0 => input-port-kind "input" "port" ident . ":"
+		":" => shift 611
+
+542:	int-port-defn-1 => int-port-defn-0 "(" param-list ")" .
+		"\n" => reduce 114
+		$default => reduce 114
+
+543:	record-spec-0 => "product" "record" ident ":" . type-name
+	type-name => . qual-ident
+	type-name => . "I8"
+	type-name => . "U8"
+	type-name => . "I16"
+	type-name => . "U16"
+	type-name => . "I32"
+	type-name => . "U32"
+	type-name => . "I64"
+	type-name => . "U64"
+	type-name => . "F32"
+	type-name => . "F64"
+	type-name => . "bool"
+	type-name => . "string"
+	type-name => . "string" "size" expr
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 597
+		ident => shift 103
+		qual-ident-1 => shift 104
+		"string" => shift 105
+		"bool" => shift 106
+		"F64" => shift 107
+		"F32" => shift 108
+		"U64" => shift 109
+		"I64" => shift 110
+		"U32" => shift 111
+		"I32" => shift 112
+		"U16" => shift 113
+		"I16" => shift 114
+		"U8" => shift 115
+		"I8" => shift 116
+		qual-ident => shift 117
+		type-name => shift 610
 
-574:	st-tran-spec-1 => st-tran-spec-0 . "if" ident
+544:	gen-port-inst-1 => gen-port-inst-0 "[" expr "]" .
+		$default => reduce 97
+
+545:	cmd-spec-1 => cmd-spec-0 "(" param-list ")" .
+		"\n" => reduce 122
+		$default => reduce 122
+
+546:	severity => "activity" "high" .
+		$default => reduce 155
+
+547:	severity => "activity" "low" .
+		$default => reduce 156
+
+548:	severity => "warning" "high" .
+		$default => reduce 160
+
+549:	severity => "warning" "low" .
+		$default => reduce 161
+
+550:	tlm-update => "on" "change" .
+		"\n" => reduce 185
+		$default => reduce 185
+
+551:	gen-port-inst-0 => "output" "port" ident ":" .
+		$default => reduce 95
+
+552:	param-spec-0 => "param" ident ":" type-name .
+		"\n" => reduce 163
+		$default => reduce 163
+
+553:	tlm-chan-0 => "telemetry" ident ":" type-name .
+		"\n" => reduce 173
+		$default => reduce 173
+
+554:	event-spec-1 => event-spec-0 "(" param-list ")" .
+		$default => reduce 148
+
+555:	tlm-pkt-spec => "packet" . ident "group" expr "id" expr "{" tlm-pkt-mem-seq "}"
+	ident => . '$ident
+	tlm-pkt-spec => "packet" . ident "group" expr "{" tlm-pkt-mem-seq "}"
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 609
+
+556:	tlm-pktgrp-mem-seq => include-spec . elt-sep tlm-pktgrp-mem-seq
+	elt-sep => . ","
+	elt-sep => . "\n"
+	elt-sep => . elt-sep "\n"
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 608
+
+557:	tlm-pktgrp-mem-seq => tlm-pkt-spec . elt-sep tlm-pktgrp-mem-seq
+	elt-sep => . ","
+	elt-sep => . "\n"
+	elt-sep => . elt-sep "\n"
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 607
+
+558:	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq . "}" "omit" "{" tlm-chan-id-seq "}"
+	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq . "}"
+		"}" => shift 606
+
+559:	conn-graph-spec => pattern-kind "connections" "instance" qual-ident "{" . qual-ident-seq "}"
+	qual-ident-seq => .
+	qual-ident-seq => . qual-ident elt-sep qual-ident-seq
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 103
+		qual-ident-1 => shift 104
+		qual-ident => shift 604
+		qual-ident-seq => shift 605
+		$default => reduce 309
+
+560:	conn-graph-spec => "connections" ident "{" conn-seq "}" .
+		"\n" => reduce 230
+		$default => reduce 230
+
+561:	elt-sep => elt-sep . "\n"
+	conn-seq => connection elt-sep . conn-seq
+	conn-seq => .
+	conn-seq => . connection elt-sep conn-seq
+	connection => . conn-from "->" conn-to
+	connection => . "unmatched" conn-from "->" conn-to
+	conn-from => . qual-ident
+	conn-from => . qual-ident "[" expr "]"
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 103
+		qual-ident-1 => shift 104
+		qual-ident => shift 477
+		"unmatched" => shift 478
+		conn-from => shift 479
+		connection => shift 480
+		conn-seq => shift 603
+		"\n" => shift 246
+		$default => reduce 240
+
+562:	connection => conn-from "->" . conn-to
+	conn-to => . qual-ident
+	conn-to => . qual-ident "[" expr "]"
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 103
+		qual-ident-1 => shift 104
+		qual-ident => shift 601
+		conn-to => shift 602
+
+563:	connection => "unmatched" conn-from . "->" conn-to
+		"->" => shift 600
+
+564:	conn-from => qual-ident "[" . expr "]"
+	expr => . add-expr
+	add-expr => . mul-expr
+	add-expr => . add-expr "+" mul-expr
+	add-expr => . add-expr "-" mul-expr
+	mul-expr => . unary-expr
+	mul-expr => . mul-expr "*" unary-expr
+	mul-expr => . mul-expr "/" unary-expr
+	unary-expr => . prim-expr
+	unary-expr => . "-" unary-expr
+	prim-expr => . qual-ident
+	prim-expr => . number
+	prim-expr => . string
+	prim-expr => . "[" expr-seq "]"
+	prim-expr => . "{" struct-elt-seq "}"
+	prim-expr => . "(" expr ")"
+	number => . '$float
+	number => . '$fixed
+	string => . '$string
+	qual-ident => . qual-ident-1
+	qual-ident-1 => . ident
+	qual-ident-1 => . qual-ident-1 "." ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 103
+		qual-ident-1 => shift 104
+		'$string => shift 98
+		'$fixed => shift 119
+		'$float => shift 120
+		"(" => shift 121
+		"{" => shift 122
+		"[" => shift 123
+		string => shift 124
+		number => shift 125
+		qual-ident => shift 126
+		"-" => shift 127
+		prim-expr => shift 128
+		unary-expr => shift 129
+		mul-expr => shift 130
+		add-expr => shift 131
+		expr => shift 599
+
+565:	stmach-mem => "choice" ident "{" "if" . ident trans-expr "else" trans-expr "}"
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 598
+
+566:	stmach-mem => "action" ident ":" type-name .
+		"\n" => reduce 340
+		$default => reduce 340
+
+567:	stmach-mem => "guard" ident ":" type-name .
+		"\n" => reduce 342
+		$default => reduce 342
+
+568:	stmach-mem => "signal" ident ":" type-name .
+		"\n" => reduce 344
+		$default => reduce 344
+
+569:	action-seq => ident . elt-sep action-seq
+	elt-sep => . ","
+	elt-sep => . "\n"
+	elt-sep => . elt-sep "\n"
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 597
+
+570:	do-expr => "do" "{" action-seq . "}"
+		"}" => shift 596
+
+571:	st-tran-spec-0 => "on" . ident
+	ident => . '$ident
+		'$ident => shift 60
+		ident => shift 595
+
+572:	st-tran-spec-1 => st-tran-spec-0 . "if" ident
 	st-tran-spec-1 => st-tran-spec-0 .
-		"if" => shift 596
-		$default => reduce 361
+		"if" => shift 594
+		$default => reduce 360
 
-575:	st-tran-spec-2 => st-tran-spec-1 . trans-or-do
+573:	st-tran-spec-2 => st-tran-spec-1 . trans-or-do
 	trans-or-do => . trans-expr
 	trans-or-do => . do-expr
 	trans-expr => . trans-expr-1
@@ -6841,77 +6820,77 @@
 	trans-expr-1 => . trans-expr-0
 	trans-expr-1 => . do-expr trans-expr-0
 	trans-expr-0 => . "enter" qual-ident
-		"enter" => shift 453
-		trans-expr-0 => shift 455
-		"do" => shift 452
-		trans-expr-1 => shift 456
-		do-expr => shift 593
-		trans-expr => shift 594
-		trans-or-do => shift 595
-
-576:	state-trans-spec => st-tran-spec-2 .
-		"\n" => reduce 359
-		$default => reduce 359
-
-577:	state-defn-mem => "exit" . do-expr
-	do-expr => . "do" "{" action-seq "}"
-		"do" => shift 452
-		do-expr => shift 592
-
-578:	state-defn-mem => "entry" . do-expr
-	do-expr => . "do" "{" action-seq "}"
-		"do" => shift 452
+		"enter" => shift 451
+		trans-expr-0 => shift 453
+		"do" => shift 450
+		trans-expr-1 => shift 454
 		do-expr => shift 591
+		trans-expr => shift 592
+		trans-or-do => shift 593
 
-579:	state-defn-mem => state-trans-spec .
-		"\n" => reduce 356
-		$default => reduce 356
+574:	state-trans-spec => st-tran-spec-2 .
+		"\n" => reduce 358
+		$default => reduce 358
 
-580:	state-defn-mem => state-defn .
+575:	state-defn-mem => "exit" . do-expr
+	do-expr => . "do" "{" action-seq "}"
+		"do" => shift 450
+		do-expr => shift 590
+
+576:	state-defn-mem => "entry" . do-expr
+	do-expr => . "do" "{" action-seq "}"
+		"do" => shift 450
+		do-expr => shift 589
+
+577:	state-defn-mem => state-trans-spec .
 		"\n" => reduce 355
 		$default => reduce 355
 
-581:	state-defn-mem => "choice" . ident "{" "if" ident trans-expr "else" trans-expr "}"
+578:	state-defn-mem => state-defn .
+		"\n" => reduce 354
+		$default => reduce 354
+
+579:	state-defn-mem => "choice" . ident "{" "if" ident trans-expr "else" trans-expr "}"
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 590
+		ident => shift 588
 
-582:	state-defn-mem => "initial" . trans-expr
+580:	state-defn-mem => "initial" . trans-expr
 	trans-expr => . trans-expr-1
 	trans-expr-1 => . trans-expr-0
 	trans-expr-1 => . do-expr trans-expr-0
 	trans-expr-0 => . "enter" qual-ident
 	do-expr => . "do" "{" action-seq "}"
-		"do" => shift 452
-		"enter" => shift 453
-		do-expr => shift 454
-		trans-expr-0 => shift 455
-		trans-expr-1 => shift 456
-		trans-expr => shift 589
+		"do" => shift 450
+		"enter" => shift 451
+		do-expr => shift 452
+		trans-expr-0 => shift 453
+		trans-expr-1 => shift 454
+		trans-expr => shift 587
 
-583:	state-defn-mem => lone-anno .
-		"\n" => reduce 352
-		$default => reduce 352
+581:	state-defn-mem => lone-anno .
+		"\n" => reduce 351
+		$default => reduce 351
 
-584:	state-defn-mem-seq => state-defn-mem . mem-sep state-defn-mem-seq
+582:	state-defn-mem-seq => state-defn-mem . mem-sep state-defn-mem-seq
 	mem-sep => . ";"
 	mem-sep => . "\n"
 	mem-sep => . mem-sep "\n"
 		"\n" => shift 55
 		";" => shift 56
-		mem-sep => shift 588
+		mem-sep => shift 586
 
-585:	state-defn => "state" ident "{" state-defn-mem-seq . "}"
-		"}" => shift 587
+583:	state-defn => "state" ident "{" state-defn-mem-seq . "}"
+		"}" => shift 585
 
-586:	struct-elt-seq => ident "=" expr elt-sep struct-elt-seq .
+584:	struct-elt-seq => ident "=" expr elt-sep struct-elt-seq .
 		$default => reduce 298
 
-587:	state-defn => "state" ident "{" state-defn-mem-seq "}" .
-		"\n" => reduce 349
-		$default => reduce 349
+585:	state-defn => "state" ident "{" state-defn-mem-seq "}" .
+		"\n" => reduce 348
+		$default => reduce 348
 
-588:	mem-sep => mem-sep . "\n"
+586:	mem-sep => mem-sep . "\n"
 	state-defn-mem-seq => state-defn-mem mem-sep . state-defn-mem-seq
 	state-defn-mem-seq => .
 	state-defn-mem-seq => . state-defn-mem mem-sep state-defn-mem-seq
@@ -6930,95 +6909,95 @@
 	st-tran-spec-1 => . st-tran-spec-0
 	st-tran-spec-1 => . st-tran-spec-0 "if" ident
 	st-tran-spec-0 => . "on" ident
-		"on" => shift 573
-		st-tran-spec-0 => shift 574
-		st-tran-spec-1 => shift 575
-		st-tran-spec-2 => shift 576
-		"state" => shift 258
+		"on" => shift 571
+		st-tran-spec-0 => shift 572
+		st-tran-spec-1 => shift 573
+		st-tran-spec-2 => shift 574
+		"state" => shift 256
 		'$lone-anno => shift 25
-		"exit" => shift 577
-		"entry" => shift 578
-		state-trans-spec => shift 579
-		state-defn => shift 580
-		"choice" => shift 581
-		"initial" => shift 582
-		lone-anno => shift 583
-		state-defn-mem => shift 584
-		state-defn-mem-seq => shift 636
-		"\n" => shift 164
-		$default => reduce 350
+		"exit" => shift 575
+		"entry" => shift 576
+		state-trans-spec => shift 577
+		state-defn => shift 578
+		"choice" => shift 579
+		"initial" => shift 580
+		lone-anno => shift 581
+		state-defn-mem => shift 582
+		state-defn-mem-seq => shift 634
+		"\n" => shift 163
+		$default => reduce 349
 
-589:	state-defn-mem => "initial" trans-expr .
-		"\n" => reduce 353
-		$default => reduce 353
+587:	state-defn-mem => "initial" trans-expr .
+		"\n" => reduce 352
+		$default => reduce 352
 
-590:	state-defn-mem => "choice" ident . "{" "if" ident trans-expr "else" trans-expr "}"
-		"{" => shift 635
+588:	state-defn-mem => "choice" ident . "{" "if" ident trans-expr "else" trans-expr "}"
+		"{" => shift 633
 
-591:	state-defn-mem => "entry" do-expr .
+589:	state-defn-mem => "entry" do-expr .
+		"\n" => reduce 356
+		$default => reduce 356
+
+590:	state-defn-mem => "exit" do-expr .
 		"\n" => reduce 357
 		$default => reduce 357
 
-592:	state-defn-mem => "exit" do-expr .
-		"\n" => reduce 358
-		$default => reduce 358
-
-593:	trans-expr-1 => do-expr . trans-expr-0
+591:	trans-expr-1 => do-expr . trans-expr-0
 	trans-expr-0 => . "enter" qual-ident
 	trans-or-do => do-expr .
-		"enter" => shift 453
-		trans-expr-0 => shift 471
-		"\n" => reduce 372
-		$default => reduce 372
-
-594:	trans-or-do => trans-expr .
+		"enter" => shift 451
+		trans-expr-0 => shift 469
 		"\n" => reduce 371
 		$default => reduce 371
 
-595:	st-tran-spec-2 => st-tran-spec-1 trans-or-do .
-		"\n" => reduce 363
-		$default => reduce 363
+592:	trans-or-do => trans-expr .
+		"\n" => reduce 370
+		$default => reduce 370
 
-596:	st-tran-spec-1 => st-tran-spec-0 "if" . ident
+593:	st-tran-spec-2 => st-tran-spec-1 trans-or-do .
+		"\n" => reduce 362
+		$default => reduce 362
+
+594:	st-tran-spec-1 => st-tran-spec-0 "if" . ident
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 634
+		ident => shift 632
 
-597:	st-tran-spec-0 => "on" ident .
-		$default => reduce 360
+595:	st-tran-spec-0 => "on" ident .
+		$default => reduce 359
 
-598:	do-expr => "do" "{" action-seq "}" .
-		"\n" => reduce 368
-		$default => reduce 368
+596:	do-expr => "do" "{" action-seq "}" .
+		"\n" => reduce 367
+		$default => reduce 367
 
-599:	elt-sep => elt-sep . "\n"
+597:	elt-sep => elt-sep . "\n"
 	action-seq => ident elt-sep . action-seq
 	action-seq => .
 	action-seq => . ident elt-sep action-seq
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 571
-		action-seq => shift 633
-		"\n" => shift 248
-		$default => reduce 369
+		ident => shift 569
+		action-seq => shift 631
+		"\n" => shift 246
+		$default => reduce 368
 
-600:	stmach-mem => "choice" ident "{" "if" ident . trans-expr "else" trans-expr "}"
+598:	stmach-mem => "choice" ident "{" "if" ident . trans-expr "else" trans-expr "}"
 	trans-expr => . trans-expr-1
 	trans-expr-1 => . trans-expr-0
 	trans-expr-1 => . do-expr trans-expr-0
 	trans-expr-0 => . "enter" qual-ident
 	do-expr => . "do" "{" action-seq "}"
-		"do" => shift 452
-		"enter" => shift 453
-		do-expr => shift 454
-		trans-expr-0 => shift 455
-		trans-expr-1 => shift 456
-		trans-expr => shift 632
+		"do" => shift 450
+		"enter" => shift 451
+		do-expr => shift 452
+		trans-expr-0 => shift 453
+		trans-expr-1 => shift 454
+		trans-expr => shift 630
 
-601:	conn-from => qual-ident "[" expr . "]"
-		"]" => shift 631
+599:	conn-from => qual-ident "[" expr . "]"
+		"]" => shift 629
 
-602:	connection => "unmatched" conn-from "->" . conn-to
+600:	connection => "unmatched" conn-from "->" . conn-to
 	conn-to => . qual-ident
 	conn-to => . qual-ident "[" expr "]"
 	qual-ident => . qual-ident-1
@@ -7028,40 +7007,40 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 603
-		conn-to => shift 630
+		qual-ident => shift 601
+		conn-to => shift 628
 
-603:	conn-to => qual-ident . "[" expr "]"
+601:	conn-to => qual-ident . "[" expr "]"
 	conn-to => qual-ident .
-		"[" => shift 629
+		"[" => shift 627
 		"\n" => reduce 246
 		$default => reduce 246
 
-604:	connection => conn-from "->" conn-to .
+602:	connection => conn-from "->" conn-to .
 		"\n" => reduce 242
 		$default => reduce 242
 
-605:	conn-seq => connection elt-sep conn-seq .
+603:	conn-seq => connection elt-sep conn-seq .
 		$default => reduce 241
 
-606:	qual-ident-seq => qual-ident . elt-sep qual-ident-seq
+604:	qual-ident-seq => qual-ident . elt-sep qual-ident-seq
 	elt-sep => . ","
 	elt-sep => . "\n"
 	elt-sep => . elt-sep "\n"
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 628
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 626
 
-607:	conn-graph-spec => pattern-kind "connections" "instance" qual-ident "{" qual-ident-seq . "}"
-		"}" => shift 627
+605:	conn-graph-spec => pattern-kind "connections" "instance" qual-ident "{" qual-ident-seq . "}"
+		"}" => shift 625
 
-608:	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}" .
+606:	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}" .
 	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}" . "omit" "{" tlm-chan-id-seq "}"
-		"omit" => shift 626
+		"omit" => shift 624
 		"\n" => reduce 248
 		$default => reduce 248
 
-609:	elt-sep => elt-sep . "\n"
+607:	elt-sep => elt-sep . "\n"
 	tlm-pktgrp-mem-seq => tlm-pkt-spec elt-sep . tlm-pktgrp-mem-seq
 	tlm-pktgrp-mem-seq => .
 	tlm-pktgrp-mem-seq => . tlm-pkt-spec elt-sep tlm-pktgrp-mem-seq
@@ -7069,15 +7048,15 @@
 	include-spec => . "include" '$string
 	tlm-pkt-spec => . "packet" ident "group" expr "{" tlm-pkt-mem-seq "}"
 	tlm-pkt-spec => . "packet" ident "group" expr "id" expr "{" tlm-pkt-mem-seq "}"
-		"packet" => shift 557
+		"packet" => shift 555
 		"include" => shift 50
-		include-spec => shift 558
-		tlm-pkt-spec => shift 559
-		tlm-pktgrp-mem-seq => shift 625
-		"\n" => shift 248
+		include-spec => shift 556
+		tlm-pkt-spec => shift 557
+		tlm-pktgrp-mem-seq => shift 623
+		"\n" => shift 246
 		$default => reduce 250
 
-610:	elt-sep => elt-sep . "\n"
+608:	elt-sep => elt-sep . "\n"
 	tlm-pktgrp-mem-seq => include-spec elt-sep . tlm-pktgrp-mem-seq
 	tlm-pktgrp-mem-seq => .
 	tlm-pktgrp-mem-seq => . tlm-pkt-spec elt-sep tlm-pktgrp-mem-seq
@@ -7085,61 +7064,61 @@
 	include-spec => . "include" '$string
 	tlm-pkt-spec => . "packet" ident "group" expr "{" tlm-pkt-mem-seq "}"
 	tlm-pkt-spec => . "packet" ident "group" expr "id" expr "{" tlm-pkt-mem-seq "}"
-		"packet" => shift 557
+		"packet" => shift 555
 		"include" => shift 50
-		include-spec => shift 558
-		tlm-pkt-spec => shift 559
-		tlm-pktgrp-mem-seq => shift 624
-		"\n" => shift 248
+		include-spec => shift 556
+		tlm-pkt-spec => shift 557
+		tlm-pktgrp-mem-seq => shift 622
+		"\n" => shift 246
 		$default => reduce 250
 
-611:	tlm-pkt-spec => "packet" ident . "group" expr "{" tlm-pkt-mem-seq "}"
+609:	tlm-pkt-spec => "packet" ident . "group" expr "{" tlm-pkt-mem-seq "}"
 	tlm-pkt-spec => "packet" ident . "group" expr "id" expr "{" tlm-pkt-mem-seq "}"
-		"group" => shift 623
+		"group" => shift 621
 
-612:	record-spec-0 => "product" "record" ident ":" type-name .
+610:	record-spec-0 => "product" "record" ident ":" type-name .
 		"\n" => reduce 192
 		$default => reduce 192
 
-613:	gen-port-inst-0 => input-port-kind "input" "port" ident ":" .
+611:	gen-port-inst-0 => input-port-kind "input" "port" ident ":" .
 		$default => reduce 94
 
-614:	tlm-chan-4 => tlm-chan-3 "low" "{" tlm-lim-seq "}" .
+612:	tlm-chan-4 => tlm-chan-3 "low" "{" tlm-lim-seq "}" .
 		"\n" => reduce 181
 		$default => reduce 181
 
-615:	tlm-chan-5 => tlm-chan-4 "high" "{" tlm-lim-seq "}" .
+613:	tlm-chan-5 => tlm-chan-4 "high" "{" tlm-lim-seq "}" .
 		"\n" => reduce 183
 		$default => reduce 183
 
-616:	elt-sep => elt-sep . "\n"
+614:	elt-sep => elt-sep . "\n"
 	tlm-lim-seq => tlm-lim elt-sep . tlm-lim-seq
 	tlm-lim-seq => .
 	tlm-lim-seq => . tlm-lim elt-sep tlm-lim-seq
 	tlm-lim => . "red" expr
 	tlm-lim => . "orange" expr
 	tlm-lim => . "yellow" expr
-		"yellow" => shift 535
-		"orange" => shift 536
-		"red" => shift 537
-		tlm-lim => shift 538
-		tlm-lim-seq => shift 622
-		"\n" => shift 248
+		"yellow" => shift 533
+		"orange" => shift 534
+		"red" => shift 535
+		tlm-lim => shift 536
+		tlm-lim-seq => shift 620
+		"\n" => shift 246
 		$default => reduce 186
 
-617:	tlm-lim => "red" expr .
+615:	tlm-lim => "red" expr .
 		"\n" => reduce 188
 		$default => reduce 188
 
-618:	tlm-lim => "orange" expr .
+616:	tlm-lim => "orange" expr .
 		"\n" => reduce 189
 		$default => reduce 189
 
-619:	tlm-lim => "yellow" expr .
+617:	tlm-lim => "yellow" expr .
 		"\n" => reduce 190
 		$default => reduce 190
 
-620:	stmach-inst-0 => "state" "machine" "instance" ident ":" . qual-ident
+618:	stmach-inst-0 => "state" "machine" "instance" ident ":" . qual-ident
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
 	qual-ident-1 => . qual-ident-1 "." ident
@@ -7147,17 +7126,17 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 621
+		qual-ident => shift 619
 
-621:	stmach-inst-0 => "state" "machine" "instance" ident ":" qual-ident .
-		'$code-anno => reduce 329
-		"\n" => reduce 329
-		$default => reduce 329
+619:	stmach-inst-0 => "state" "machine" "instance" ident ":" qual-ident .
+		'$code-anno => reduce 328
+		"\n" => reduce 328
+		$default => reduce 328
 
-622:	tlm-lim-seq => tlm-lim elt-sep tlm-lim-seq .
+620:	tlm-lim-seq => tlm-lim elt-sep tlm-lim-seq .
 		$default => reduce 187
 
-623:	tlm-pkt-spec => "packet" ident "group" . expr "id" expr "{" tlm-pkt-mem-seq "}"
+621:	tlm-pkt-spec => "packet" ident "group" . expr "id" expr "{" tlm-pkt-mem-seq "}"
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -7220,22 +7199,22 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 642
+		expr => shift 640
 
-624:	tlm-pktgrp-mem-seq => include-spec elt-sep tlm-pktgrp-mem-seq .
+622:	tlm-pktgrp-mem-seq => include-spec elt-sep tlm-pktgrp-mem-seq .
 		$default => reduce 252
 
-625:	tlm-pktgrp-mem-seq => tlm-pkt-spec elt-sep tlm-pktgrp-mem-seq .
+623:	tlm-pktgrp-mem-seq => tlm-pkt-spec elt-sep tlm-pktgrp-mem-seq .
 		$default => reduce 251
 
-626:	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}" "omit" . "{" tlm-chan-id-seq "}"
-		"{" => shift 641
+624:	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}" "omit" . "{" tlm-chan-id-seq "}"
+		"{" => shift 639
 
-627:	conn-graph-spec => pattern-kind "connections" "instance" qual-ident "{" qual-ident-seq "}" .
+625:	conn-graph-spec => pattern-kind "connections" "instance" qual-ident "{" qual-ident-seq "}" .
 		"\n" => reduce 232
 		$default => reduce 232
 
-628:	elt-sep => elt-sep . "\n"
+626:	elt-sep => elt-sep . "\n"
 	qual-ident-seq => qual-ident elt-sep . qual-ident-seq
 	qual-ident-seq => .
 	qual-ident-seq => . qual-ident elt-sep qual-ident-seq
@@ -7246,12 +7225,12 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 606
-		qual-ident-seq => shift 640
-		"\n" => shift 248
-		$default => reduce 310
+		qual-ident => shift 604
+		qual-ident-seq => shift 638
+		"\n" => shift 246
+		$default => reduce 309
 
-629:	conn-to => qual-ident "[" . expr "]"
+627:	conn-to => qual-ident "[" . expr "]"
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -7291,67 +7270,67 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 639
+		expr => shift 637
 
-630:	connection => "unmatched" conn-from "->" conn-to .
+628:	connection => "unmatched" conn-from "->" conn-to .
 		"\n" => reduce 243
 		$default => reduce 243
 
-631:	conn-from => qual-ident "[" expr "]" .
+629:	conn-from => qual-ident "[" expr "]" .
 		$default => reduce 245
 
-632:	stmach-mem => "choice" ident "{" "if" ident trans-expr . "else" trans-expr "}"
-		"else" => shift 638
+630:	stmach-mem => "choice" ident "{" "if" ident trans-expr . "else" trans-expr "}"
+		"else" => shift 636
 
-633:	action-seq => ident elt-sep action-seq .
-		$default => reduce 370
+631:	action-seq => ident elt-sep action-seq .
+		$default => reduce 369
 
-634:	st-tran-spec-1 => st-tran-spec-0 "if" ident .
-		$default => reduce 362
+632:	st-tran-spec-1 => st-tran-spec-0 "if" ident .
+		$default => reduce 361
 
-635:	state-defn-mem => "choice" ident "{" . "if" ident trans-expr "else" trans-expr "}"
-		"if" => shift 637
+633:	state-defn-mem => "choice" ident "{" . "if" ident trans-expr "else" trans-expr "}"
+		"if" => shift 635
 
-636:	state-defn-mem-seq => state-defn-mem mem-sep state-defn-mem-seq .
-		$default => reduce 351
+634:	state-defn-mem-seq => state-defn-mem mem-sep state-defn-mem-seq .
+		$default => reduce 350
 
-637:	state-defn-mem => "choice" ident "{" "if" . ident trans-expr "else" trans-expr "}"
+635:	state-defn-mem => "choice" ident "{" "if" . ident trans-expr "else" trans-expr "}"
 	ident => . '$ident
 		'$ident => shift 60
-		ident => shift 648
+		ident => shift 646
 
-638:	stmach-mem => "choice" ident "{" "if" ident trans-expr "else" . trans-expr "}"
+636:	stmach-mem => "choice" ident "{" "if" ident trans-expr "else" . trans-expr "}"
 	trans-expr => . trans-expr-1
 	trans-expr-1 => . trans-expr-0
 	trans-expr-1 => . do-expr trans-expr-0
 	trans-expr-0 => . "enter" qual-ident
 	do-expr => . "do" "{" action-seq "}"
-		"do" => shift 452
-		"enter" => shift 453
-		do-expr => shift 454
-		trans-expr-0 => shift 455
-		trans-expr-1 => shift 456
-		trans-expr => shift 647
+		"do" => shift 450
+		"enter" => shift 451
+		do-expr => shift 452
+		trans-expr-0 => shift 453
+		trans-expr-1 => shift 454
+		trans-expr => shift 645
 
-639:	conn-to => qual-ident "[" expr . "]"
-		"]" => shift 646
+637:	conn-to => qual-ident "[" expr . "]"
+		"]" => shift 644
 
-640:	qual-ident-seq => qual-ident elt-sep qual-ident-seq .
-		$default => reduce 311
+638:	qual-ident-seq => qual-ident elt-sep qual-ident-seq .
+		$default => reduce 310
 
-641:	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}" "omit" "{" . tlm-chan-id-seq "}"
+639:	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}" "omit" "{" . tlm-chan-id-seq "}"
 	tlm-chan-id-seq => .
 	tlm-chan-id-seq => . tlm-chan-id-seq elt-sep qual-ident
-		tlm-chan-id-seq => shift 645
+		tlm-chan-id-seq => shift 643
 		"\n" => reduce 258
 		$default => reduce 258
 
-642:	tlm-pkt-spec => "packet" ident "group" expr . "{" tlm-pkt-mem-seq "}"
+640:	tlm-pkt-spec => "packet" ident "group" expr . "{" tlm-pkt-mem-seq "}"
 	tlm-pkt-spec => "packet" ident "group" expr . "id" expr "{" tlm-pkt-mem-seq "}"
-		"id" => shift 643
-		"{" => shift 644
+		"id" => shift 641
+		"{" => shift 642
 
-643:	tlm-pkt-spec => "packet" ident "group" expr "id" . expr "{" tlm-pkt-mem-seq "}"
+641:	tlm-pkt-spec => "packet" ident "group" expr "id" . expr "{" tlm-pkt-mem-seq "}"
 	expr => . add-expr
 	add-expr => . mul-expr
 	add-expr => . add-expr "+" mul-expr
@@ -7391,9 +7370,9 @@
 		unary-expr => shift 129
 		mul-expr => shift 130
 		add-expr => shift 131
-		expr => shift 656
+		expr => shift 654
 
-644:	tlm-pkt-spec => "packet" ident "group" expr "{" . tlm-pkt-mem-seq "}"
+642:	tlm-pkt-spec => "packet" ident "group" expr "{" . tlm-pkt-mem-seq "}"
 	tlm-pkt-mem-seq => .
 	tlm-pkt-mem-seq => . qual-ident elt-sep tlm-pkt-mem-seq
 	tlm-pkt-mem-seq => . include-spec elt-sep tlm-pkt-mem-seq
@@ -7406,53 +7385,53 @@
 		ident => shift 103
 		qual-ident-1 => shift 104
 		"include" => shift 50
-		include-spec => shift 653
-		qual-ident => shift 654
-		tlm-pkt-mem-seq => shift 655
+		include-spec => shift 651
+		qual-ident => shift 652
+		tlm-pkt-mem-seq => shift 653
 		$default => reduce 255
 
-645:	tlm-chan-id-seq => tlm-chan-id-seq . elt-sep qual-ident
+643:	tlm-chan-id-seq => tlm-chan-id-seq . elt-sep qual-ident
 	elt-sep => . ","
 	elt-sep => . "\n"
 	elt-sep => . elt-sep "\n"
 	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}" "omit" "{" tlm-chan-id-seq . "}"
-		"}" => shift 651
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 652
+		"}" => shift 649
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 650
 
-646:	conn-to => qual-ident "[" expr "]" .
+644:	conn-to => qual-ident "[" expr "]" .
 		"\n" => reduce 247
 		$default => reduce 247
 
-647:	stmach-mem => "choice" ident "{" "if" ident trans-expr "else" trans-expr . "}"
-		"}" => shift 650
+645:	stmach-mem => "choice" ident "{" "if" ident trans-expr "else" trans-expr . "}"
+		"}" => shift 648
 
-648:	state-defn-mem => "choice" ident "{" "if" ident . trans-expr "else" trans-expr "}"
+646:	state-defn-mem => "choice" ident "{" "if" ident . trans-expr "else" trans-expr "}"
 	trans-expr => . trans-expr-1
 	trans-expr-1 => . trans-expr-0
 	trans-expr-1 => . do-expr trans-expr-0
 	trans-expr-0 => . "enter" qual-ident
 	do-expr => . "do" "{" action-seq "}"
-		"do" => shift 452
-		"enter" => shift 453
-		do-expr => shift 454
-		trans-expr-0 => shift 455
-		trans-expr-1 => shift 456
-		trans-expr => shift 649
+		"do" => shift 450
+		"enter" => shift 451
+		do-expr => shift 452
+		trans-expr-0 => shift 453
+		trans-expr-1 => shift 454
+		trans-expr => shift 647
 
-649:	state-defn-mem => "choice" ident "{" "if" ident trans-expr . "else" trans-expr "}"
-		"else" => shift 662
+647:	state-defn-mem => "choice" ident "{" "if" ident trans-expr . "else" trans-expr "}"
+		"else" => shift 660
 
-650:	stmach-mem => "choice" ident "{" "if" ident trans-expr "else" trans-expr "}" .
-		"\n" => reduce 339
-		$default => reduce 339
+648:	stmach-mem => "choice" ident "{" "if" ident trans-expr "else" trans-expr "}" .
+		"\n" => reduce 338
+		$default => reduce 338
 
-651:	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}" "omit" "{" tlm-chan-id-seq "}" .
+649:	tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq "}" "omit" "{" tlm-chan-id-seq "}" .
 		"\n" => reduce 249
 		$default => reduce 249
 
-652:	elt-sep => elt-sep . "\n"
+650:	elt-sep => elt-sep . "\n"
 	tlm-chan-id-seq => tlm-chan-id-seq elt-sep . qual-ident
 	qual-ident => . qual-ident-1
 	qual-ident-1 => . ident
@@ -7461,32 +7440,32 @@
 		'$ident => shift 60
 		ident => shift 103
 		qual-ident-1 => shift 104
-		qual-ident => shift 661
-		"\n" => shift 248
+		qual-ident => shift 659
+		"\n" => shift 246
 
-653:	tlm-pkt-mem-seq => include-spec . elt-sep tlm-pkt-mem-seq
+651:	tlm-pkt-mem-seq => include-spec . elt-sep tlm-pkt-mem-seq
 	elt-sep => . ","
 	elt-sep => . "\n"
 	elt-sep => . elt-sep "\n"
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 660
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 658
 
-654:	tlm-pkt-mem-seq => qual-ident . elt-sep tlm-pkt-mem-seq
+652:	tlm-pkt-mem-seq => qual-ident . elt-sep tlm-pkt-mem-seq
 	elt-sep => . ","
 	elt-sep => . "\n"
 	elt-sep => . elt-sep "\n"
-		"\n" => shift 201
-		"," => shift 202
-		elt-sep => shift 659
+		"\n" => shift 199
+		"," => shift 200
+		elt-sep => shift 657
 
-655:	tlm-pkt-spec => "packet" ident "group" expr "{" tlm-pkt-mem-seq . "}"
-		"}" => shift 658
+653:	tlm-pkt-spec => "packet" ident "group" expr "{" tlm-pkt-mem-seq . "}"
+		"}" => shift 656
 
-656:	tlm-pkt-spec => "packet" ident "group" expr "id" expr . "{" tlm-pkt-mem-seq "}"
-		"{" => shift 657
+654:	tlm-pkt-spec => "packet" ident "group" expr "id" expr . "{" tlm-pkt-mem-seq "}"
+		"{" => shift 655
 
-657:	tlm-pkt-spec => "packet" ident "group" expr "id" expr "{" . tlm-pkt-mem-seq "}"
+655:	tlm-pkt-spec => "packet" ident "group" expr "id" expr "{" . tlm-pkt-mem-seq "}"
 	tlm-pkt-mem-seq => .
 	tlm-pkt-mem-seq => . qual-ident elt-sep tlm-pkt-mem-seq
 	tlm-pkt-mem-seq => . include-spec elt-sep tlm-pkt-mem-seq
@@ -7499,16 +7478,16 @@
 		ident => shift 103
 		qual-ident-1 => shift 104
 		"include" => shift 50
-		include-spec => shift 653
-		qual-ident => shift 654
-		tlm-pkt-mem-seq => shift 666
+		include-spec => shift 651
+		qual-ident => shift 652
+		tlm-pkt-mem-seq => shift 664
 		$default => reduce 255
 
-658:	tlm-pkt-spec => "packet" ident "group" expr "{" tlm-pkt-mem-seq "}" .
+656:	tlm-pkt-spec => "packet" ident "group" expr "{" tlm-pkt-mem-seq "}" .
 		"\n" => reduce 253
 		$default => reduce 253
 
-659:	elt-sep => elt-sep . "\n"
+657:	elt-sep => elt-sep . "\n"
 	tlm-pkt-mem-seq => qual-ident elt-sep . tlm-pkt-mem-seq
 	tlm-pkt-mem-seq => .
 	tlm-pkt-mem-seq => . qual-ident elt-sep tlm-pkt-mem-seq
@@ -7522,13 +7501,13 @@
 		ident => shift 103
 		qual-ident-1 => shift 104
 		"include" => shift 50
-		include-spec => shift 653
-		qual-ident => shift 654
-		tlm-pkt-mem-seq => shift 665
-		"\n" => shift 248
+		include-spec => shift 651
+		qual-ident => shift 652
+		tlm-pkt-mem-seq => shift 663
+		"\n" => shift 246
 		$default => reduce 255
 
-660:	elt-sep => elt-sep . "\n"
+658:	elt-sep => elt-sep . "\n"
 	tlm-pkt-mem-seq => include-spec elt-sep . tlm-pkt-mem-seq
 	tlm-pkt-mem-seq => .
 	tlm-pkt-mem-seq => . qual-ident elt-sep tlm-pkt-mem-seq
@@ -7542,46 +7521,46 @@
 		ident => shift 103
 		qual-ident-1 => shift 104
 		"include" => shift 50
-		include-spec => shift 653
-		qual-ident => shift 654
-		tlm-pkt-mem-seq => shift 664
-		"\n" => shift 248
+		include-spec => shift 651
+		qual-ident => shift 652
+		tlm-pkt-mem-seq => shift 662
+		"\n" => shift 246
 		$default => reduce 255
 
-661:	tlm-chan-id-seq => tlm-chan-id-seq elt-sep qual-ident .
+659:	tlm-chan-id-seq => tlm-chan-id-seq elt-sep qual-ident .
 		"\n" => reduce 259
 		$default => reduce 259
 
-662:	state-defn-mem => "choice" ident "{" "if" ident trans-expr "else" . trans-expr "}"
+660:	state-defn-mem => "choice" ident "{" "if" ident trans-expr "else" . trans-expr "}"
 	trans-expr => . trans-expr-1
 	trans-expr-1 => . trans-expr-0
 	trans-expr-1 => . do-expr trans-expr-0
 	trans-expr-0 => . "enter" qual-ident
 	do-expr => . "do" "{" action-seq "}"
-		"do" => shift 452
-		"enter" => shift 453
-		do-expr => shift 454
-		trans-expr-0 => shift 455
-		trans-expr-1 => shift 456
-		trans-expr => shift 663
+		"do" => shift 450
+		"enter" => shift 451
+		do-expr => shift 452
+		trans-expr-0 => shift 453
+		trans-expr-1 => shift 454
+		trans-expr => shift 661
 
-663:	state-defn-mem => "choice" ident "{" "if" ident trans-expr "else" trans-expr . "}"
-		"}" => shift 668
+661:	state-defn-mem => "choice" ident "{" "if" ident trans-expr "else" trans-expr . "}"
+		"}" => shift 666
 
-664:	tlm-pkt-mem-seq => include-spec elt-sep tlm-pkt-mem-seq .
+662:	tlm-pkt-mem-seq => include-spec elt-sep tlm-pkt-mem-seq .
 		$default => reduce 257
 
-665:	tlm-pkt-mem-seq => qual-ident elt-sep tlm-pkt-mem-seq .
+663:	tlm-pkt-mem-seq => qual-ident elt-sep tlm-pkt-mem-seq .
 		$default => reduce 256
 
-666:	tlm-pkt-spec => "packet" ident "group" expr "id" expr "{" tlm-pkt-mem-seq . "}"
-		"}" => shift 667
+664:	tlm-pkt-spec => "packet" ident "group" expr "id" expr "{" tlm-pkt-mem-seq . "}"
+		"}" => shift 665
 
-667:	tlm-pkt-spec => "packet" ident "group" expr "id" expr "{" tlm-pkt-mem-seq "}" .
+665:	tlm-pkt-spec => "packet" ident "group" expr "id" expr "{" tlm-pkt-mem-seq "}" .
 		"\n" => reduce 254
 		$default => reduce 254
 
-668:	state-defn-mem => "choice" ident "{" "if" ident trans-expr "else" trans-expr "}" .
-		"\n" => reduce 354
-		$default => reduce 354
+666:	state-defn-mem => "choice" ident "{" "if" ident trans-expr "else" trans-expr "}" .
+		"\n" => reduce 353
+		$default => reduce 353
 

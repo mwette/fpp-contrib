@@ -483,7 +483,8 @@
      (code-anno-list ($$ (string-join (reverse $1) "\n"))))
     (code-anno-list
      ($code-anno ($$ (list $1)))
-     (code-anno-list "\n" $code-anno ($$ (cons $3 $1))))
+     ;;(code-anno-list "\n" $code-anno ($$ (cons $3 $1))) ;; not working
+     )
 
     (qual-ident (qual-ident-1 ($$ (reverse $1))))
     (qual-ident-1
