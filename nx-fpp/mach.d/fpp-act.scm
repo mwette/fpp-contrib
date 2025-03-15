@@ -23,14 +23,13 @@
    (lambda ($2 $1 . $rest)
      (let* ((path (dirname (port-filename (current-input-port))))
             (path (string-append path "/" $2)))
-       (push-input (open-input-file path))
-       `(include ,$2)))
+       (push-input (open-input-file path))))
    ;; translation-unit => module-mem-seq
-   (lambda ($1 . $rest) `(trans-unit ,@(sx-tail (tl->list $1))))
+   (lambda ($1 . $rest) `(trans-unit ,@(sx-tail (seq->elt $1))))
    ;; module-mem-seq => 
-   (lambda $rest (make-tl 'module-mem-seq))
+   (lambda $rest (make-seq))
    ;; module-mem-seq => mod-mem mem-sep module-mem-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; module-mem-seq => include-spec mem-sep module-mem-seq
    (lambda ($3 $2 $1 . $rest) $3)
    ;; mod-mem => lone-anno
@@ -60,7 +59,7 @@
    ;; mod-mem => stmach-defn
    (lambda ($1 . $rest) $1)
    ;; module-defn => "module" ident "{" module-mem-seq "}"
-   (lambda ($5 $4 $3 $2 $1 . $rest) `(module-defn ,$2 ,(tl->list $4)))
+   (lambda ($5 $4 $3 $2 $1 . $rest) `(module-defn ,$2 ,(seq->elt $4)))
    ;; const-defn => "constant" ident "=" expr
    (lambda ($4 $3 $2 $1 . $rest) `(const-defn ,$2 ,$4))
    ;; abs-type-defn => "type" ident
@@ -76,15 +75,15 @@
    ;; enum-defn-1 => enum-defn-0 ":" type-name
    (lambda ($3 $2 $1 . $rest) (cons $3 $1))
    ;; enum-defn-2 => enum-defn-1 "{" enum-mem-seq "}"
-   (lambda ($4 $3 $2 $1 . $rest) (cons (tl->list $3) $1))
+   (lambda ($4 $3 $2 $1 . $rest) (cons (seq->elt $3) $1))
    ;; enum-defn-3 => enum-defn-2
    (lambda ($1 . $rest) $1)
    ;; enum-defn-3 => enum-defn-2 "default" expr
    (lambda ($3 $2 $1 . $rest) (cons `(default ,$3) $1))
    ;; enum-mem-seq => 
-   (lambda $rest (make-tl 'enum-mem-seq))
+   (lambda $rest (make-seq))
    ;; enum-mem-seq => enum-mem elt-sep enum-mem-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; enum-mem => ident
    (lambda ($1 . $rest) `(enum ,$1))
    ;; enum-mem => ident "=" expr
@@ -92,15 +91,15 @@
    ;; struct-defn => struct-defn-1
    (lambda ($1 . $rest) (reverse $1))
    ;; struct-defn-0 => "struct" ident "{" struct-mem-seq "}"
-   (lambda ($5 $4 $3 $2 $1 . $rest) (list (tl->list $4) $2 'struct-defn))
+   (lambda ($5 $4 $3 $2 $1 . $rest) (list (seq->elt $4) $2 'struct-defn))
    ;; struct-defn-1 => struct-defn-0
    (lambda ($1 . $rest) $1)
    ;; struct-defn-1 => struct-defn-0 "default" expr
    (lambda ($3 $2 $1 . $rest) (cons `(default ,$3) $1))
    ;; struct-mem-seq => 
-   (lambda $rest (make-tl 'mem-seq))
+   (lambda $rest (make-seq))
    ;; struct-mem-seq => struct-mem mem-sep struct-mem-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; struct-mem => struct-mem-3
    (lambda ($1 . $rest) (reverse $1))
    ;; struct-mem => struct-mem-3 '$code-anno
@@ -119,7 +118,7 @@
    ;; struct-mem-3 => struct-mem-2 "format" string
    (lambda ($3 $2 $1 . $rest) (cons `(format ,$3) $1))
    ;; port-defn => port-defn-2
-   (lambda ($1 . $rest) reverse $1)
+   (lambda ($1 . $rest) (reverse $1))
    ;; port-defn-0 => "port" ident
    (lambda ($2 $1 . $rest) (list $2 'port-defn))
    ;; port-defn-1 => port-defn-0
@@ -132,7 +131,10 @@
    (lambda ($3 $2 $1 . $rest) (cons $3 $1))
    ;; component-defn => comp-kind "component" ident "{" comp-mem-seq "}"
    (lambda ($6 $5 $4 $3 $2 $1 . $rest)
-     `(component-defn ,$3 (kind ,$1) ,(tl->list $5)))
+     (sferr "rl,seq->elt:\n")
+     (pperr $5)
+     (pperr (seq->elt $5))
+     `(component-defn ,$3 (kind ,$1) ,(seq->elt $5)))
    ;; comp-kind => "active"
    (lambda ($1 . $rest) $1)
    ;; comp-kind => "passive"
@@ -140,9 +142,9 @@
    ;; comp-kind => "queued"
    (lambda ($1 . $rest) $1)
    ;; comp-mem-seq => 
-   (lambda $rest (make-tl 'comp-mem-seq))
+   (lambda $rest (make-seq))
    ;; comp-mem-seq => comp-mem mem-sep comp-mem-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; comp-mem-seq => include-spec mem-sep comp-mem-seq
    (lambda ($3 $2 $1 . $rest) $3)
    ;; comp-mem => lone-anno
@@ -352,19 +354,19 @@
    ;; tlm-chan-4 => tlm-chan-3
    (lambda ($1 . $rest) $1)
    ;; tlm-chan-4 => tlm-chan-3 "low" "{" tlm-lim-seq "}"
-   (lambda ($5 $4 $3 $2 $1 . $rest) (cons `(id ,(tl->list $4)) $1))
+   (lambda ($5 $4 $3 $2 $1 . $rest) (cons `(id ,(seq->elt $4)) $1))
    ;; tlm-chan-5 => tlm-chan-4
    (lambda ($1 . $rest) $1)
    ;; tlm-chan-5 => tlm-chan-4 "high" "{" tlm-lim-seq "}"
-   (lambda ($5 $4 $3 $2 $1 . $rest) (cons `(id ,(tl->list $4)) $1))
+   (lambda ($5 $4 $3 $2 $1 . $rest) (cons `(id ,(seq->elt $4)) $1))
    ;; tlm-update => "always"
    (lambda ($1 . $rest) "always")
    ;; tlm-update => "on" "change"
    (lambda ($2 $1 . $rest) "on-change")
    ;; tlm-lim-seq => 
-   (lambda $rest (make-tl 'tlm-lim-seq))
+   (lambda $rest (make-seq))
    ;; tlm-lim-seq => tlm-lim elt-sep tlm-lim-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; tlm-lim => "red" expr
    (lambda ($2 $1 . $rest) `(tlm-lim ,$1 ,$2))
    ;; tlm-lim => "orange" expr
@@ -428,11 +430,11 @@
    ;; comp-inst-7 => comp-inst-6 "{" string "}"
    (lambda ($4 $3 $2 $1 . $rest) (cons `(code ,$3) $1))
    ;; topology-defn => "topology" ident "{" topo-mem-seq "}"
-   (lambda ($5 $4 $3 $2 $1 . $rest) `(topology-defn ,$2 ,(tl->list $4)))
+   (lambda ($5 $4 $3 $2 $1 . $rest) `(topology-defn ,$2 ,(seq->elt $4)))
    ;; topo-mem-seq => 
-   (lambda $rest (make-tl 'topo-mem-seq))
+   (lambda $rest (make-seq))
    ;; topo-mem-seq => topo-mem mem-sep topo-mem-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; topo-mem-seq => include-spec mem-sep topo-mem-seq
    (lambda ($3 $2 $1 . $rest) $3)
    ;; topo-mem => lone-anno
@@ -450,12 +452,12 @@
    ;; comp-inst-spec => "private" "instance" ident
    (lambda ($3 $2 $1 . $rest) `(comp-priv-inst ,$3))
    ;; conn-graph-spec => "connections" ident "{" conn-seq "}"
-   (lambda ($5 $4 $3 $2 $1 . $rest) `(connections ,$2 ,(tl->list $4)))
+   (lambda ($5 $4 $3 $2 $1 . $rest) `(connections ,$2 ,(seq->elt $4)))
    ;; conn-graph-spec => pattern-kind "connections" "instance" qual-ident
    (lambda ($4 $3 $2 $1 . $rest) `(connections-inst ,$4 (kind ,$1)))
    ;; conn-graph-spec => pattern-kind "connections" "instance" qual-ident "...
    (lambda ($7 $6 $5 $4 $3 $2 $1 . $rest)
-     `(connections-inst ,$4 (kind ,$1) ,(tl->list $6)))
+     `(connections-inst ,$4 (kind ,$1) ,(seq->elt $6)))
    ;; pattern-kind => "command"
    (lambda ($1 . $rest) $1)
    ;; pattern-kind => "event"
@@ -471,9 +473,9 @@
    ;; pattern-kind => "text" "event"
    (lambda ($2 $1 . $rest) "text-event")
    ;; conn-seq => 
-   (lambda $rest (make-tl 'conn-seq))
+   (lambda $rest (make-seq))
    ;; conn-seq => connection elt-sep conn-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; connection => conn-from "->" conn-to
    (lambda ($3 $2 $1 . $rest) `(conn ,$1 ,$3))
    ;; connection => "unmatched" conn-from "->" conn-to
@@ -487,38 +489,38 @@
    ;; conn-to => qual-ident "[" expr "]"
    (lambda ($4 $3 $2 $1 . $rest) `(to ,$1 ,$3))
    ;; tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq...
-   (lambda ($6 $5 $4 $3 $2 $1 . $rest) `(tlm-packets ,$3 ,(tl->list $4)))
+   (lambda ($6 $5 $4 $3 $2 $1 . $rest) `(tlm-packets ,$3 ,(seq->elt $4)))
    ;; tlm-pktset-spec => "telemetry" "packets" ident "{" tlm-pktgrp-mem-seq...
    (lambda ($10 $9 $8 $7 $6 $5 $4 $3 $2 $1 . $rest)
-     `(tlm-packets ,$3 ,(tl->list $5) (omit ,@(sx-tail (tl->list $9)))))
+     `(tlm-packets ,$3 ,(seq->elt $5) (omit ,@(sx-tail (seq->elt $9)))))
    ;; tlm-pktgrp-mem-seq => 
-   (lambda $rest (make-tl 'tlm-pktgrp-mem-seq))
+   (lambda $rest (make-seq))
    ;; tlm-pktgrp-mem-seq => tlm-pkt-spec elt-sep tlm-pktgrp-mem-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; tlm-pktgrp-mem-seq => include-spec elt-sep tlm-pktgrp-mem-seq
    (lambda ($3 $2 $1 . $rest) $3)
    ;; tlm-pkt-spec => "packet" ident "group" expr "{" tlm-pkt-mem-seq "}"
    (lambda ($7 $6 $5 $4 $3 $2 $1 . $rest)
-     `(packet ,$2 (group ,$4) (tl->list $6)))
+     `(packet ,$2 (group ,$4) (seq->elt $6)))
    ;; tlm-pkt-spec => "packet" ident "group" expr "id" expr "{" tlm-pkt-mem...
    (lambda ($9 $8 $7 $6 $5 $4 $3 $2 $1 . $rest)
-     `(packet ,$2 (group ,$4) (id ,$6) (tl->list $8)))
+     `(packet ,$2 (group ,$4) (id ,$6) (seq->elt $8)))
    ;; tlm-pkt-mem-seq => 
-   (lambda $rest (make-tl 'tlm-pkt-mem-seq))
+   (lambda $rest (make-seq))
    ;; tlm-pkt-mem-seq => qual-ident elt-sep tlm-pkt-mem-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; tlm-pkt-mem-seq => include-spec elt-sep tlm-pkt-mem-seq
    (lambda ($3 $2 $1 . $rest) $3)
    ;; tlm-chan-id-seq => 
-   (lambda $rest (make-tl 'tlm-chanid-seq))
+   (lambda $rest (make-seq))
    ;; tlm-chan-id-seq => tlm-chan-id-seq elt-sep qual-ident
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; param-list => param-list-1
-   (lambda ($1 . $rest) (tl->list $1))
+   (lambda ($1 . $rest) (seq->elt $1))
    ;; param-list-1 => 
-   (lambda $rest (make-tl 'param-list))
+   (lambda $rest (make-seq))
    ;; param-list-1 => formal-param elt-sep param-list-1
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; formal-param => formal-param-1
    (lambda ($1 . $rest) $1)
    ;; formal-param => formal-param-1 '$code-anno
@@ -526,7 +528,7 @@
    ;; formal-param-1 => ident ":" type-name
    (lambda ($3 $2 $1 . $rest) `(param ,$1 ,$3))
    ;; formal-param-1 => "ref" ident ":" type-name
-   (lambda ($4 $3 $2 $1 . $rest) `(param-ref ,$1 ,$3))
+   (lambda ($4 $3 $2 $1 . $rest) `(ref-param ,$2 ,$4))
    ;; queue-full-beh => queue-full-beh-1
    (lambda ($1 . $rest) `(q-full-beh ,$1))
    ;; queue-full-beh-1 => "assert"
@@ -578,20 +580,20 @@
    ;; prim-expr => string
    (lambda ($1 . $rest) $1)
    ;; prim-expr => "[" expr-seq "]"
-   (lambda ($3 $2 $1 . $rest) `(array-val ,@(sx-tail (tl->list $2))))
+   (lambda ($3 $2 $1 . $rest) `(array-val ,@(sx-tail (seq->elt $2))))
    ;; prim-expr => "{" struct-elt-seq "}"
-   (lambda ($3 $2 $1 . $rest) `(struct-val ,@(sx-tail (tl->list $2))))
+   (lambda ($3 $2 $1 . $rest) `(struct-val ,@(sx-tail (seq->elt $2))))
    ;; prim-expr => "(" expr ")"
    (lambda ($3 $2 $1 . $rest) $2)
    ;; expr-seq => expr
-   (lambda ($1 . $rest) (make-tl 'expr-seq))
+   (lambda ($1 . $rest) (make-seq))
    ;; expr-seq => expr elt-sep expr-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; struct-elt-seq => 
-   (lambda $rest (make-tl 'struct-val-seq))
+   (lambda $rest (make-seq))
    ;; struct-elt-seq => ident "=" expr elt-sep struct-elt-seq
    (lambda ($5 $4 $3 $2 $1 . $rest)
-     (tl-insert $5 `(bind-struct-elt ,$1 ,$3)))
+     (seq-insert $5 `(bind-struct-elt ,$1 ,$3)))
    ;; number => '$float
    (lambda ($1 . $rest) `(float ,$1))
    ;; number => '$fixed
@@ -603,15 +605,15 @@
    ;; lone-anno => '$lone-anno
    (lambda ($1 . $rest) `(lone-anno ,$1))
    ;; qual-ident => qual-ident-1
-   (lambda ($1 . $rest) (tl->list $1))
+   (lambda ($1 . $rest) (reverse $1))
    ;; qual-ident-1 => ident
-   (lambda ($1 . $rest) (make-tl 'qual-ident (sx-ref $1 1)))
+   (lambda ($1 . $rest) (list (sx-ref $1 1) 'qual-ident))
    ;; qual-ident-1 => qual-ident-1 "." ident
-   (lambda ($3 $2 $1 . $rest) (tl-append $1 (sx-ref $3 1)))
+   (lambda ($3 $2 $1 . $rest) (cons (sx-ref $3 1) $1))
    ;; qual-ident-seq => 
-   (lambda $rest (make-tl 'qual-ident-seq))
+   (lambda $rest (make-seq))
    ;; qual-ident-seq => qual-ident elt-sep qual-ident-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; index => "[" expr "]"
    (lambda ($3 $2 $1 . $rest) `(index ,$2))
    ;; type-name => qual-ident
@@ -660,11 +662,11 @@
    ;; stmach-defn => "state" "machine" ident
    (lambda ($3 $2 $1 . $rest) `(stmach-defn ,$3))
    ;; stmach-defn => "state" "machine" ident "{" stmach-mem-seq "}"
-   (lambda ($6 $5 $4 $3 $2 $1 . $rest) `(stmach-defn ,$3 ,(tl->list $5)))
+   (lambda ($6 $5 $4 $3 $2 $1 . $rest) `(stmach-defn ,$3 ,(seq->elt $5)))
    ;; stmach-mem-seq => 
-   (lambda $rest (make-tl 'stmach-mem-seq))
+   (lambda $rest (make-seq))
    ;; stmach-mem-seq => stmach-mem mem-sep stmach-mem-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; stmach-mem => lone-anno
    (lambda ($1 . $rest) $1)
    ;; stmach-mem => "choice" ident "{" "if" ident trans-expr "else" trans-e...
@@ -688,11 +690,11 @@
    ;; state-defn => "state" ident
    (lambda ($2 $1 . $rest) `(state-defn ,$2))
    ;; state-defn => "state" ident "{" state-defn-mem-seq "}"
-   (lambda ($5 $4 $3 $2 $1 . $rest) `(state-defn ,$2 ,(tl->list $4)))
+   (lambda ($5 $4 $3 $2 $1 . $rest) `(state-defn ,$2 ,(seq->elt $4)))
    ;; state-defn-mem-seq => 
-   (lambda $rest (make-tl 'state-defn-mem-seq))
+   (lambda $rest (make-seq))
    ;; state-defn-mem-seq => state-defn-mem mem-sep state-defn-mem-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; state-defn-mem => lone-anno
    (lambda ($1 . $rest) $1)
    ;; state-defn-mem => "initial" trans-expr
@@ -726,11 +728,11 @@
    ;; trans-expr-1 => do-expr trans-expr-0
    (lambda ($2 $1 . $rest) $1)
    ;; do-expr => "do" "{" action-seq "}"
-   (lambda ($4 $3 $2 $1 . $rest) `(do-expr ,(tl->list $3)))
+   (lambda ($4 $3 $2 $1 . $rest) `(do-expr ,(seq->elt $3)))
    ;; action-seq => 
-   (lambda $rest (make-tl 'action-seq))
+   (lambda $rest (make-seq))
    ;; action-seq => ident elt-sep action-seq
-   (lambda ($3 $2 $1 . $rest) (tl-insert $3 $1))
+   (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; trans-or-do => trans-expr
    (lambda ($1 . $rest) $1)
    ;; trans-or-do => do-expr

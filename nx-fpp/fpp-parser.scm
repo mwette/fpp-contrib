@@ -7,16 +7,44 @@
   #:export (parse-fpp read-fpp-file)
   #:use-module (nyacc lex)
   #:use-module (nyacc parse)
-  #:use-module (nyacc lang util)
-  #:use-module (nyacc lang sx-util)
-  #:use-module (sxml fold)
-  #:use-module ((srfi srfi-1) #:select (fold)))
+  #:use-module (nyacc lang util)        ; push-input, pop-input
+  #:use-module (nyacc lang sx-util)     ; sx-ref,sx-tail
+  #:use-module ((srfi srfi-1) #:select (fold))
+  #:declarative? #f)
 
 (use-modules (ice-9 pretty-print))
 (define (sferr fmt . args) (apply simple-format (current-error-port) fmt args))
 (define (pperr exp)
   (pretty-print exp (current-error-port) #:per-line-prefix "  "))
 
+(define (make-seq)
+  '())
+
+(define (seq-insert sq item)
+  (if (eq? 'lone-anno (car item))
+      (if (eq? 'lone-anno (caar sq))
+          (cons (cons* 'lone-anno (cadr item) (cdar sq)) (cdr sq))
+          (cons item sq))
+      (if (and (pair? sq) (eq? 'lone-anno (caar sq)))
+          (let ((ae `(anno ,(string-join (cdar sq) "\n"))))
+            (cons* item (cons* (caadr sq) `(@ ,ae) (cdadr sq)) (cddr sq)))
+          (cons item sq))))
+
+(define (seq->elt sq)
+  (cons 'seq
+        (if (and (pair? sq) (eq? 'lone-anno (caar sq)))
+            (let ((ae `(anno ,(string-join (cdar sq) "\n"))))
+              (cons (cons* (caar sq) `(@ ,ae) (cdar sq)) (cddr sq)))
+            sq)))
+
+(export make-seq seq-insert seq->elt)
+
+(define-public t-seq (make-seq))
+(set! t-seq (seq-insert t-seq '(baz "BAZ")))
+(set! t-seq (seq-insert t-seq '(bar "BAR")))
+(set! t-seq (seq-insert t-seq '(lone-anno "BAR ANNO")))
+(set! t-seq (seq-insert t-seq '(lone-anno "Consider:")))
+(set! t-seq (seq-insert t-seq '(foo "FOO")))
 
 (include-from-path "mach.d/fpp-tab.scm")
 (include-from-path "mach.d/fpp-act.scm")
@@ -99,8 +127,7 @@
 (define* (read-fpp-file filename #:key debug)
   (let* ((port (open-input-file filename))
          (tree (with-input-from-port port
-                 (lambda() (parse-fpp #:debug debug))))
-         )
+                 (lambda() (parse-fpp #:debug debug)))))
     ; need to augment tree with filename ???
     tree))
 

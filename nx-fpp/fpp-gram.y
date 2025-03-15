@@ -133,6 +133,7 @@
 %token _lone_comm
 %token _code_comm
 %define lr.default-reduction accepting
+%expect 1
 %start translation_unit
 %%
 elt_sep: ',' ;
