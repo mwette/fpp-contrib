@@ -10,7 +10,7 @@
   #:use-module (nyacc lang util)        ; push-input, pop-input
   #:use-module (nyacc lang sx-util)     ; sx-ref,sx-tail
   #:use-module ((srfi srfi-1) #:select (fold))
-  #:declarative? #f)
+  #:declarative? #t)
 
 (use-modules (ice-9 pretty-print))
 (define (sferr fmt . args) (apply simple-format (current-error-port) fmt args))
@@ -34,17 +34,16 @@
   (cons 'seq
         (if (and (pair? sq) (eq? 'lone-anno (caar sq)))
             (let ((ae `(anno ,(string-join (cdar sq) "\n"))))
-              (cons (cons* (caar sq) `(@ ,ae) (cdar sq)) (cddr sq)))
+              (cons (cons* (caadr sq) `(@ ,ae) (cdadr sq)) (cddr sq)))
             sq)))
 
-(export make-seq seq-insert seq->elt)
-
-(define-public t-seq (make-seq))
-(set! t-seq (seq-insert t-seq '(baz "BAZ")))
-(set! t-seq (seq-insert t-seq '(bar "BAR")))
-(set! t-seq (seq-insert t-seq '(lone-anno "BAR ANNO")))
-(set! t-seq (seq-insert t-seq '(lone-anno "Consider:")))
-(set! t-seq (seq-insert t-seq '(foo "FOO")))
+;;(export make-seq seq-insert seq->elt)
+;;(define-public t-seq (make-seq))
+;;(set! t-seq (seq-insert t-seq '(baz "BAZ")))
+;;(set! t-seq (seq-insert t-seq '(bar "BAR")))
+;;(set! t-seq (seq-insert t-seq '(lone-anno "BAR ANNO")))
+;;(set! t-seq (seq-insert t-seq '(lone-anno "Consider:")))
+;;(set! t-seq (seq-insert t-seq '(foo "FOO")))
 
 (include-from-path "mach.d/fpp-tab.scm")
 (include-from-path "mach.d/fpp-act.scm")

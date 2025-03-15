@@ -130,11 +130,7 @@
 
     (component-defn
      (comp-kind "component" ident "{" comp-mem-seq "}"
-                ($$
-                 (sferr "rl,seq->elt:\n")
-                 (pperr $5)
-                 (pperr (seq->elt $5)) 
-                 `(component-defn ,$3 (kind ,$1) ,(seq->elt $5)))))
+                ($$ `(component-defn ,$3 (kind ,$1) ,(seq->elt $5)))))
     (comp-kind ("active") ("passive") ("queued"))
     (comp-mem-seq
      ($empty ($$ (make-seq)))

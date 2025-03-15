@@ -131,9 +131,6 @@
    (lambda ($3 $2 $1 . $rest) (cons $3 $1))
    ;; component-defn => comp-kind "component" ident "{" comp-mem-seq "}"
    (lambda ($6 $5 $4 $3 $2 $1 . $rest)
-     (sferr "rl,seq->elt:\n")
-     (pperr $5)
-     (pperr (seq->elt $5))
      `(component-defn ,$3 (kind ,$1) ,(seq->elt $5)))
    ;; comp-kind => "active"
    (lambda ($1 . $rest) $1)
