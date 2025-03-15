@@ -628,8 +628,6 @@
    (lambda ($1 . $rest) (string-join (reverse $1) "\n"))
    ;; code-anno-list => '$code-anno
    (lambda ($1 . $rest) (list $1))
-   ;; code-anno-list => code-anno-list "\n" '$code-anno
-   (lambda ($3 $2 $1 . $rest) (cons $3 $1))
    ;; qual-ident => qual-ident-1
    (lambda ($1 . $rest) (reverse $1))
    ;; qual-ident-1 => ident
