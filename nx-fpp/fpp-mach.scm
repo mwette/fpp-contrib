@@ -77,38 +77,52 @@
 
     ;; === const, abs-type, array, enum, struct, port defn's
     
-    (const-defn ("constant" ident "=" expr ($$ `(const-defn ,$2 ,$4))))
-    (abs-type-defn ("type" ident ($$ `(type-defn ,$2))))
-    (array-defn ("array" ident "=" index ident ($$ `(array-defn ,$3 ,$2))))
+    (const-defn
+     ("constant" ident "=" expr ($$ `(const-defn ,$2 ,$4)))
+     ("constant" ident "=" expr code-anno
+      ($$ `(const-defn (@ (anno ,$4)) ,$2 ,$4))))
+    (abs-type-defn
+     ("type" ident ($$ `(type-defn ,$2)))
+     ("type" ident code-anno ($$ `(type-defn (@ (anno ,$3)) ,$2))))
+    (array-defn
+     ("array" ident "=" index ident ($$ `(array-defn ,$2 ,$4 ,$5)))
+     ("array" ident "=" index ident code-anno
+      ($$ `(array-defn (@ (anno ,$6)) ,$2 ,$4 ,$5))))
     
-    (enum-defn (enum-defn-3 ($$ (reverse $1))))
+    (enum-defn
+     (enum-defn-4 ($$ (if (string? (car $1)) (annoverse $1) (reverse $1)))))
     (enum-defn-0 ("enum" ident ($$ (list $2 'enum-defn))))
     (enum-defn-1 (enum-defn-0)
                  (enum-defn-0 ":" type-name ($$ (cons $3 $1))))
     (enum-defn-2 (enum-defn-1 "{" enum-mem-seq "}" ($$ (cons (seq->elt $3) $1))))
     (enum-defn-3 (enum-defn-2)
                  (enum-defn-2 "default" expr ($$ (cons `(default ,$3) $1))))
+    (enum-defn-4 (enum-defn-3)
+                 (enum-defn-3 code-anno ($$ (cons $2 $1))))
     (enum-mem-seq
      ($empty ($$ (make-seq)))
      (enum-mem elt-sep enum-mem-seq ($$ (seq-insert $3 $1))))
     (enum-mem
      (ident ($$ `(enum ,$1)))
-     (ident "=" expr ($$ `(enum ,$1 ,$3))))
+     (ident code-anno ($$ `(enum (@ (anno ,$2)),$1)))
+     (ident "=" expr ($$ `(enum ,$1 ,$3)))
+     (ident "=" expr code-anno ($$ `(enum (@ (anno ,$4)) ,$1 ,$3))))
 
     (struct-defn
-     (struct-defn-1 ($$ (reverse $1))))
+     (struct-defn-2 ($$ (if (string? (car $1)) (annoverse $1) (reverse $1)))))
     (struct-defn-0
      ("struct" ident "{" struct-mem-seq "}"
       ($$ (list (seq->elt $4) $2 'struct-defn))))
-    (struct-defn-1
-     (struct-defn-0)
-     (struct-defn-0 "default" expr ($$ (cons `(default ,$3) $1))))
+    (struct-defn-1 (struct-defn-0)
+                   (struct-defn-0 "default" expr ($$ (cons `(default ,$3) $1))))
+    (struct-defn-2 (struct-defn-1)
+                   (struct-defn-1 code-anno ($$ (cons $2 $1))))
     (struct-mem-seq
      ($empty ($$ (make-seq)))
      (struct-mem mem-sep struct-mem-seq ($$ (seq-insert $3 $1))))
     (struct-mem
      (struct-mem-3 ($$ (reverse $1)))
-     (struct-mem-3 $code-anno
+     (struct-mem-3 code-anno
                    ($$ (let (($1 (reverse $1)))
                          (cons* (car $1) `(@ (anno ,$2)) (cdr $1))))))
     (struct-mem-0 (ident ":" ($$ (list $1 'struct-elt))))
@@ -118,12 +132,15 @@
     (struct-mem-3 (struct-mem-2)
                   (struct-mem-2 "format" string ($$ (cons `(format ,$3) $1))))
 
-    (port-defn (port-defn-2 ($$ (reverse $1))))
+    (port-defn
+     (port-defn-3 ($$ (if (string? (car $1)) (annoverse $1) (reverse $1)))))
     (port-defn-0 ("port" ident ($$ (list $2 'port-defn))))
     (port-defn-1 (port-defn-0)
                  (port-defn-0 "(" param-list ")" ($$ (cons $3 $1))))
     (port-defn-2 (port-defn-1)
                  (port-defn-1 "->" type-name ($$ (cons $3 $1))))
+    (port-defn-3 (port-defn-2)
+                 (port-defn-2 code-anno ($$ (cons $2 $1))))
 
 
     ;; === component spec ===============
@@ -395,7 +412,7 @@
      (formal-param elt-sep param-list-1 ($$ (seq-insert $3 $1))))
     (formal-param
      (formal-param-1)
-     (formal-param-1 $code-anno
+     (formal-param-1 code-anno
                      ($$ (cons* (sx-tag $1) `(@ (anno ,$2)) (sx-tail $1)))))
     (formal-param-1
      (ident ":" type-name ($$ `(param ,$1 ,$3)))
@@ -459,7 +476,14 @@
             ($fixed ($$ `(fixed ,$1))))
     (ident ($ident ($$ `(ident ,$1))))
     (string ($string ($$ `(string ,$1))))
-    (lone-anno ($lone-anno ($$ `(lone-anno ,$1))))
+    
+    (lone-anno
+     ($lone-anno ($$ `(lone-anno ,$1))))
+    (code-anno
+     (code-anno-list ($$ (string-join (reverse $1) "\n"))))
+    (code-anno-list
+     ($code-anno ($$ (list $1)))
+     (code-anno-list "\n" $code-anno ($$ (cons $3 $1))))
 
     (qual-ident (qual-ident-1 ($$ (reverse $1))))
     (qual-ident-1
@@ -487,7 +511,7 @@
 
     (stmach-inst
      (stmach-inst-2 ($$ (reverse $1)))
-     (stmach-inst-2 $code-anno
+     (stmach-inst-2 code-anno
                     ($$ (let (($1 (reverse $1)))
                           (cons* (car $1) `(@ (anno ,$2)) (cdr $1))))))
     (stmach-inst-0 ("state" "machine" "instance" ident ":" qual-ident

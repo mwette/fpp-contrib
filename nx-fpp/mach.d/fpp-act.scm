@@ -62,12 +62,19 @@
    (lambda ($5 $4 $3 $2 $1 . $rest) `(module-defn ,$2 ,(seq->elt $4)))
    ;; const-defn => "constant" ident "=" expr
    (lambda ($4 $3 $2 $1 . $rest) `(const-defn ,$2 ,$4))
+   ;; const-defn => "constant" ident "=" expr code-anno
+   (lambda ($5 $4 $3 $2 $1 . $rest) `(const-defn (@ (anno ,$4)) ,$2 ,$4))
    ;; abs-type-defn => "type" ident
    (lambda ($2 $1 . $rest) `(type-defn ,$2))
+   ;; abs-type-defn => "type" ident code-anno
+   (lambda ($3 $2 $1 . $rest) `(type-defn (@ (anno ,$3)) ,$2))
    ;; array-defn => "array" ident "=" index ident
-   (lambda ($5 $4 $3 $2 $1 . $rest) `(array-defn ,$3 ,$2))
-   ;; enum-defn => enum-defn-3
-   (lambda ($1 . $rest) (reverse $1))
+   (lambda ($5 $4 $3 $2 $1 . $rest) `(array-defn ,$2 ,$4 ,$5))
+   ;; array-defn => "array" ident "=" index ident code-anno
+   (lambda ($6 $5 $4 $3 $2 $1 . $rest)
+     `(array-defn (@ (anno ,$6)) ,$2 ,$4 ,$5))
+   ;; enum-defn => enum-defn-4
+   (lambda ($1 . $rest) (if (string? (car $1)) (annoverse $1) (reverse $1)))
    ;; enum-defn-0 => "enum" ident
    (lambda ($2 $1 . $rest) (list $2 'enum-defn))
    ;; enum-defn-1 => enum-defn-0
@@ -80,29 +87,41 @@
    (lambda ($1 . $rest) $1)
    ;; enum-defn-3 => enum-defn-2 "default" expr
    (lambda ($3 $2 $1 . $rest) (cons `(default ,$3) $1))
+   ;; enum-defn-4 => enum-defn-3
+   (lambda ($1 . $rest) $1)
+   ;; enum-defn-4 => enum-defn-3 code-anno
+   (lambda ($2 $1 . $rest) (cons $2 $1))
    ;; enum-mem-seq => 
    (lambda $rest (make-seq))
    ;; enum-mem-seq => enum-mem elt-sep enum-mem-seq
    (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; enum-mem => ident
    (lambda ($1 . $rest) `(enum ,$1))
+   ;; enum-mem => ident code-anno
+   (lambda ($2 $1 . $rest) `(enum (@ (anno ,$2)) ,$1))
    ;; enum-mem => ident "=" expr
    (lambda ($3 $2 $1 . $rest) `(enum ,$1 ,$3))
-   ;; struct-defn => struct-defn-1
-   (lambda ($1 . $rest) (reverse $1))
+   ;; enum-mem => ident "=" expr code-anno
+   (lambda ($4 $3 $2 $1 . $rest) `(enum (@ (anno ,$4)) ,$1 ,$3))
+   ;; struct-defn => struct-defn-2
+   (lambda ($1 . $rest) (if (string? (car $1)) (annoverse $1) (reverse $1)))
    ;; struct-defn-0 => "struct" ident "{" struct-mem-seq "}"
    (lambda ($5 $4 $3 $2 $1 . $rest) (list (seq->elt $4) $2 'struct-defn))
    ;; struct-defn-1 => struct-defn-0
    (lambda ($1 . $rest) $1)
    ;; struct-defn-1 => struct-defn-0 "default" expr
    (lambda ($3 $2 $1 . $rest) (cons `(default ,$3) $1))
+   ;; struct-defn-2 => struct-defn-1
+   (lambda ($1 . $rest) $1)
+   ;; struct-defn-2 => struct-defn-1 code-anno
+   (lambda ($2 $1 . $rest) (cons $2 $1))
    ;; struct-mem-seq => 
    (lambda $rest (make-seq))
    ;; struct-mem-seq => struct-mem mem-sep struct-mem-seq
    (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; struct-mem => struct-mem-3
    (lambda ($1 . $rest) (reverse $1))
-   ;; struct-mem => struct-mem-3 '$code-anno
+   ;; struct-mem => struct-mem-3 code-anno
    (lambda ($2 $1 . $rest)
      (let (($1 (reverse $1))) (cons* (car $1) `(@ (anno ,$2)) (cdr $1))))
    ;; struct-mem-0 => ident ":"
@@ -117,8 +136,8 @@
    (lambda ($1 . $rest) $1)
    ;; struct-mem-3 => struct-mem-2 "format" string
    (lambda ($3 $2 $1 . $rest) (cons `(format ,$3) $1))
-   ;; port-defn => port-defn-2
-   (lambda ($1 . $rest) (reverse $1))
+   ;; port-defn => port-defn-3
+   (lambda ($1 . $rest) (if (string? (car $1)) (annoverse $1) (reverse $1)))
    ;; port-defn-0 => "port" ident
    (lambda ($2 $1 . $rest) (list $2 'port-defn))
    ;; port-defn-1 => port-defn-0
@@ -129,6 +148,10 @@
    (lambda ($1 . $rest) $1)
    ;; port-defn-2 => port-defn-1 "->" type-name
    (lambda ($3 $2 $1 . $rest) (cons $3 $1))
+   ;; port-defn-3 => port-defn-2
+   (lambda ($1 . $rest) $1)
+   ;; port-defn-3 => port-defn-2 code-anno
+   (lambda ($2 $1 . $rest) (cons $2 $1))
    ;; component-defn => comp-kind "component" ident "{" comp-mem-seq "}"
    (lambda ($6 $5 $4 $3 $2 $1 . $rest)
      `(component-defn ,$3 (kind ,$1) ,(seq->elt $5)))
@@ -520,7 +543,7 @@
    (lambda ($3 $2 $1 . $rest) (seq-insert $3 $1))
    ;; formal-param => formal-param-1
    (lambda ($1 . $rest) $1)
-   ;; formal-param => formal-param-1 '$code-anno
+   ;; formal-param => formal-param-1 code-anno
    (lambda ($2 $1 . $rest) (cons* (sx-tag $1) `(@ (anno ,$2)) (sx-tail $1)))
    ;; formal-param-1 => ident ":" type-name
    (lambda ($3 $2 $1 . $rest) `(param ,$1 ,$3))
@@ -601,6 +624,12 @@
    (lambda ($1 . $rest) `(string ,$1))
    ;; lone-anno => '$lone-anno
    (lambda ($1 . $rest) `(lone-anno ,$1))
+   ;; code-anno => code-anno-list
+   (lambda ($1 . $rest) (string-join (reverse $1) "\n"))
+   ;; code-anno-list => '$code-anno
+   (lambda ($1 . $rest) (list $1))
+   ;; code-anno-list => code-anno-list "\n" '$code-anno
+   (lambda ($3 $2 $1 . $rest) (cons $3 $1))
    ;; qual-ident => qual-ident-1
    (lambda ($1 . $rest) (reverse $1))
    ;; qual-ident-1 => ident
@@ -643,7 +672,7 @@
    (lambda ($3 $2 $1 . $rest) `(type-name ,$1 (size ,$3)))
    ;; stmach-inst => stmach-inst-2
    (lambda ($1 . $rest) (reverse $1))
-   ;; stmach-inst => stmach-inst-2 '$code-anno
+   ;; stmach-inst => stmach-inst-2 code-anno
    (lambda ($2 $1 . $rest)
      (let (($1 (reverse $1))) (cons* (car $1) `(@ (anno ,$2)) (cdr $1))))
    ;; stmach-inst-0 => "state" "machine" "instance" ident ":" qual-ident
