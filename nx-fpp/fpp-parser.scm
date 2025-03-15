@@ -45,6 +45,10 @@
 ;;(set! t-seq (seq-insert t-seq '(lone-anno "Consider:")))
 ;;(set! t-seq (seq-insert t-seq '(foo "FOO")))
 
+(define (annoverse terms)
+  (let ((anno `(@ (anno (car terms)))) (form (reverse (cdr terms))))
+    (cons* (car form) anno form)))
+
 (include-from-path "mach.d/fpp-tab.scm")
 (include-from-path "mach.d/fpp-act.scm")
 
