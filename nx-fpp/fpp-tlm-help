@@ -48,14 +48,12 @@ exec guile $0 "$@"
       ((probe-form
         (lambda (form scope seed)
           (sxml-match form
+            ((seq . ,members)
+             (probe-members members scope seed))
             ((trans-unit . ,members)
              (probe-members members scope seed))
-            ((module-mem-seq . ,members)
-             (probe-members members scope seed))
-            ((module-defn (ident ,name) (module-mem-seq . ,members))
+            ((module-defn (ident ,name) (seq . ,members))
              (probe-members members (cons name scope) seed))
-            ((module-mem-seq . ,members)
-             (probe-members members scope seed))
             ((instance (ident ,name) (qual-ident ,parts ...) . ,_)
              (acons name (string-join parts ".") seed))
             (,__ seed))))
@@ -77,13 +75,11 @@ exec guile $0 "$@"
         (lambda (form seed)
           (sxml-match form
             ((trans-unit . ,members) (probe-members members seed))
-            ((module-mem-seq . ,members) (probe-members members seed))
-            ((module-defn (ident ,name) (module-mem-seq . ,members))
+            ((seq . ,members) (probe-members members seed))
+            ((module-defn (ident ,name) (seq . ,members))
              (probe-members members seed))
-            ((module-mem-seq . ,members) (probe-members members seed))
             ((component-defn (ident ,n) (kind ,k) . ,members)
              (probe-members members seed))
-            ((comp-mem-seq . ,members) (probe-members members seed))
             ((telemetry (ident ,name) . ,_)
              (cons (string-append pfix "." name) seed))
             (,_ seed))))
@@ -163,7 +159,9 @@ exec guile $0 "$@"
          (inst-cl (inst-chanl dname ilist ldict))
          (pkts-cl (pkts-chanl ptree))
          (addrem (add-rem inst-cl pkts-cl)))
+    ;;(pp ilist)
     ;;(pp inst-cl)
+    ;;(pp pkts-cl)
     (pp addrem)
     ;; need to process includes
     #|
