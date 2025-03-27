@@ -6,6 +6,8 @@
 ;;
 ;; https://cmake-format.readthedocs.io/en/latest/parse-tree.html
 
+;; https://aosabook.org/en/v1/cmake.html
+
 (use-modules (ice-9 match))
 
 (define (sf fmt . args) (apply simple-format (current-error-port) fmt args))

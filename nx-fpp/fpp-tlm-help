@@ -55,7 +55,7 @@ exec guile $0 "$@"
             ((module-defn (ident ,name) (seq . ,members))
              (probe-members members (cons name scope) seed))
             ((instance (ident ,name) (qual-ident ,parts ...) . ,_)
-             (acons name (string-join parts ".") seed))
+             (acons name parts seed))
             (,__ seed))))
        (probe-members
         (lambda (members scope seed)
@@ -153,7 +153,8 @@ exec guile $0 "$@"
          (ifile (string-append dpldir "/Top/instances.fpp"))
          (itree (read-fpp-file ifile))
          (dname (get-dname itree))
-         (ilist (coll-inst itree))
+         (ilist (map (lambda (ent) (cons (car ent) (string-join (cdr ent))))
+                     itree))
          (pfile (string-append dpldir "/Top/" dname "Packets.xml"))
          (ptree (cadr (xml->sxml (open-input-file pfile) #:trim-whitespace? #t)))
          (inst-cl (inst-chanl dname ilist ldict))
