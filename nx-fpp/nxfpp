@@ -7,12 +7,71 @@ exec guile $0 "$@"
 (use-modules ((srfi srfi-1) #:select (fold)))
 (use-modules (sxml match))
 (use-modules (fpp-parser))
+(use-modules (fpp-help))
 
+(define (sf fmt . args) (apply simple-format #t fmt args))
 (use-modules (ice-9 pretty-print))
 (define pp pretty-print)
 
 (define (rsl->qid sl)
   (string-join (reverse sl) "."))
+
+(define *src-dirs* (make-parameter '("Components" "Ports" "Types" "fprime")))
+
+;; inst -> type
+;; type -> type-deps (types)
+
+
+(define (file-deps filename)
+  (letrec
+      ((probe-form
+        (lambda (form scope seed)
+          (sxml-match form
+            ((seq . ,members)
+             (probe-members members scope seed))
+            ((trans-unit . ,members)
+             (probe-members members scope seed))
+            ((module-defn (ident ,name) (seq . ,members))
+             (probe-members members (cons name scope) seed))
+            ((component-defn (ident ,name) (kind ,kind) . ,members)
+             (probe-members members (cons name scope) seed))
+            
+            ((input-port (ident ,_1) (spc-kind ,_2))
+             seed)
+            ((output-port (ident ,_1) (spc-kind ,_2) . ,_3)
+             seed)
+            ((input-port (ident ,_1) (kind ,_2) ,type)
+             (cons `(port ,type) seed))
+            ((output-port (ident ,_1) ,type)
+             (cons `(port ,type) seed))
+            ((param (ident ,_0) (type-name ,type) . ,_1)
+             (cons `(type ,type) seed))
+            ((event-spec (ident ,_0) . ,_1)
+             seed)
+            ((event-spec (ident ,_0) (seq . ,param-list) . ,_1)
+             (probe-members param-list scope seed))
+            ((command (ident ,_0) (kind ,_1) . ,_2)
+             seed)
+            ((command (ident ,_0) (seq . ,param-list) . ,_1)
+             (probe-members param-list scope seed))
+            
+            ((telemetry (ident ,name) . ,_) seed)
+            
+            (,_ (sf "missed ~s\n" (car form)) (pp form) (quit)))))
+       (probe-members
+        (lambda (members scope seed)
+          (fold (lambda (member seed) (probe-form member scope seed))
+                seed members))))
+    (probe-form (read-fpp-file filename) '() '())))
+    
+
+(define (process-dpl dir)
+  (let* ((ifile (string-append dir "/Top/instances.fpp"))
+         (itree (read-fpp-file ifile))
+         (instl (coll-inst itree))
+         )
+    instl
+    ))
 
 (define* (show-tlm tree #:optional (scope '()))
   (letrec ((probe-form
@@ -35,13 +94,31 @@ exec guile $0 "$@"
                     seed members))))
     (reverse (probe-form tree scope '()))))
 
+
+(define (show-tree file)
+  (pp (read-fpp-file file #:debug #f)))
+
+(define (show-tlms file)
+  (for-each
+   (lambda (tlm) (simple-format #t "~s\n" (cadr tlm)))
+   (show-tlm (read-fpp-file file #:debug #f) '("foo"))))
+
+(define (show-icont file)
+  (pp (process-dpl file)))
+
+(define (show-deps file)
+  (pp (file-deps file)))
+
+  ;;(find-src '("MathModule" "MathReceiver")
+;;            (cons "MathModule" (*src-dirs*)))) (pp (file-deps file)))
+
 (let* ((args (cdr (program-arguments)))
        (file (car args))
-       (tree (read-fpp-file file #:debug #f))
-       ;;(tlms (show-tlm tree '("foo")))
        )
-  ;;(for-each (lambda (tlm) (simple-format #t "~s\n" (cadr tlm))) tlms)
-  (pp tree)
-  )
+  ;;(show-deps file)
+  (show-tree file)
+  ;;(show-tlms file)
+  ;;(show-icont file)
+  0)
 
 ;; --- last line ---

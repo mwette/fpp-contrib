@@ -50,10 +50,12 @@
             (push-input (open-input-file path))))))
 
     (translation-unit
-     (module-mem-seq ($$ `(trans-unit ,@(sx-tail (seq->elt $1))))))
+     (module-mem-seq ($$ `(fpp-trans-unit ,@(sx-tail (seq->elt $1))))))
 
     (module-mem-seq
      ($empty ($$ (make-seq)))
+     (mod-mem ($$ (seq-insert (make-seq) $1)))
+     (include-spec ($$ (seq-insert (make-seq) $1)))
      (mod-mem mem-sep module-mem-seq ($$ (seq-insert $3 $1)))
      (include-spec mem-sep module-mem-seq ($$ $3)))
     (mod-mem
@@ -101,6 +103,7 @@
                  (enum-defn-3 code-anno ($$ (cons $2 $1))))
     (enum-mem-seq
      ($empty ($$ (make-seq)))
+     (enum-mem ($$ (seq-insert (make-seq) $1)))
      (enum-mem elt-sep enum-mem-seq ($$ (seq-insert $3 $1))))
     (enum-mem
      (ident ($$ `(enum ,$1)))
@@ -119,6 +122,7 @@
                    (struct-defn-1 code-anno ($$ (cons $2 $1))))
     (struct-mem-seq
      ($empty ($$ (make-seq)))
+     (struct-mem ($$ (seq-insert (make-seq) $1)))
      (struct-mem mem-sep struct-mem-seq ($$ (seq-insert $3 $1))))
     (struct-mem
      (struct-mem-3 ($$ (reverse $1)))
@@ -188,7 +192,8 @@
                      (gen-port-inst-3 queue-full-beh ($$ (cons $2 $1))))
 
     (spc-port-inst-0
-     (spc-port-kind "port" ident ($$ (list `(spc-kind ,$1) $3 'port))))
+     (spc-iport-kind "port" ident ($$ (list `(spc-kind ,$1) $3 'input-port)))
+     (spc-oport-kind "port" ident ($$ (list `(spc-kind ,$1) $3 'output-port))))
     (spc-port-inst-1 (spc-port-inst-0)
                      (input-port-kind spc-port-inst-0
                                       ($$ (cons `(kind ,$1) $2))))
@@ -220,20 +225,21 @@
     (cmd-spec-4 (cmd-spec-3)
                 (cmd-spec-3 queue-full-beh ($$ (cons $2 $1))))
     
-    (spc-port-kind
-     ("command" "recv" ($$ "command-receive"))
+    (spc-iport-kind
      ("command" "reg" ($$ "command-reg"))
      ("command" "resp" ($$ "command-resp"))
      ("event")
      ("param" "get" ($$ "param-get"))
      ("param" "set" ($$ "param-set"))
      ("product" "get" ($$ "product-get"))
-     ("product" "recv" ($$ "product-recv"))
      ("product" "request" ($$ "product-request"))
      ("product" "send" ($$ "product-send"))
      ("telemetry")
      ("text" "event" ($$ "text-event"))
      ("time" "get" ($$ "time-get")))
+    (spc-oport-kind
+     ("command" "recv" ($$ "command-receive"))
+     ("product" "recv" ($$ "product-recv")))
 
     (input-port-kind ("async") ("guarded") ("sync"))
 
@@ -287,6 +293,7 @@
      ("on" "change" ($$ "on-change")))
     (tlm-lim-seq
      ($empty ($$ (make-seq)))
+     (tlm-lim ($$ (seq-insert (make-seq) $1)))
      (tlm-lim elt-sep tlm-lim-seq ($$ (seq-insert $3 $1))))
     (tlm-lim
      ("red" expr ($$ `(tlm-lim ,$1 ,$2)))
@@ -339,6 +346,8 @@
       ($$ `(topology-defn ,$2 ,(seq->elt $4)))))
     (topo-mem-seq
      ($empty ($$ (make-seq)))
+     (topo-mem ($$ (seq-insert (make-seq) $1)))
+     (include-spec ($$ (seq-insert (make-seq) $1)))
      (topo-mem mem-sep topo-mem-seq ($$ (seq-insert $3 $1)))
      (include-spec mem-sep topo-mem-seq ($$ $3)))
     (topo-mem
@@ -365,6 +374,7 @@
 
     (conn-seq
      ($empty ($$ (make-seq)))
+     (connection ($$ (seq-insert (make-seq) $1)))
      (connection elt-sep conn-seq ($$ (seq-insert $3 $1))))
     (connection
      (conn-from "->" conn-to ($$ `(conn ,$1 ,$3)))
@@ -385,6 +395,8 @@
 
     (tlm-pktgrp-mem-seq
      ($empty ($$ (make-seq)))
+     (tlm-pkt-spec ($$ (seq-insert (make-seq) $1)))
+     (include-spec ($$ (seq-insert (make-seq) $1)))
      (tlm-pkt-spec elt-sep tlm-pktgrp-mem-seq ($$ (seq-insert $3 $1)))
      (include-spec elt-sep tlm-pktgrp-mem-seq ($$ $3)))
     
@@ -396,12 +408,13 @@
 
     (tlm-pkt-mem-seq
      ($empty ($$ (make-seq)))
+     (qual-ident ($$ (seq-insert (make-seq) $1)))
+     (include-spec ($$ (seq-insert (make-seq) $1)))
      (qual-ident elt-sep tlm-pkt-mem-seq ($$ (seq-insert $3 $1)))
      (include-spec elt-sep tlm-pkt-mem-seq ($$ $3)))
 
     (tlm-chan-id-seq
-     ($empty ($$ (make-seq)))
-     (tlm-chan-id-seq elt-sep qual-ident ($$ (seq-insert $3 $1))))
+     (qual-ident-seq))
 
 
     ;; === misc =========================
@@ -409,6 +422,7 @@
     (param-list (param-list-1 ($$ (seq->elt $1))))
     (param-list-1
      ($empty ($$ (make-seq)))
+     (formal-param ($$ (seq-insert (make-seq) $1)))
      (formal-param elt-sep param-list-1 ($$ (seq-insert $3 $1))))
     (formal-param
      (formal-param-1)
@@ -469,8 +483,10 @@
      (expr elt-sep expr-seq ($$ (seq-insert $3 $1))))
     (struct-elt-seq
      ($empty ($$ (make-seq)))
-     (ident "=" expr elt-sep struct-elt-seq
-            ($$ (seq-insert $5 `(bind-struct-elt ,$1 ,$3)))))
+     (struct-elt ($$ (seq-insert (make-seq) $1)))
+     (struct-elt elt-sep struct-elt-seq ($$ (seq-insert $3 $1))))
+    (struct-elt
+     (ident "=" expr ($$ `(bind-struct-elt ,$1 ,$3))))
 
     (number ($float ($$ `(float ,$1)))
             ($fixed ($$ `(fixed ,$1))))
@@ -492,6 +508,7 @@
      (qual-ident-1 "." ident ($$ (cons (sx-ref $3 1) $1))))
     (qual-ident-seq
      ($empty ($$ (make-seq)))
+     (qual-ident ($$ (seq-insert (make-seq) $1)))
      (qual-ident elt-sep qual-ident-seq ($$ (seq-insert $3 $1))))
 
     (index
@@ -499,13 +516,14 @@
 
     (type-name
      (qual-ident ($$ `(type-name ,$1)))
-     ("I8" ($$ `(type-name ,$1))) ("U8" ($$ `(type-name ,$1)))
-     ("I16" ($$ `(type-name ,$1))) ("U16" ($$ `(type-name ,$1)))
-     ("I32" ($$ `(type-name ,$1))) ("U32" ($$ `(type-name ,$1)))
-     ("I64" ($$ `(type-name ,$1))) ("U64" ($$ `(type-name ,$1)))
-     ("F32" ($$ `(type-name ,$1))) ("F64" ($$ `(type-name ,$1)))
-     ("bool" ($$ `(type-name ,$1))) ("string" ($$ `(type-name ,$1)))
-     ("string" "size" expr ($$ `(type-name ,$1 (size ,$3)))))
+     ("I8" ($$ `(type-name (fixed ,$1)))) ("U8" ($$ `(type-name (fixed ,$1))))
+     ("I16" ($$ `(type-name (fixed ,$1)))) ("U16" ($$ `(type-name (fixed ,$1))))
+     ("I32" ($$ `(type-name (fixed ,$1)))) ("U32" ($$ `(type-name (fixed ,$1))))
+     ("I64" ($$ `(type-name (fixed ,$1)))) ("U64" ($$ `(type-name (fixed ,$1))))
+     ("F32" ($$ `(type-name (float ,$1)))) ("F64" ($$ `(type-name (float ,$1))))
+     ("bool" ($$ `(type-name (bool ,$1))))
+     ("string" ($$ `(type-name (string ,$1))))
+     ("string" "size" expr ($$ `(type-name (string ,$1 (size ,$3))))))
 
 
     ;; === state machines ==============
@@ -529,6 +547,7 @@
 
     (stmach-mem-seq
      ($empty ($$ (make-seq)))
+     (stmach-mem ($$ (seq-insert (make-seq) $1)))
      (stmach-mem mem-sep stmach-mem-seq ($$ (seq-insert $3 $1))))
 
     (stmach-mem
@@ -551,6 +570,7 @@
 
     (state-defn-mem-seq
      ($empty ($$ (make-seq)))
+     (state-defn-mem ($$ (seq-insert (make-seq) $1)))
      (state-defn-mem mem-sep state-defn-mem-seq ($$ (seq-insert $3 $1))))
     (state-defn-mem
      (lone-anno)
@@ -575,6 +595,7 @@
      ("do" "{" action-seq "}" ($$ `(do-expr ,(seq->elt $3)))))
     (action-seq
      ($empty ($$ (make-seq)))
+     (ident ($$ (seq-insert (make-seq) $1)))
      (ident elt-sep action-seq ($$ (seq-insert $3 $1))))
 
     (trans-or-do (trans-expr) (do-expr)))))
